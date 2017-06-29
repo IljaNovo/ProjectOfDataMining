@@ -1,18 +1,3 @@
-'''
-Created on Sep 25, 2012
-
-@author: johnterzis
-
-Parser takes raw json output from BingClient and parses the result list of dictionaries, placing 
-significant components into a Document List
-
-e.g.
-if json document, exampleResults, is passed into contructor
-
-exampleResults['d]['results'] is list of 10 dictionaries, each a result
-
-'''
-
 import json
 
 class Parser:

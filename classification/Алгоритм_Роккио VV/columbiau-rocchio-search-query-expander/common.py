@@ -1,11 +1,3 @@
-'''
-
-@author: aiman.najjar
-
-Functions that are commonly used across the project
-
-'''
-
 import operator
 import constants
 import sys
@@ -13,14 +5,6 @@ import logging
 import re
 from HTMLParser import HTMLParser
 from PorterStemmer import PorterStemmer
-
-
-'''
-MLStripper:
- An implementation of the HTMLParser class that returns only useful terms and discard other markup
- Initial skeleton of this implementation was obtained from the following StackOverflow page but was modified as per our needs:
- http://stackoverflow.com/questions/753052/strip-html-from-strings-in-python
-'''
 
 class MLStripper(HTMLParser):
     def __init__(self):

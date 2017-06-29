@@ -1,14 +1,3 @@
-'''
-Created on Sep 21, 2012
-
-@author: johnterzis
-
-arguments: <precision> <query>
-
-Contains the main loop of the application
-
-'''
-
 import json
 import sys
 import bingclient

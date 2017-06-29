@@ -1,8 +1,3 @@
-'''
-Implement Rocchio algo on a corpus of relevant documents
-by weighting based on td-idf to iteratively form a new query vector of weightings
-for each unique term across all dictionaries (from invertedFiles) passed into Rocchio
-'''
 import constants
 import math
 import sys
