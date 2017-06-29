@@ -1,2 +1,0 @@
-matplotlib==1.4.3
-virtualenv==12.0.7
