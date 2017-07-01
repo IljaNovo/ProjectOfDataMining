@@ -1,6 +1,5 @@
-# DecisionTreeClassifier
+# Дерево решений на основе алгоритма C4.5.
 
-- A decision tree based on the C4.5 algorithm.
-- Works on a wine dataset from https://archive.ics.uci.edu/ml/datasets/Wine+Quality
-- Classifies based on wine quality in binary. 0-6 is "0" and above 7 is "1"
-- Attributes are split based on normalized information gain
+-Работает на наборе данных о вине с https://archive.ics.uci.edu/ml/datasets/Wine+Quality
+-Классифицируется на основе качества вина в двоичном формате. 0-6 - «0», а выше 7 - «1»,
+-Атрибуты разделяются на основе нормализованной информации
