@@ -13,19 +13,21 @@ successfulCount = 0
 # Method to show main menu
 def menu():
     method = 0
-    while method < 1 or method > 4:
+   # while method < 1 or method > 4:
         print("(K = Number of Clusters)")
-        print("Please enter one of the following options:")
-        print("1. Perform K-Means clustering using cluster means as cluster centre.")
-        print("2. Perform K-Means clustering using closest insatnce to mean as cluster centre.")
-        print("3. Automate option 1 for K = 2->20 with 5 iterations on each value of K.")
-        print("4. Automate option 2 for K = 2->20 with 5 iterations on each value of K.")
+      #  print("(K = Number of Clusters)")
+      #  print("Please enter one of the following options:")
+      #  print("1. Perform K-Means clustering using cluster means as cluster centre.")
+      #  print("2. Perform K-Means clustering using closest insatnce to mean as cluster centre.")
+      #  print("3. Automate option 1 for K = 2->20 with 5 iterations on each value of K.")
+      #  print("4. Automate option 2 for K = 2->20 with 5 iterations on each value of K.")
 
         # Read input of clusters wanted and method choice
-        method = int(input())
+        method = 3 #int(input())
 
     if method == 1 or method == 2:
-        K = int(input("\nHow many clusters would you like? "))
+       # K = int(input("\nHow many clusters would you like? "))
+        K=5
         process(K, method)
     elif method == 3 or method == 4:
         store = []

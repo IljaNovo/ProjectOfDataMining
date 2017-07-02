@@ -5,6 +5,9 @@
 Это временный скриптовый файл.
 """
 import clustering.mean_shift.mean_shift_runner as msr
+import classification.C_4_5.tree as с45
+#import clustering.kmeans.kmeans as k_means #подключение k-means
+
 from tkinter import *
 from tkinter.messagebox import *
 
@@ -50,9 +53,39 @@ def show_hide_child_search_rules(event):
         root.deiconify()
 
 
+def oformlenie():
+    print("=========================================================")
+
+def oformlenie_end():
+    print("====================End of execution=====================")
+
+#######################################################################
+##КЛАСТЕРИЗАЦИЯ
+#######################################################################
+
 def mean_shift_run(event):
+    oformlenie()
+    print("Mean Shift")
+    oformlenie()
     if __name__ == '__main__':
         msr.run()
+    oformlenie_end()
+
+        
+#def k_means_run(event):
+#    if __name__ == '__main__':
+#        k_means.run() 
+
+#######################################################################
+##КЛАССИФИКАЦИЯ
+#######################################################################
+def С_4_5_run(event):
+    oformlenie()
+    print("C 4.5")
+    oformlenie()
+    if __name__ == '__main__':
+        с45.run_decision_tree()   
+    oformlenie_end()
 
 def exit_prog(event):
     exit(0);
@@ -83,6 +116,7 @@ child_classif.bind("<Destroy>", exit_prog);
 child_classif.withdraw()
 
 child_classif_btn1 = Button(child_classif, text="C 4.5")
+child_classif_btn1.bind("<Button-1>", С_4_5_run)
 child_classif_btn1.pack(fill=X)
 
 child_classif_btn2 = Button(child_classif, text="k Nearest Neighbors")
@@ -117,6 +151,7 @@ child_claster_btn1.bind("<Button-1>", mean_shift_run)
 child_claster_btn1.pack(fill=X)
 
 child_claster_btn2 = Button(child_claster, text="K-means")
+#child_claster_btn1.bind("<Button-1>", k_means_run)
 child_claster_btn2.pack(fill=X)
 
 child_claster_btn3 = Button(child_claster, text="Hierarchical clustering")
