@@ -18,5 +18,5 @@ def run():
         cluster_assignment = mean_shift_result.cluster_ids[i]
         print("(%5.2f,%5.2f)  ->  (%5.2f,%5.2f)  cluster %i" % (original_point[0], original_point[1], converged_point[0], converged_point[1], cluster_assignment))
 
-if __name__ == '__main__':
-    run()
+#if __name__ == '__main__':
+#    run()

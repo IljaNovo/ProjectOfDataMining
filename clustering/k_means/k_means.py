@@ -19,7 +19,6 @@ def converged(centroids, old_centroids):
 	if len(old_centroids) == 0:
 		return False
 
-
 	if len(centroids) <= 5:
 		a = 1
 	elif len(centroids) <= 10:
@@ -70,20 +69,25 @@ def getMin(pixel, centroids):
 # Method finds the closest centroid to the given pixel, then
 # assigns that centroids to the pixel.
 #
+
 def assignPixels(centroids):
-	clusters = {}
+    global px
+    global img_height
+    global img_width
+    
+    clusters = {}
 
-	for x in range(0, img_width):
-		for y in range(0, img_height):
-			p = px[x, y]
-			minIndex = getMin(px[x, y], centroids)
+    for x in range(0, img_width):
+        for y in range(0, img_height):
+            p = px[x, y]
+            minIndex = getMin(px[x, y], centroids)
 
-			try:
-				clusters[minIndex].append(p)
-			except KeyError:
-				clusters[minIndex] = [p]
+            try:
+                clusters[minIndex].append(p)
+            except KeyError:
+                clusters[minIndex] = [p]
 
-	return clusters
+    return clusters
 
 #end assignPixels
 
@@ -120,34 +124,37 @@ def adjustCentroids(centroids, clusters):
 # Used to initialize the k-means clustering
 #
 def startKmeans(someK):
-	centroids = []
-	old_centroids = []
-	rgb_range = ImageStat.Stat(im).extrema
-	i = 1
-
+    global px
+    global img_height
+    global img_width
+    global im
+    
+    centroids = []
+    old_centroids = []
+    #rgb_range = ImageStat.Stat(im).extrema
 	#Initializes someK number of centroids for the clustering
-	for k in range(0, someK):
-
-		cent = px[numpy.random.randint(0, img_width), numpy.random.randint(0, img_height)]
-		centroids.append(cent)
 	
+    for k in range(0, someK):        
+       cent = px[numpy.random.randint(0, img_width), numpy.random.randint(0, img_height)]
+       centroids.append(cent)
+	
+    print("Centroids Initialized. Starting Assignments")
+    print("===========================================")
 
-	print("Centroids Initialized. Starting Assignments")
-	print("===========================================")
+    i = 0
+    while not converged(centroids, old_centroids) and i <= 20:
+        print("Iteration #" + str(i))
+        i += 1
 
-	while not converged(centroids, old_centroids) and i <= 20:
-		print("Iteration #" + str(i))
-		i += 1
-
-		old_centroids = centroids 								#Make the current centroids into the old centroids
-		clusters = assignPixels(centroids) 						#Assign each pixel in the image to their respective centroids
-		centroids = adjustCentroids(old_centroids, clusters) 	#Adjust the centroids to the center of their assigned pixels
+        old_centroids = centroids 								#Make the current centroids into the old centroids
+        clusters = assignPixels(centroids) 						#Assign each pixel in the image to their respective centroids
+        centroids = adjustCentroids(old_centroids, clusters) 	#Adjust the centroids to the center of their assigned pixels
 
 
-	print("===========================================")
-	print("Convergence Reached!")
-	print(centroids)
-	return centroids
+    print("===========================================")
+    print("Convergence Reached!")
+    print(centroids)
+    return centroids
 
 #end startKmeans
 
@@ -160,27 +167,36 @@ def startKmeans(someK):
 # generates the segmented image and opens it.
 #
 def drawWindow(result):
-	img = Image.new('RGB', (img_width, img_height), "white")
-	p = img.load()
+    global px
+    global img_height
+    global img_width
 
-	for x in range(img.size[0]):
-		for y in range(img.size[1]):
-			RGB_value = result[getMin(px[x, y], result)]
-			p[x, y] = RGB_value
+    img = Image.new('RGB', (img_width, img_height), "white")
+    p = img.load()
 
-	img.show()
+    for x in range(img.size[0]):
+        for y in range(img.size[1]):
+            RGB_value = result[getMin(px[x, y], result)]
+            p[x, y] = RGB_value
+
+    img.show()
 
 #end drawWindow
 
-
-
-num_input = str(input("Enter image number: "))
-k_input = int(input("Enter K value: "))
+def run():
+    global img_width
+    global img_height
+    global px
+    global im
     
-img = "img/test" + num_input.zfill(2) + ".jpg"
-im = Image.open(img)
-img_width, img_height = im.size
-px = im.load()
+    num_input = str(input("Enter image number: "))
+    k_input = int(input("Enter K value: "))
     
-result = startKmeans(k_input)
-drawWindow(result)
+    img = "clustering/k_means/img/test" + num_input.zfill(2) + ".jpg"
+    im = Image.open(img)
+    img_width = im.size
+    img_height = im.size
+    px = im.load()
+    
+    result = startKmeans(k_input)
+    drawWindow(result)

@@ -19,6 +19,60 @@ import os
 import heapq
 import itertools
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""                               Main Method                                    """
+"""                                                                              """    
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+def run():
+    #if __name__ == '__main__':
+
+    #inputs:
+    #- ipt_data: a text file name for the input data
+    #- ipt_k: a value k for the number of desired clusters.
+
+    #outputs:
+    #- opt_clusters: output k clusters, with each cluster contains a set of data points (index for input data)
+    #- opt_precision
+    #- opt_recall
+    
+    
+
+    ## input test
+    # ipt_data = "iris.dat"
+    # ipt_data = "iris_dataset1.txt"
+    # ipt_k = 3
+    ipt_data = "clustering\Hierarchical_clustering\iris.dat" #sys.argv[1]      # input data, e.g. iris.dat
+    ipt_k = 3 #int(sys.argv[2])    # number of clusters, e.g. 3
+
+    hc = Hierarchical_Clustering(ipt_data, ipt_k)
+    hc.initialize()
+    current_clusters = hc.hierarchical_clustering()
+    precision, recall = hc.evaluate(current_clusters)
+    hc.display(current_clusters, precision, recall)
+
+    ## euclidean_distance() test
+    # loaded_data = hc.loaded_dataset()
+    # print loaded_data
+    # print hc.euclidean_distance(loaded_data[0]["data"],loaded_data[1]["data"])
+
+    ## compute_centroid() test
+    # loaded_data = hc.loaded_dataset()
+    # hc.compute_centroid(loaded_data, [10, 11, 12, 13])
+
+    ## distance_list test
+    # distance_list = hc.compute_pairwise_distance()
+    # distance_list.sort()
+    # print distance_list
+    
+    ## heapq test
+    # heap = []
+    # data = [1, 3, 5, 7, 9, 2, 4, 6, 8, 0]
+    # data = [[1,4,5], [3,6,1], [5,6,10], [7,2,11], [9,6,1], [2,1,5], [4,2,1], [6,6,5], [8,7,1], [0,1,0]]
+    # heapq.heapify(data)
+    # print data
+
+
+
 class Hierarchical_Clustering:
     def __init__(self, ipt_data, ipt_k):
         self.input_file_name = ipt_data
@@ -127,8 +181,8 @@ class Hierarchical_Clustering:
         dataset = self.dataset
         current_clusters = self.clusters
         old_clusters = []
-        heap = hc.compute_pairwise_distance(dataset)
-        heap = hc.build_priority_queue(heap)
+        heap = self.compute_pairwise_distance(dataset)
+        heap = self.build_priority_queue(heap)
 
         while len(current_clusters) > self.k:
             dist, min_item = heapq.heappop(heap)
@@ -150,7 +204,7 @@ class Hierarchical_Clustering:
                 del current_clusters[str(pair_item)]
             self.add_heap_entry(heap, new_cluster, current_clusters)
             current_clusters[str(new_cluster_elements)] = new_cluster
-        current_clusters.sort()
+        #current_clusters.sort()
         return current_clusters
             
     def valid_heap_node(self, heap_node, old_clusters):
@@ -256,58 +310,6 @@ class Hierarchical_Clustering:
             print (cluster["elements"])
 
 
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""                               Main Method                                    """
-"""                                                                              """    
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if __name__ == '__main__':
-    """
-    inputs:
-    - ipt_data: a text file name for the input data
-    - ipt_k: a value k for the number of desired clusters.
-
-    outputs:
-    - opt_clusters: output k clusters, with each cluster contains a set of data points (index for input data)
-    - opt_precision
-    - opt_recall
-
-    """
-
-    ## input test
-    # ipt_data = "iris.dat"
-    # ipt_data = "iris_dataset1.txt"
-    # ipt_k = 3
-
-    ipt_data = sys.argv[1]      # input data, e.g. iris.dat
-    ipt_k = int(sys.argv[2])    # number of clusters, e.g. 3
-
-    hc = Hierarchical_Clustering(ipt_data, ipt_k)
-    hc.initialize()
-    current_clusters = hc.hierarchical_clustering()
-    precision, recall = hc.evaluate(current_clusters)
-    hc.display(current_clusters, precision, recall)
-
-    ## euclidean_distance() test
-    # loaded_data = hc.loaded_dataset()
-    # print loaded_data
-    # print hc.euclidean_distance(loaded_data[0]["data"],loaded_data[1]["data"])
-
-    ## compute_centroid() test
-    # loaded_data = hc.loaded_dataset()
-    # hc.compute_centroid(loaded_data, [10, 11, 12, 13])
-
-    ## distance_list test
-    # distance_list = hc.compute_pairwise_distance()
-    # distance_list.sort()
-    # print distance_list
-    
-    ## heapq test
-    # heap = []
-    # data = [1, 3, 5, 7, 9, 2, 4, 6, 8, 0]
-    # data = [[1,4,5], [3,6,1], [5,6,10], [7,2,11], [9,6,1], [2,1,5], [4,2,1], [6,6,5], [8,7,1], [0,1,0]]
-    # heapq.heapify(data)
-    # print data
 
 
 
