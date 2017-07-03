@@ -4,8 +4,14 @@
 
 Это временный скриптовый файл.
 """
+import os
+
 import clustering.mean_shift.mean_shift_runner as msr
+#######################################################################
+##КЛАССИФИКАЦИЯ
+#######################################################################
 import classification.C_4_5.tree as с45
+import classification.Linear_Least_Squares_Classifier.LLS as lls
 #import clustering.kmeans.kmeans as k_means #подключение k-means
 
 from tkinter import *
@@ -58,6 +64,7 @@ def oformlenie():
 
 def oformlenie_end():
     print("====================End of execution=====================")
+    print("=========================================================")
 
 #######################################################################
 ##КЛАСТЕРИЗАЦИЯ
@@ -86,6 +93,17 @@ def С_4_5_run(event):
     if __name__ == '__main__':
         с45.run_decision_tree()   
     oformlenie_end()
+    
+def lls_run(event):
+    oformlenie()
+    print("LLS")
+    oformlenie()
+#запуск стартера, т.к. в нем есть подключение к бд
+    dir = os.path.abspath(os.curdir)+"//classification//Linear_Least_Squares_Classifier//run_data.sh 1"
+    os.popen(dir)#"run_data.sh", cwd=r"C/1/ProjectOfDataMining/classification/Linear_Least_Squares_Classifierr")
+    
+    oformlenie_end()    
+    
 
 def exit_prog(event):
     exit(0);
@@ -123,6 +141,7 @@ child_classif_btn2 = Button(child_classif, text="k Nearest Neighbors")
 child_classif_btn2.pack(fill=X)
 
 child_classif_btn3 = Button(child_classif, text="Linear Least Squares Classifier")
+child_classif_btn3.bind("<Button-1>", lls_run)
 child_classif_btn3.pack(fill=X)
 
 child_classif_btn5 = Button(child_classif, text="Naive Bayes Classifier")

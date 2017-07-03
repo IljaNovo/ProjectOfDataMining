@@ -124,6 +124,7 @@ def main():
 	data = []
 	classes = []
 	f = open(sys.argv[1]) # open data file
+   #f = open("iris.csv")
 	try:
 		# parse file
 		for line in f:
