@@ -43,65 +43,65 @@ def decision_tree_driver(train, validate = False, predict = False, prune = False
     else:
         depth = float("inf")
 
-    print "###\n#  Training Tree\n###"
+    print ("###\n#  Training Tree\n###")
 
     # call the ID3 classification algorithm with the appropriate options
     tree = ID3(train_set, attribute_metadata, numerical_splits_count, depth)
-    print '\n'
-    print "Nodes before pruning: " + str(tree.num_nodes())
+    print ('\n')
+    print ("Nodes before pruning: " + str(tree.num_nodes()))
 
     # # call reduced error pruning using the pruning set
     if prune != False:
-        print '###\n#  Pruning\n###'
+        print ('###\n#  Pruning\n###')
         pruning_set, _ = parse(prune, False)
         reduced_error_pruning(tree,train_set,pruning_set)
-        print ''
-        print "Nodes after pruning: " + str(tree.num_nodes())
+        print ('')
+        print ("Nodes after pruning: " + str(tree.num_nodes()))
 
     # print tree visually
     if print_tree:
-        print '###\n#  Decision Tree\n###'
+        print ('###\n#  Decision Tree\n###')
         cursor = open('./output/tree.txt','w+')
         cursor.write(tree.print_tree())
         cursor.close()
-        print 'Decision Tree written to /output/tree'
-        print ''
+        print ('Decision Tree written to /output/tree')
+        print ('')
 
     # print tree in disjunctive normalized form
     if print_dnf:
-        print '###\n#  Decision Tree as DNF\n###'
+        print ('###\n#  Decision Tree as DNF\n###')
         cursor = open('./output/DNF.txt','w+')
-        print tree.print_dnf_tree()
+        print (tree.print_dnf_tree())
         # cursor.write(final)
         # cursor.close()
-        print 'Decision Tree written to /output/DNF'
-        print ''
+        print ('Decision Tree written to /output/DNF')
+        print ('')
 
     # test tree accuracy on validation set
     if validate != False:
-        print '###\n#  Validating\n###'
+        print ('###\n#  Validating\n###')
         train_set, _ = parse(train, False)
         accuracy = validation_accuracy(tree, train_set)
-        print "Accuracy on training set: " + str(accuracy)
+        print ("Accuracy on training set: " + str(accuracy))
         validate_set, _ = parse(validate, False)
         accuracy = validation_accuracy(tree,validate_set)
-        print "Accuracy on validation set: " + str(accuracy)
-        print ''
+        print ("Accuracy on validation set: " + str(accuracy))
+        print ('')
 
     # generate predictions on the test set
     if predict != False:
-        print '###\n#  Generating Predictions on Test Set\n###'
+        print ('###\n#  Generating Predictions on Test Set\n###')
         create_predictions(tree, predict)
-        print ''
+        print ('')
 
     # generate a learning curve using the validation set
     if learning_curve and validate:
-        print '###\n#  Generating Learning Curve\n###'
+        print ('###\n#  Generating Learning Curve\n###')
         iterations = 2 # number of times to test each size
-        print get_graph_data(train_set, attribute_metadata, validate_set, numerical_splits_count, iterations, [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0])
+        print (get_graph_data(train_set, attribute_metadata, validate_set, numerical_splits_count, iterations, [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]))
         # get_graph(train_set, attribute_metadata, validate_set, 
         #     numerical_splits_count, depth, 5, 0, learning_curve['upper_bound'],
         #     learning_curve['increment'])
-        print ''
+        print ('')
 
 tree = decision_tree_driver( **options )
