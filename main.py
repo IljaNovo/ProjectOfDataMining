@@ -8,6 +8,7 @@
 ##КЛАССИФИКАЦИЯ
 #######################################################################
 import classification.C_4_5.tree as с45
+import classification.k_Nearest_Neighbors.knn as knn
 import clustering.Hierarchical_clustering.hclust as hc
 #import classification.Linear_Least_Squares_Classifier.LLS as lls
 import clustering.mean_shift.mean_shift_runner as msr
@@ -113,7 +114,12 @@ def lls_run(event):
    # os.popen(dir)#"run_data.sh", cwd=r"C/1/ProjectOfDataMining/classification/Linear_Least_Squares_Classifierr")
     
     oformlenie_end()    
-    
+ 
+def knn_run(event):
+    oformlenie()
+    print("k-Nearest Neighbors")
+    knn.main()   
+    oformlenie_end()
 
 def exit_prog(event):
     exit(0);
@@ -149,6 +155,7 @@ child_classif_btn1.bind("<Button-1>", С_4_5_run)
 child_classif_btn1.pack(fill=X)
 
 child_classif_btn2 = Button(child_classif, text="k Nearest Neighbors")
+child_classif_btn2.bind("<Button-1>", knn_run)
 child_classif_btn2.pack(fill=X)
 
 child_classif_btn3 = Button(child_classif, text="Linear Least Squares Classifier")
