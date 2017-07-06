@@ -9,11 +9,14 @@
 #######################################################################
 import classification.C_4_5.tree as с45
 import clustering.Hierarchical_clustering.hclust as hc
+import input_output.io as io
+#import associative_rules.apriori_tid.apriori as apriori_tid
 #import classification.Linear_Least_Squares_Classifier.LLS as lls
 import clustering.mean_shift.mean_shift_runner as msr
 import clustering.k_means.k_means as kmen
 from tkinter import *
 from tkinter.messagebox import *
+from associative_rules.apriori_tid.apriori import *
 
 flag_child_classif = False
 flag_child_claster = False
@@ -90,6 +93,18 @@ def hierarchical_clustering_run(event):
     print("Hierarchical clustering")
     hc.run()
     oformlenie_end()
+
+#######################################################################
+##АССОЦИАТИВНЫЕ ПРАВИЛА
+#######################################################################
+
+def run_apriori_tid(event):
+    oformlenie()
+    print("Apriori TID")
+    oformlenie()
+    data_iter = dataFromFile('tesco.csv')
+    items, rules = run_apriori(data_iter, 0.5, 0.05)
+    printResults(items, rules)
 
 #######################################################################
 ##КЛАССИФИКАЦИЯ
@@ -171,7 +186,7 @@ child_classif_btn4.pack(fill=X)
 
 
 child_claster = Toplevel(root)
-child_claster.title("Класстеризация")
+child_claster.title("Кластеризация")
 child_claster.geometry("400x200")
 child_claster.bind("<Destroy>", exit_prog);
 child_claster.withdraw()
@@ -211,6 +226,10 @@ child_search_rules_btn1.pack(fill=X)
 
 child_search_rules_btn2 = Button(child_search_rules, text="ID3")
 child_search_rules_btn2.pack(fill=X)
+
+child_search_rules_btn3 = Button(child_search_rules, text="Apriori TID")
+child_search_rules_btn3.bind("<Button-1>", run_apriori_tid)
+child_search_rules_btn3.pack(fill=X)
 
 child_search_rules_btn4 = Button(child_search_rules, text="Назад")
 child_search_rules_btn4.bind("<Button-1>", show_hide_child_search_rules)
