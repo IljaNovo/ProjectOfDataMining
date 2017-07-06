@@ -102,8 +102,8 @@ def run_apriori_tid(event):
     oformlenie()
     print("Apriori TID")
     oformlenie()
-    data_iter = dataFromFile('tesco.csv')
-    items, rules = run_apriori(data_iter, 0.5, 0.05)
+    data_iter = dataFromFile('associative_rules/apriori_tid/tesco.csv')
+    items, rules = runApriori(data_iter, 0.5, 0.05)
     printResults(items, rules)
 
 #######################################################################
