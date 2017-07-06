@@ -100,7 +100,7 @@ def runApriori(data_iter, minSupport, minConfidence):
                            for item in value])
 
     toRetRules = []
-    for key, value in largeSet.items()[1:]:
+    for key, value in list(largeSet.items())[1:]:
         for item in value:
             _subsets = map(frozenset, [x for x in subsets(item)])
             for element in _subsets:
@@ -115,12 +115,12 @@ def runApriori(data_iter, minSupport, minConfidence):
 
 def printResults(items, rules):
     """prints the generated itemsets sorted by support and the confidence rules sorted by confidence"""
-    for item, support in sorted(items, key=lambda item, support: support):
-        print ("item: %s , %.3f" , (str(item), support))
+    for item, support in sorted(items, key = lambda support: support):
+        print ("item: %s , %.3f" % (str(item), support))
     print ("\n------------------------ RULES:")
-    for rule, confidence in sorted(rules, key=lambda rule, confidence: confidence):
+    for rule, confidence in sorted(rules, key= lambda confidence: confidence):
         pre, post = rule
-        print ("Rule: %s ==> %s , %.3f" , (str(pre), str(post), confidence))
+        print ("Rule: %s ==> %s , %.3f" % (str(pre), str(post), confidence))
 
 
 def dataFromFile(fname):
