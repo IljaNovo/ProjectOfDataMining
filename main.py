@@ -13,6 +13,7 @@ import clustering.Hierarchical_clustering.hclust as hc
 import input_output.io as io
 #import associative_rules.apriori_tid.apriori as apriori_tid
 #import classification.Linear_Least_Squares_Classifier.LLS as lls
+import clustering.Affinity_Propagation.AffinityPropagation as aff_p
 import clustering.mean_shift.mean_shift_runner as msr
 import clustering.k_means.k_means as kmen
 from tkinter import *
@@ -79,6 +80,11 @@ def mean_shift_run(event):
         msr.run()
     oformlenie_end()
 
+def affinity_propagation_run(event) :
+    oformlenie()
+    aff_p.compute_affinity_propagation()
+    oformlenie()
+    oformlenie_end()
 
 def k_means_run(event):
     oformlenie()
@@ -214,6 +220,7 @@ child_claster_btn5 = Button(child_claster, text="DBSCAN")
 child_claster_btn5.pack(fill=X)
 
 child_claster_btn6 = Button(child_claster, text="Affinity Propagation")
+child_claster_btn6.bind("<Button-1>", affinity_propagation_run)
 child_claster_btn6.pack(fill=X)
 
 child_claster_btn4 = Button(child_claster, text="Назад")
