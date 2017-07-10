@@ -73,31 +73,3 @@ class Output:
         except Exception:
             print('Неизвестная ошибка!')
 
-
-class InputTestStub:
-    @staticmethod
-    def local_read_csv():
-        print(Input.local_read_csv('C:\\Users\\vladimir.kornilov\\Desktop\\LessonPython\\data\\example_table.csv'))
-
-    @staticmethod
-    def internet_read_csv():
-        return Input.internet_read_csv('https://raw.githubusercontent.com/cs109/2014_data/master/countries.csv')
-
-    @staticmethod
-    def internet_read_text_file():
-        return Input.internet_read_text_file(
-            'https://raw.githubusercontent.com/mhyhre/Tuxis-Input-Module/master/README.rdoc')
-
-    @staticmethod
-    def local_read_text_file():
-        return Input.local_read_text_file('C:\\Users\\vladimir.kornilov\\Desktop\\LessonPython\\data\\text.txt')
-
-
-class OutPutTestStub:
-    @staticmethod
-    def write_to_txt(file1):
-        Output.write_to_txt_file('csv.txt', file1)
-
-    @staticmethod
-    def write_to_csv(csv):
-        Output.write_to_csv_file('table.csv', csv)

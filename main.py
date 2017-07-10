@@ -11,6 +11,7 @@ import classification.C_4_5.tree as с45
 import classification.k_Nearest_Neighbors.knn as knn
 import clustering.Hierarchical_clustering.hclust as hc
 import input_output.io as io
+import utils.text_processing as text_proc
 #import associative_rules.apriori_tid.apriori as apriori_tid
 #import classification.Linear_Least_Squares_Classifier.LLS as lls
 import clustering.Affinity_Propagation.AffinityPropagation as aff_p
@@ -82,7 +83,9 @@ def mean_shift_run(event):
 
 def affinity_propagation_run(event) :
     oformlenie()
-    aff_p.compute_affinity_propagation()
+    file = io.Input.local_read_text_file("clustering\Affinity_Propagation\parameters.txt")
+    data = text_proc.remove_comments(file)
+    aff_p.compute_affinity_propagation(data)
     oformlenie()
     oformlenie_end()
 

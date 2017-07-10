@@ -4,7 +4,7 @@ from sklearn.datasets.samples_generator import make_blobs
 import matplotlib.pyplot as plt
 from itertools import cycle
 
-def compute_affinity_propagation():
+def compute_affinity_propagation(data):
     centers = [[1, 1], [-1, -1], [1, -1]]
     X, labels_true = make_blobs(n_samples=300, centers=centers, cluster_std=1, random_state=0)
     af = AffinityPropagation(preference=-50).fit(X)
