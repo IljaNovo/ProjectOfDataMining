@@ -1,2 +1,3 @@
-#ignore cash files
+__pycache__
+
 *.pyc
