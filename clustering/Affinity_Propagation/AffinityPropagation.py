@@ -4,9 +4,17 @@ from sklearn.datasets.samples_generator import make_blobs
 import matplotlib.pyplot as plt
 from itertools import cycle
 
+
 def compute_affinity_propagation(data):
-    centers = [[1, 1], [-1, -1], [1, -1]]
-    X, labels_true = make_blobs(n_samples=300, centers=centers, cluster_std=1, random_state=0)
+    # DATA FILLING
+    if len(data)==0:
+        centers = [[1, 1], [-1, -1], [1, -1]]
+        n_sampes = 300
+        cluster_std = 1
+        random_state = 0
+    else:
+        centers, n_sampes, cluster_std, random_state = process_data(data)
+    X, labels_true = make_blobs(n_samples=int(n_sampes), centers=centers, cluster_std=int(cluster_std), random_state=int(random_state))
     af = AffinityPropagation(preference=-50).fit(X)
     cluster_centers_indices = af.cluster_centers_indices_
     labels = af.labels_
@@ -21,7 +29,6 @@ def compute_affinity_propagation(data):
     plt.close('all')
     plt.figure(1)
     plt.clf()
-
     colors = cycle('bgrcmykbgrcmykbgrcmykbgrcmyk')
     for k, col in zip(range(n_clusters_), colors):
         class_members = labels == k
@@ -33,3 +40,18 @@ def compute_affinity_propagation(data):
 
     plt.title('Estimated number of clusters: %d' % n_clusters_)
     plt.show()
+
+def process_data(data) :
+    first_row = data[0].split()
+    second_row = data[1].split()
+    centers = []
+    center = []
+    for item in first_row :
+        center.append(int(item))
+        if(len(center)== 2) :
+            centers.append(center)
+            center = []
+    n_sampes = second_row[0]
+    cluster_std = second_row[1]
+    random_state = second_row[2]
+    return centers,n_sampes,cluster_std,random_state
