@@ -10,6 +10,7 @@
 import classification.C_4_5.tree as с45
 import classification.k_Nearest_Neighbors.knn as knn
 import clustering.Hierarchical_clustering.hclust as hc
+import clustering.DBSCAN.plot_dbscan as dbscan
 import input_output.io as io
 import utils.text_processing as text_proc
 #import associative_rules.apriori_tid.apriori as apriori_tid
@@ -86,6 +87,12 @@ def affinity_propagation_run(event) :
     file = io.Input.local_read_text_file("clustering\Affinity_Propagation\parameters.txt")
     data = text_proc.remove_comments(file)
     aff_p.compute_affinity_propagation(data)
+    oformlenie()
+    oformlenie_end()
+
+def dbscan_run(event):
+    oformlenie()
+    dbscan
     oformlenie()
     oformlenie_end()
 
@@ -220,6 +227,7 @@ child_claster_btn3.bind("<Button-1>", hierarchical_clustering_run)
 child_claster_btn3.pack(fill=X)
 
 child_claster_btn5 = Button(child_claster, text="DBSCAN")
+child_claster_btn5.bind("<Button-1>", dbscan_run)
 child_claster_btn5.pack(fill=X)
 
 child_claster_btn6 = Button(child_claster, text="Affinity Propagation")
