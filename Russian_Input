@@ -12,7 +12,7 @@ import matplotlib as mpl
 mpl.rcParams['font.family'] = 'fantasy'
 mpl.rcParams['font.fantasy'] = 'Comic Sans MS, Arial'
 # Английские
-def w_open_ing():
+def w_open_еng():
      aa=ord('a')
      bb=ord('z')
      op = askopenfilename()
