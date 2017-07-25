@@ -1,0 +1,8 @@
+
+# Входные файлы .txt
+import os
+filename, file_extension = os.path.splitext('*.txt')
+filename
+'/path/to/somefile'
+file_extension
+'*.txt'
