@@ -37,4 +37,14 @@ std::cout.imbue(loc);
 std::cout << 3.1415926; #Пример
 std::cin.ignore();
 std::cin.get();
+# Как вариант
+def save_file():
+        save_as = asksaveasfilename()
+        try:
+                x =txt.get(1.0, END) 
+                f = open(save_as, "w")
+                f.writelines(x.encode('cp1251'))
+                f.close()
+        except:
+                pass
 }
