@@ -1,0 +1,15 @@
+import csv 
+import pickle
+# Хороший вариант для не-string списков, т.к мы зайдействуем сериализацию
+# с помощью pickle. Можно сериализовать в json или, например, xml.
+pickle.dump(list, f)
+# .txt
+with open("файл.txt", "w") as file:
+    print(*список, file=file)
+   #print(*список, file=file, sep="\n") отдельно в каждой стр.
+   f.close()
+ #.csv
+ with open("список.csv", "w", newline='') as file:
+    csv.writer(file).writerow(список)
+ #print(*список, file=file, sep="\n")
+ f.close()
