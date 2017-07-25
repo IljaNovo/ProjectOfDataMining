@@ -20,7 +20,7 @@ def w_open_ing():
  #Русские буквы
  def w_open_rus():
      aa=ord('а')
-     bb=ord('ё')
+     bb=ord('ё') # Понимает разницу между е и ё
      op = askopenfilename()
      main(op,aa,bb)
  #Всё включено + ещё смотрит на каком языке ввод.
