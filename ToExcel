@@ -1,0 +1,34 @@
+import xlsxwriter
+
+def sample_excel(file_name):
+  try:
+    file_xlsx_name = file_name + ".xlsx"
+    
+    # Создание книги и листа Excel.
+    workbook = xlsxwriter.Workbook(file_xlsx_name)
+    worksheet = workbook.add_worksheet()
+  
+    # Установим ширину ячеек   
+    for c in range(9):
+      col_name = xlsxwriter.utility.xl_col_to_name(c)
+      worksheet.set_column('%s:%s' % (col_name, col_name), 5)
+  
+    # Определим форматирование
+    format_head = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter'})   
+    format_cell = workbook.add_format({'align': 'center', 'valign': 'vcenter'})   
+
+    # Столбцы и строки нумеруются с 0. 1-я ячейка - (0, 0)
+    # Выводим таблицу умножения с 0-й по 8-ю ячейку/столбец.
+    for row in range(9):
+      for col in range(9):
+        if col == 0 or row == 0:
+          worksheet.write(row, col, (row+1)*(col+1), format_head)
+        else:
+          worksheet.write(row, col, (row+1)*(col+1), format_cell)
+  
+    workbook.close()  
+  
+  except StandardError, value:
+    print("Error: %s\n" % value)
+
+sample_excel("sample")
