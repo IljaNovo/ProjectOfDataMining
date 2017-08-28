@@ -92,7 +92,7 @@ def affinity_propagation_run(event) :
 
 def dbscan_run(event):
     oformlenie()
-    dbscan
+    dbscan.dbscan_run()
     oformlenie()
     oformlenie_end()
 
