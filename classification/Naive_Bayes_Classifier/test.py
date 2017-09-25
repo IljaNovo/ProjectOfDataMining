@@ -35,6 +35,6 @@ keywords = "Salah satu Oakley store yang cukup nyaman menurut gw, koleksinya jug
 for i in range(100):
     b.classify(keywords)
 total = time.time() - a
-print "\nNumber of keywords classified: %d" % len(keywords.split(" "))
-print "Elapsed time after %d iterations: %f seconds" % (i+1, total)
-print "Average per ops: %f seconds" % (total / (i+1))
+print ("\nNumber of keywords classified: %d" % len(keywords.split(" ")))
+print ("Elapsed time after %d iterations: %f seconds" % (i+1, total))
+print ("Average per ops: %f seconds" % (total / (i+1)))

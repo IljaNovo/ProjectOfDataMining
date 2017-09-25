@@ -8,6 +8,7 @@
 ##КЛАССИФИКАЦИЯ
 #######################################################################
 import classification.C_4_5.tree as с45
+import classification.Naive_Bayes_Classifier.BayesScratch.bayes_classifier as bayes
 import classification.k_Nearest_Neighbors.knn as knn
 import clustering.Hierarchical_clustering.hclust as hc
 import clustering.DBSCAN.plot_dbscan as dbscan
@@ -145,7 +146,13 @@ def lls_run(event):
    # os.popen(dir)#"run_data.sh", cwd=r"C/1/ProjectOfDataMining/classification/Linear_Least_Squares_Classifierr")
     
     oformlenie_end()    
- 
+
+def bayes_run(event):
+    oformlenie()
+    print("Naive Bayes Algorithm")
+    bayes.main()
+    oformlenie_end()
+
 def knn_run(event):
     oformlenie()
     print("k-Nearest Neighbors")
@@ -194,6 +201,7 @@ child_classif_btn3.bind("<Button-1>", lls_run)
 child_classif_btn3.pack(fill=X)
 
 child_classif_btn5 = Button(child_classif, text="Naive Bayes Classifier")
+child_classif_btn5.bind("<Button-1>", bayes_run)
 child_classif_btn5.pack(fill=X)
 
 child_classif_btn6 = Button(child_classif, text="Алгоритм опорных векторов")
