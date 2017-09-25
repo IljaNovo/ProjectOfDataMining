@@ -94,7 +94,7 @@ def affinity_propagation_run(event) :
 
 def dbscan_run(event):
     oformlenie()
-    dbscan
+    dbscan.dbscan_run()
     oformlenie()
     oformlenie_end()
 
@@ -157,7 +157,7 @@ def lls_run(event):
 def bayes_run(event):
     oformlenie()
     print("Naive Bayes Algorithm")
-    bayes.main()
+    bayes.main("classification/Naive_Bayes_Classifier/BayesScratch/pima-indians-diabetes.csv")
     oformlenie_end()
 
 def knn_run(event):
