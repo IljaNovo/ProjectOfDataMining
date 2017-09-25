@@ -2,7 +2,7 @@
 import csv
 import random
 import math
-
+import input_output.io as io
 
 def loadCsv(filename):
     lines = csv.reader(open(filename, "r"))
@@ -98,8 +98,8 @@ def getAccuracy(testSet, predictions):
     return (correct / float(len(testSet))) * 100.0
 
 
-def main():
-    filename = 'C:\\Users\\vladimir.kornilov\\Python\\ProjectOfDataMining\\classification\\Naive_Bayes_Classifier\\BayesScratch\\pima-indians-diabetes.csv'
+def main(path):
+    filename = path
     splitRatio = 0.67
     dataset = loadCsv(filename)
     trainingSet, testSet = splitDataset(dataset, splitRatio)
@@ -107,6 +107,7 @@ def main():
     # prepare model
     summaries = summarizeByClass(trainingSet)
     # test model
+    io.Output.write_to_txt_file("classification/Naive_Bayes_Classifier/BayesScratch/result.txt", trainingSet)
     predictions = getPredictions(summaries, testSet)
     accuracy = getAccuracy(testSet, predictions)
     print(('Accuracy: {0}%').format(accuracy))
