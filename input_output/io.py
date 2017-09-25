@@ -73,3 +73,16 @@ class Output:
         except Exception:
             print('Неизвестная ошибка!')
 
+    @staticmethod
+    def write_array_to_txt_file(filePath, array):
+        try:
+            with open(filePath, 'w', encoding='utf-8') as file2:
+                for line in array:
+                    file2.write(str(line)+"\n")
+        except TimeoutError:
+            print('Истекло время ожидания')
+        except Exception:
+            print('Неизвестная ошибка!')
+
+
+

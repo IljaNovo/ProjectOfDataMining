@@ -116,7 +116,7 @@ def hierarchical_clustering_run(event):
 def birch_run(event):
     oformlenie()
     print("BIRCH clustering")
-    birch.run()
+    birch.run("clustering\\BIRCH\\input_data.txt")
     oformlenie_end()
 
 #######################################################################
