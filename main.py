@@ -12,6 +12,7 @@ import classification.Naive_Bayes_Classifier.BayesScratch.bayes_classifier as ba
 import classification.k_Nearest_Neighbors.knn as knn
 import clustering.Hierarchical_clustering.hclust as hc
 import clustering.DBSCAN.plot_dbscan as dbscan
+import clustering.BIRCH.birch_clustering as birch
 import input_output.io as io
 import utils.text_processing as text_proc
 #import associative_rules.apriori_tid.apriori as apriori_tid
@@ -110,6 +111,12 @@ def hierarchical_clustering_run(event):
     oformlenie()
     print("Hierarchical clustering")
     hc.run()
+    oformlenie_end()
+
+def birch_run(event):
+    oformlenie()
+    print("BIRCH clustering")
+    birch
     oformlenie_end()
 
 #######################################################################
@@ -237,6 +244,10 @@ child_claster_btn3.pack(fill=X)
 child_claster_btn5 = Button(child_claster, text="DBSCAN")
 child_claster_btn5.bind("<Button-1>", dbscan_run)
 child_claster_btn5.pack(fill=X)
+
+child_claster_btn7 = Button(child_claster, text="BIRCH")
+child_claster_btn7.bind("<Button-1>", birch_run)
+child_claster_btn7.pack(fill=X)
 
 child_claster_btn6 = Button(child_claster, text="Affinity Propagation")
 child_claster_btn6.bind("<Button-1>", affinity_propagation_run)
