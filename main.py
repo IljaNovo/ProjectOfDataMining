@@ -94,7 +94,7 @@ def affinity_propagation_run(event) :
 
 def dbscan_run(event):
     oformlenie()
-    dbscan.dbscan_run()
+    dbscan.dbscan_run("clustering\\DBSCAN\\input_data.txt")
     oformlenie()
     oformlenie_end()
 

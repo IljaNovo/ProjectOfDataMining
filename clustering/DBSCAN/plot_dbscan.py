@@ -14,13 +14,23 @@ from sklearn.cluster import DBSCAN
 from sklearn import metrics
 from sklearn.datasets.samples_generator import make_blobs
 from sklearn.preprocessing import StandardScaler
-def dbscan_run():
+import input_output.io as io
+from numpy import array
+
+def dbscan_run(inputFilePath):
     print(__doc__)
     ##############################################################################
     # Generate sample data
     centers = [[1, 1], [-1, -1], [1, -1]]
-    X, labels_true = make_blobs(n_samples=750, centers=centers, cluster_std=0.4,
+    text = io.Input.local_read_text_file(inputFilePath)
+    input_array = text.split('\n')
+    X, labels_true = make_blobs(n_samples=len(input_array), centers=centers, cluster_std=0.4,
                                 random_state=0)
+    float_array = []
+    for line in input_array:
+        float_line = [float(i) for i in line.split(' ')]
+        float_array.append(float_line)
+    X = array(float_array)
 
     X = StandardScaler().fit_transform(X)
 
