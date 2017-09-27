@@ -13,6 +13,7 @@ import classification.k_Nearest_Neighbors.knn as knn
 import clustering.Hierarchical_clustering.hclust as hc
 import clustering.DBSCAN.plot_dbscan as dbscan
 import clustering.BIRCH.birch_clustering as birch
+import clustering.mean_shift.mean_shift_plot as mean_shift
 import input_output.io as io
 import utils.text_processing as text_proc
 #import associative_rules.apriori_tid.apriori as apriori_tid
@@ -80,8 +81,7 @@ def mean_shift_run(event):
     oformlenie()
     print("Mean Shift")
     oformlenie()
-    if __name__ == '__main__':
-        msr.run()
+    mean_shift.run_mean_shift("clustering\\mean_shift\\input_data.txt")
     oformlenie_end()
 
 def affinity_propagation_run(event) :
