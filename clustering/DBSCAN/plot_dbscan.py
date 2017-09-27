@@ -26,6 +26,10 @@ def dbscan_run(inputFilePath):
     input_array = text.split('\n')
     X, labels_true = make_blobs(n_samples=len(input_array), centers=centers, cluster_std=0.4,
                                 random_state=0)
+    #with open("input_data.txt", 'w', encoding='utf-8') as file2:
+    #    for line in X:
+    #        file2.write(str(line) + "\n")
+
     float_array = []
     for line in input_array:
         float_line = [float(i) for i in line.split(' ')]
