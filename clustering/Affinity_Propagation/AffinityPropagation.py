@@ -2,19 +2,23 @@ from sklearn.cluster import AffinityPropagation
 from sklearn import metrics
 from sklearn.datasets.samples_generator import make_blobs
 import matplotlib.pyplot as plt
+import input_output.io as io
 from itertools import cycle
+from numpy import array
 
 
-def compute_affinity_propagation(data):
+def compute_affinity_propagation(inputFilePath):
     # DATA FILLING
-    if len(data)==0:
-        centers = [[1, 1], [-1, -1], [1, -1]]
-        n_sampes = 300
-        cluster_std = 1
-        random_state = 0
-    else:
-        centers, n_sampes, cluster_std, random_state = process_data(data)
-    X, labels_true = make_blobs(n_samples=int(n_sampes), centers=centers, cluster_std=int(cluster_std), random_state=int(random_state))
+    text = io.Input.local_read_text_file(inputFilePath)
+    input_array = text.split('\n')
+    centers = [[1, 1], [-1, -1], [1, -1]]
+    X, labels_true = make_blobs(n_samples=len(input_array), centers=centers, cluster_std=1, random_state=0)
+    float_array = []
+    for line in input_array:
+        float_line = [float(i) for i in line.split(' ')]
+        float_array.append(float_line)
+    X = array(float_array)
+
     af = AffinityPropagation(preference=-50).fit(X)
     cluster_centers_indices = af.cluster_centers_indices_
     labels = af.labels_

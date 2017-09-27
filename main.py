@@ -86,9 +86,7 @@ def mean_shift_run(event):
 
 def affinity_propagation_run(event) :
     oformlenie()
-    file = io.Input.local_read_text_file("clustering\Affinity_Propagation\parameters.txt")
-    data = text_proc.remove_comments(file)
-    aff_p.compute_affinity_propagation(data)
+    aff_p.compute_affinity_propagation("clustering\\Affinity_Propagation\\input_data.txt")
     oformlenie()
     oformlenie_end()
 
