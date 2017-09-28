@@ -11,6 +11,7 @@ import classification.C_4_5.tree as с45
 import classification.Naive_Bayes_Classifier.BayesScratch.bayes_classifier as bayes
 import classification.k_Nearest_Neighbors.knn as knn
 import clustering.Hierarchical_clustering.hclust as hc
+import clustering.Hierarchical_clustering.hierarchical_clustering_plot as hc_plot
 import clustering.DBSCAN.plot_dbscan as dbscan
 import clustering.BIRCH.birch_clustering as birch
 import input_output.io as io
@@ -108,7 +109,7 @@ def k_means_run(event):
 def hierarchical_clustering_run(event):
     oformlenie()
     print("Hierarchical clustering")
-    hc.run()
+    hc_plot.run("clustering\\Hierarchical_clustering\\input_data.txt")
     oformlenie_end()
 
 def birch_run(event):
