@@ -47,7 +47,6 @@ def dbscan_run(inputFilePath):
 
     # Number of clusters in labels, ignoring noise if present.
     n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
-
     print('Estimated number of clusters: %d' % n_clusters_)
     print("Homogeneity: %0.3f" % metrics.homogeneity_score(labels_true, labels))
     print("Completeness: %0.3f" % metrics.completeness_score(labels_true, labels))
@@ -58,6 +57,7 @@ def dbscan_run(inputFilePath):
           % metrics.adjusted_mutual_info_score(labels_true, labels))
     print("Silhouette Coefficient: %0.3f"
           % metrics.silhouette_score(X, labels))
+    print("Fowlkes Mallows Score: %0.3f" % metrics.fowlkes_mallows_score(labels_true, labels))
 
     ##############################################################################
     # Plot result
