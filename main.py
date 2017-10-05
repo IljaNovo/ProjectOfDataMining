@@ -15,6 +15,7 @@ import clustering.Hierarchical_clustering.hierarchical_clustering_plot as hc_plo
 import clustering.DBSCAN.plot_dbscan as dbscan
 import clustering.BIRCH.birch_clustering as birch
 import input_output.io as io
+import classification.Stochastic_Gradient_Descent.sgd as sgd
 import utils.text_processing as text_proc
 #import associative_rules.apriori_tid.apriori as apriori_tid
 #import classification.Linear_Least_Squares_Classifier.LLS as lls
@@ -153,6 +154,12 @@ def lls_run(event):
     
     oformlenie_end()    
 
+def sgd_run(event):
+    oformlenie()
+    print("Stochastic Gradient Descent")
+    sgd.run("")
+    oformlenie_end()
+
 def bayes_run(event):
     oformlenie()
     print("Naive Bayes Algorithm")
@@ -215,6 +222,10 @@ child_classif_btn6.pack(fill=X)
 
 child_classif_btn7 = Button(child_classif, text="Алгоритм Роккио")
 child_classif_btn7.pack(fill=X)
+
+child_classif_btn8 = Button(child_classif, text="Stochastic Gradient Descent")
+child_classif_btn8.bind("<Button-1>", sgd_run)
+child_classif_btn8.pack(fill=X)
 
 child_classif_btn4 = Button(child_classif, text="Назад")
 child_classif_btn4.bind("<Button-1>", show_hide_child_classif)
