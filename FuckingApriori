@@ -1,304 +1,165 @@
-# -*- coding: utf-8 -*-
+Usage:
+    $python apriori.py -f DATASET.csv -s minSupport  -c minConfidence
+    $python apriori.py -f DATASET.csv -s 0.15 -c 0.6
+"""
+
+import sys
+
+from itertools import chain, combinations
 from collections import defaultdict
-from itertools import combinations
-from sys import stdout
+from optparse import OptionParser
 
 
-class cached_property(object):
-    """A cached property only computed once
+def subsets(arr):
+    """ Returns non empty subsets of arr"""
+    return chain(*[combinations(arr, i + 1) for i, a in enumerate(arr)])
+
+
+def returnItemsWithMinSupport(itemSet, transactionList, minSupport, freqSet):
+        """calculates the support for items in the itemSet and returns a subset
+       of the itemSet each of whose elements satisfies the minimum support"""
+        _itemSet = set()
+        localSet = defaultdict(int)
+
+        for item in itemSet:
+                for transaction in transactionList:
+                        if item.issubset(transaction):
+                                freqSet[item] += 1
+                                localSet[item] += 1
+
+        for item, count in localSet.items():
+                support = float(count)/len(transactionList)
+
+                if support >= minSupport:
+                        _itemSet.add(item)
+
+        return _itemSet
+
+
+def joinSet(itemSet, length):
+        """Join a set with itself and returns the n-element itemsets"""
+        return set([i.union(j) for i in itemSet for j in itemSet if len(i.union(j)) == length])
+
+
+def getItemSetTransactionList(data_iterator):
+    transactionList = list()
+    itemSet = set()
+    for record in data_iterator:
+        transaction = frozenset(record)
+        transactionList.append(transaction)
+        for item in transaction:
+            itemSet.add(frozenset([item]))              # Generate 1-itemSets
+    return itemSet, transactionList
+
+
+def runApriori(data_iter, minSupport, minConfidence):
     """
-    def __init__(self, func):
-        self.func = func
-
-    def __get__(self, obj, cls):
-        if obj is None: return self
-        value = obj.__dict__[self.func.__name__] = self.func(obj)
-        return value
-
-
-class Base(object):
-    """A base workflow for Apriori algorithm
+    run the apriori algorithm. data_iter is a record iterator
+    Return both:
+     - items (tuple, support)
+     - rules ((pretuple, posttuple), confidence)
     """
-    def _before_generate_frequent_itemset(self):
-        """Invoked before generate_frequent_itemset()
-        """
-        pass
+    itemSet, transactionList = getItemSetTransactionList(data_iter)
 
-    def _after_generate_frequent_itemset(self):
-        """Invoked before generate_frequent_itemset()
-        """
-        pass
+    freqSet = defaultdict(int)
+    largeSet = dict()
+    # Global dictionary which stores (key=n-itemSets,value=support)
+    # which satisfy minSupport
 
-    def generate_frequent_itemset(self):
-        """Generate and return frequent itemset
-        """
-        raise NotImplementedError("generate_frequent_itemset(self) need to be implemented.")
+    assocRules = dict()
+    # Dictionary which stores Association Rules
 
-    def _before_generate_rule(self):
-        """Invoked before generate_frequent_itemset()
-        """
-        pass
+    oneCSet = returnItemsWithMinSupport(itemSet,
+                                        transactionList,
+                                        minSupport,
+                                        freqSet)
 
-    def _after_generate_rule(self):
-        """Invoked before generate_frequent_itemset()
-        """
-        pass
+    currentLSet = oneCSet
+    k = 2
+    while(currentLSet != set([])):
+        largeSet[k-1] = currentLSet
+        currentLSet = joinSet(currentLSet, k)
+        currentCSet = returnItemsWithMinSupport(currentLSet,
+                                                transactionList,
+                                                minSupport,
+                                                freqSet)
+        currentLSet = currentCSet
+        k = k + 1
 
-    def generate_rule(self):
-        """Generate and return rule
-        """
-        raise NotImplementedError("generate_rule(self) need to be implemented.")
+    def getSupport(item):
+            """local function which Returns the support of an item"""
+            return float(freqSet[item])/len(transactionList)
 
-    def run(self):
-        """Run Apriori algorithm and return rules
-        """
-        # generate frequent itemset
-        self._before_generate_frequent_itemset()
-        self.generate_frequent_itemset()
-        self._after_generate_frequent_itemset()
-        # generate rule
-        self._before_generate_rule()
-        self.generate_rule()
-        self._after_generate_rule()
+    toRetItems = []
+    for key, value in largeSet.items():
+        toRetItems.extend([(tuple(item), getSupport(item))
+                           for item in value])
 
-
-class Apriori(Base):
-    """A simple implementation of Apriori algorithm
-        Example:
-        
-        dataset = [
-            ['bread', 'milk'],
-            ['bread', 'diaper', 'beer', 'egg'],
-            ['milk', 'diaper', 'beer', 'cola'],
-            ['bread', 'milk', 'diaper', 'beer'],
-            ['bread', 'milk', 'diaper', 'cola'],
-        ]
-        minsup = minconf = 0.6
-
-        apriori = Apriori(dataset, minsup, minconf)
-        apriori.run()
-        apriori.print_rule()
-
-        Results:
-            Rules
-            milk --> bread (confidence = 0.75)
-            bread --> milk (confidence = 0.75)
-            diaper --> bread (confidence = 0.75)
-            bread --> diaper (confidence = 0.75)
-            beer --> diaper (confidence = 1.0)
-            diaper --> beer (confidence = 0.75)
-            diaper --> milk (confidence = 0.75)
-            milk --> diaper (confidence = 0.75)
-    """
-
-    def __init__(self, transaction_list, minsup, minconf, selected_items=None):
-        """Initialization
-        :param transaction_list: a list cantains transaction
-        :param minsup: minimum support
-        :param minconf: minimum confidence
-        :param selected_items: selected items in frequent itemset, default `None`
-        """
-        self.transaction_list = transaction_list
-        self.transaction_list_full_length = len(transaction_list)
-        self.minsup = minsup
-        self.minconf = minconf
-        if selected_items is not None and selected_items is not []:
-            self.selected_items = frozenset(selected_items)
-        else:
-            self.selected_items = None
-
-        self.frequent_itemset = dict()
-        # support for every frequent itemset
-        self.frequent_itemset_support = defaultdict(float)
-        # convert transaction_list
-        self.transaction_list = list([frozenset(transaction) \
-            for transaction in transaction_list])
-
-        self.rule = []
-
-    def set_selected_items(self, selected_items):
-        """Set selected items
-        """
-        self.selected_items = frozenset(selected_items)
-
-    @cached_property
-    def items(self):
-        """Return all items in the self.transaction_list
-        """
-        items = set()
-        for transaction in self.transaction_list:
-            for item in transaction:
-                items.add(item)
-        return items
-
-    def filter_with_minsup(self, itemsets):
-        """Return subset of itemsets which satisfies minsup
-        and record their support
-        """
-        local_counter = defaultdict(int)
-        for itemset in itemsets:
-            for transaction in self.transaction_list:
-                if itemset.issubset(transaction):
-                    local_counter[itemset] += 1
-        # filter with counter
-        result = set()
-        for itemset, count in local_counter.items():
-            support = float(count) / self.transaction_list_full_length
-            if support >= self.minsup:
-                result.add(itemset)
-                self.frequent_itemset_support[itemset] = support
-        return result
-
-    def _after_generate_frequent_itemset(self):
-        """Filter frequent itemset with selected items
-        """
-        if self.selected_items is None:
-            return
-        local_remove = []
-        for key, val in self.frequent_itemset.items():
-            for itemset in val:
-                if not self.selected_items.issubset(itemset):
-                    local_remove.append((key, itemset))
-        for (key, itemset) in local_remove:
-            self.frequent_itemset[key].remove(itemset)
-
-    def generate_frequent_itemset(self):
-        """Generate and return frequent itemset
-        """
-        def _apriori_gen(itemset, length):
-            """Return candidate itemset with given itemset and length
-            """
-            # simply use F(k-1) x F(k-1) (itemset + itemset)
-            return set([x.union(y) for x in itemset for y in itemset \
-                if len(x.union(y)) == length])
-
-        k = 1
-        current_itemset = set()
-        # generate 1-frequnt_itemset
-        for item in self.items: current_itemset.add(frozenset([item]))
-        self.frequent_itemset[k] = self.filter_with_minsup(current_itemset)
-        # generate k-frequent_itemset
-        while True:
-            k += 1
-            current_itemset = _apriori_gen(current_itemset, k)
-            current_itemset = self.filter_with_minsup(current_itemset)
-            if current_itemset != set([]):
-                self.frequent_itemset[k] = current_itemset
-            else:
-                break
-        return self.frequent_itemset
-
-    def _generate_rule(self, itemset, frequent_itemset_k):
-        """Generate rule with F(k) in DFS style
-        """
-        # make sure the itemset has at least two element to generate the rule
-        if len(itemset) < 2:
-            return
-        for element in combinations(list(itemset), 1):
-            rule_head = itemset - frozenset(element)
-            confidence = self.frequent_itemset_support[frequent_itemset_k] / \
-                self.frequent_itemset_support[rule_head]
-            if confidence >= self.minconf:
-                rule = ((rule_head, itemset - rule_head), confidence)
-                # if rule not in self.rule, add and recall _generate_rule() in DFS
-                if rule not in self.rule:
-                    self.rule.append(rule);
-                    self._generate_rule(rule_head, frequent_itemset_k)
-
-    def generate_rule(self):
-        """Generate and return rule
-        """
-        # generate frequent itemset if not generated
-        if len(self.frequent_itemset) == 0:
-            self.generate_frequent_itemset()
-        # generate in DFS style
-        for key, val in self.frequent_itemset.items():
-            if key == 1:
-                continue
-            for itemset in val:
-                self._generate_rule(itemset, itemset)
-        return self.rule
-
-    def print_frequent_itemset(self):
-        """Print out frequent itemset
-        """
-        stdout.write('======================================================\n')
-        stdout.write('Frequent itemset:\n')
-        for key, val in self.frequent_itemset.items():
-            #stdout.write('frequent itemset size of {0}:\n'.format(key))
-            for itemset in val:
-                stdout.write('(')
-                stdout.write(', '.join(itemset))
-                stdout.write(')')
-                stdout.write('  support = {0}\n'.format(round(self.frequent_itemset_support[itemset], 3)))
-        stdout.write('======================================================\n')
-
-    def save_to_csv_string_frequent_itemset(self):
-        """Print out frequent itemset
-        """
-        separator = ';'
-        result = 'SEQUENCE' + separator + 'SUPPORT\n'
-        for key, val in self.frequent_itemset.items():
-            for itemset in val:
-                result += str(list(itemset)) + separator + str(round(self.frequent_itemset_support[itemset], 3)) + '\n'
-        return result
-
-    def save_to_csv_string_rules(self):
-        """Print out frequent itemset
-        """
-        separator = ';'
-        result = 'RULE' + separator + 'CONFIDENCE\n'
-        for rule in self.rule:
-            head = rule[0][0]
-            tail = rule[0][1]
-            confidence = rule[1]
-            first_column = '(' + ','.join(head) + ') ==> (' + ','.join(tail) + ')'
-
-            result += first_column + separator + str(round(confidence, 3)) + '\n'
-        return result
+    toRetRules = []
+    for key, value in largeSet.items()[1:]:
+        for item in value:
+            _subsets = map(frozenset, [x for x in subsets(item)])
+            for element in _subsets:
+                remain = item.difference(element)
+                if len(remain) > 0:
+                    confidence = getSupport(item)/getSupport(element)
+                    if confidence >= minConfidence:
+                        toRetRules.append(((tuple(element), tuple(remain)),
+                                           confidence))
+    return toRetItems, toRetRules
 
 
-    def print_rule(self):
-        """Print out rules
-        """
-        stdout.write('======================================================\n')
-        stdout.write('Rules:\n')
-        for rule in self.rule:
-            head = rule[0][0]
-            tail = rule[0][1]
-            confidence = rule[1]
-            stdout.write('(')
-            stdout.write(', '.join(head))
-            stdout.write(')')
-            stdout.write(' ==> ')
-            stdout.write('(')
-            stdout.write(', '.join(tail))
-            stdout.write(')')
-            stdout.write('  confidence = {0}\n'.format(round(confidence, 3)))
-        stdout.write('======================================================\n')
+def printResults(items, rules):
+    """prints the generated itemsets sorted by support and the confidence rules sorted by confidence"""
+    for item, support in sorted(items, key=lambda (item, support): support):
+        print "item: %s , %.3f" % (str(item), support)
+    print "\n------------------------ RULES:"
+    for rule, confidence in sorted(rules, key=lambda (rule, confidence): confidence):
+        pre, post = rule
+        print "Rule: %s ==> %s , %.3f" % (str(pre), str(post), confidence)
 
 
-class ImprovedApriori(Apriori):
-    """Use Hash to filter frequent itemsets
-    """
+def dataFromFile(fname):
+        """Function which reads from the file and yields a generator"""
+        file_iter = open(fname, 'rU')
+        for line in file_iter:
+                line = line.strip().rstrip(',')                         # Remove trailing comma
+                record = frozenset(line.split(','))
+                yield record
 
-    def filter_with_minsup(self, itemsets):
-        """Return subset of itemset which satisfies minsup
-        and record their support
-        """
-        for itemset in itemsets:
-            k = len(itemset)
-            break
-        local_counter = defaultdict(int)
-        for transaction in self.transaction_list:
-            for itemset in combinations(list(transaction), k):
-                if frozenset(itemset) in itemsets:
-                    local_counter[frozenset(itemset)] += 1
-        # filter with counter
-        result = set()
-        for itemset, count in local_counter.items():
-            support = float(count) / self.transaction_list_full_length
-            if support >= self.minsup:
-                result.add(itemset)
-                self.frequent_itemset_support[itemset] = support
-        return result
+
+if __name__ == "__main__":
+
+    optparser = OptionParser()
+    optparser.add_option('-f', '--inputFile',
+                         dest='input',
+                         help='filename containing csv',
+                         default=None)
+    optparser.add_option('-s', '--minSupport',
+                         dest='minS',
+                         help='minimum support value',
+                         default=0.15,
+                         type='float')
+    optparser.add_option('-c', '--minConfidence',
+                         dest='minC',
+                         help='minimum confidence value',
+                         default=0.6,
+                         type='float')
+
+    (options, args) = optparser.parse_args()
+
+    inFile = None
+    if options.input is None:
+            inFile = sys.stdin
+    elif options.input is not None:
+            inFile = dataFromFile(options.input)
+    else:
+            print 'No dataset filename specified, system with exit\n'
+            sys.exit('System will exit')
+
+    minSupport = options.minS
+    minConfidence = options.minC
+
+    items, rules = runApriori(inFile, minSupport, minConfidence)
+
+    printResults(items, rules)
