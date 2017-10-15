@@ -55,9 +55,8 @@ def dbscan_run(inputFilePath):
           % metrics.adjusted_rand_score(labels_true, labels))
     print("Adjusted Mutual Information: %0.3f"
           % metrics.adjusted_mutual_info_score(labels_true, labels))
-    print("Silhouette Coefficient: %0.3f"
-          % metrics.silhouette_score(X, labels))
-    print("Fowlkes Mallows Score: %0.3f" % metrics.fowlkes_mallows_score(labels_true, labels))
+    #print("Silhouette Coefficient: %0.3f"
+    #      % metrics.silhouette_score(X, labels))
 
     ##############################################################################
     # Plot result

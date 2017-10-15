@@ -13,6 +13,11 @@ def compute_affinity_propagation(inputFilePath):
     input_array = text.split('\n')
     centers = [[1, 1], [-1, -1], [1, -1]]
     X, labels_true = make_blobs(n_samples=len(input_array), centers=centers, cluster_std=1, random_state=0)
+
+    #slist = list()
+    #for line in X:
+    #    slist.append(line)
+    #io.Output.write_array_to_txt_file("clustering\\Affinity_Propagation\\input_data1.txt", slist)
     float_array = []
     for line in input_array:
         float_line = [float(i) for i in line.split(' ')]
@@ -29,7 +34,9 @@ def compute_affinity_propagation(inputFilePath):
     print("V-measure: %0.3f" % metrics.v_measure_score(labels_true, labels))
     print("Adjusted Rand Index: %0.3f" % metrics.adjusted_rand_score(labels_true, labels))
     print("Adjusted Mutual Information: %0.3f" % metrics.adjusted_mutual_info_score(labels_true, labels))
-    print("Silhouette Coefficient: %0.3f" % metrics.silhouette_score(X, labels, metric='sqeuclidean'))
+#    print("Silhouette Coefficient: %0.3f" % metrics.silhouette_score(X, labels, metric='sqeuclidean'))
+    print("Fowlkes Mallows Score: %0.3f" % metrics.fowlkes_mallows_score(labels_true, labels))
+
     plt.close('all')
     plt.figure(1)
     plt.clf()
