@@ -4,8 +4,10 @@ from sklearn import datasets
 from sklearn.linear_model import SGDClassifier
 import csv
 
-def run(inputFilePath):
+def run(filePath):
     # import some data to play with
+    global inputFilePath
+    inputFilePath  = filePath
     iris = load_csv()
 
     # we only take the first two features. We could
@@ -73,7 +75,7 @@ def run(inputFilePath):
     plt.show()
 
 def load_csv(return_X_y=False):
-    with open('classification\\Stochastic_Gradient_Descent\\data\\iris.csv') as csv_file:
+    with open(inputFilePath) as csv_file:
         data_file = csv.reader(csv_file)
         temp = next(data_file)
         n_samples = int(temp[0])
@@ -86,15 +88,15 @@ def load_csv(return_X_y=False):
             data[i] = np.asarray(ir[:-1], dtype=np.float64)
             target[i] = np.asarray(ir[-1], dtype=np.int)
 
-    with open('classification\\Stochastic_Gradient_Descent\\descr\\iris.rst') as rst_file:
-        fdescr = rst_file.read()
+    #with open('classification\\Stochastic_Gradient_Descent\\descr\\iris.rst') as rst_file:
+    #   fdescr = rst_file.read()
 
     if return_X_y:
         return data, target
 
     return Bunch(data=data, target=target,
                  target_names=target_names,
-                 DESCR=fdescr,
+                 DESCR="",
                  feature_names=['sepal length (cm)', 'sepal width (cm)',
                                 'petal length (cm)', 'petal width (cm)'])
 
