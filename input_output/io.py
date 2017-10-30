@@ -1,6 +1,6 @@
 import pandas
 import requests
-
+from numpy import array
 
 class Input:
     # Чтение csv таблиц из интернета
@@ -52,6 +52,16 @@ class Input:
         except Exception:
             print('Неизвестная ошибка!')
 
+    @staticmethod
+    def get_ndarray_from_txt(path):
+        text = Input.local_read_text_file(path)
+        input_array = text.split('\n')
+        float_array = []
+        for line in input_array:
+            float_line = [float(i) for i in line.split(' ')]
+            float_array.append(float_line)
+        X = array(float_array)
+        return X
 
 class Output:
     @staticmethod

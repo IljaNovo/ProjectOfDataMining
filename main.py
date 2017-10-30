@@ -21,7 +21,7 @@ import utils.text_processing as text_proc
 #import associative_rules.apriori_tid.apriori as apriori_tid
 #import classification.Linear_Least_Squares_Classifier.LLS as lls
 import clustering.Affinity_Propagation.AffinityPropagation as aff_p
-import clustering.k_means.k_means as kmen
+import clustering.k_means.k_means_plt as k_means
 from tkinter import *
 from tkinter.messagebox import *
 from associative_rules.apriori_tid.apriori import *
@@ -99,7 +99,7 @@ def dbscan_run(event):
 
 def k_means_run(event):
     oformlenie()
-    kmen.run()
+    k_means.run_kmeans("clustering/k_means/data/iris.csv")
     oformlenie()
     #запуск стартера, т.к. в нем есть подключение к бд
  #   dir = os.path.abspath(os.curdir)+"//clustering//k_means//run_data.sh 1"
@@ -115,7 +115,12 @@ def hierarchical_clustering_run(event):
 def birch_run(event):
     oformlenie()
     print("BIRCH clustering")
-    birch.run("clustering\\BIRCH\\input_data.txt")
+    path = "clustering\\BIRCH\\input_data.txt"
+    threshold = 1.7 #maximum radius for cluster
+    clusters = 100 #count of clusters for BIRCH with global clustering
+    ndarray = io.Input.get_ndarray_from_txt(path)
+    birch.run(ndarray, threshold, clusters)
+    #birch.run("clustering\\BIRCH\\input_data.txt")
     oformlenie_end()
 
 #######################################################################
@@ -156,7 +161,7 @@ def lls_run(event):
 def sgd_run(event):
     oformlenie()
     print("Stochastic Gradient Descent")
-    sgd.run("")
+    sgd.run("classification/Stochastic_Gradient_Descent/data/iris.csv")
     oformlenie_end()
 
 def bayes_run(event):

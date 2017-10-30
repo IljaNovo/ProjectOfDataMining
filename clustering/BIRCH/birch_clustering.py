@@ -10,13 +10,13 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import Birch, MiniBatchKMeans
 from sklearn.datasets.samples_generator import make_blobs
 
-def run(inputFilePath):
+def run(X, threshold_,cluster_count ):
     # Generate centers for the blobs so that it forms a 10 X 10 grid.
-    xx = np.linspace(-22, 22, 10)
-    yy = np.linspace(-22, 22, 10)
-    xx, yy = np.meshgrid(xx, yy)
-    n_centres = np.hstack((np.ravel(xx)[:, np.newaxis],
-                           np.ravel(yy)[:, np.newaxis]))
+    #xx = np.linspace(-22, 22, 10)
+    #yy = np.linspace(-22, 22, 10)
+    #xx, yy = np.meshgrid(xx, yy)
+    #n_centres = np.hstack((np.ravel(xx)[:, np.newaxis],
+    #                       np.ravel(yy)[:, np.newaxis]))
 
     # Generate blobs to do a comparison between MiniBatchKMeans and Birch.
     #X, y = make_blobs(n_samples=100000, centers=n_centres, random_state=0)
@@ -24,13 +24,6 @@ def run(inputFilePath):
     #for line in X:
     #    slist.append(line)
     #io.Output.write_array_to_txt_file("clustering\\BIRCH\\input_data.txt", slist)
-    text = io.Input.local_read_text_file(inputFilePath)
-    input_array = text.split('\n')
-    float_array = []
-    for line in input_array :
-        float_line = [float(i) for i in line.split(' ')]
-        float_array.append(float_line)
-    X = array(float_array)
     # Use all colors that matplotlib provides by default.
     colors_ = cycle(colors.cnames.keys())
 
@@ -39,8 +32,8 @@ def run(inputFilePath):
 
     # Compute clustering with Birch with and without the final clustering step
     # and plot.
-    birch_models = [Birch(threshold=1.7, n_clusters=None),
-                    Birch(threshold=1.7, n_clusters=100)]
+    birch_models = [Birch(threshold=threshold_, n_clusters=None),
+                    Birch(threshold=threshold_, n_clusters = cluster_count)]
     final_step = ['without global clustering', 'with global clustering']
 
     for ind, (birch_model, info) in enumerate(zip(birch_models, final_step)):
