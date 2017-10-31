@@ -93,7 +93,12 @@ def affinity_propagation_run(event) :
 
 def dbscan_run(event):
     oformlenie()
-    dbscan.dbscan_run("clustering\\DBSCAN\\input_data.txt")
+    path = "clustering\\DBSCAN\\input_data.txt" #path to the input file
+    #parameters
+    eps = 0.3 # maximum distance between two samples or them to be considered as in the same neighborhood
+    min_samples = 10 # The number of samples (or total weight) in a neighborhood for a point to be considered as a core point. This includes the point itself.
+    X = io.Input.get_ndarray_from_txt(path)
+    dbscan.dbscan_run(X,eps,min_samples)
     oformlenie()
     oformlenie_end()
 

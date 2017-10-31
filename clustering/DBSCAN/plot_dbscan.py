@@ -17,30 +17,31 @@ from sklearn.preprocessing import StandardScaler
 import input_output.io as io
 from numpy import array
 
-def dbscan_run(inputFilePath):
+def dbscan_run(X, eps_, min_samples_):
     print(__doc__)
     ##############################################################################
     # Generate sample data
     centers = [[1, 1], [-1, -1], [1, -1]]
-    text = io.Input.local_read_text_file(inputFilePath)
-    input_array = text.split('\n')
-    X, labels_true = make_blobs(n_samples=len(input_array), centers=centers, cluster_std=0.4,
-                                random_state=0)
+    #text = io.Input.local_read_text_file(inputFilePath)
+    #input_array = text.split('\n')
+
+    # This operation need for labels_true generating for metrics printing
+    useless_data, labels_true = make_blobs(n_samples=len(X), centers=centers, cluster_std=0.4,random_state=0)
     #with open("input_data.txt", 'w', encoding='utf-8') as file2:
     #    for line in X:
     #        file2.write(str(line) + "\n")
 
-    float_array = []
-    for line in input_array:
-        float_line = [float(i) for i in line.split(' ')]
-        float_array.append(float_line)
-    X = array(float_array)
+    #float_array = []
+    #for line in input_array:
+    #    float_line = [float(i) for i in line.split(' ')]
+    #    float_array.append(float_line)
+    #X = array(float_array)
 
     X = StandardScaler().fit_transform(X)
 
     ##############################################################################
     # Compute DBSCAN
-    db = DBSCAN(eps=0.3, min_samples=10).fit(X)
+    db = DBSCAN(eps=eps_, min_samples=min_samples_).fit(X)
     core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
     core_samples_mask[db.core_sample_indices_] = True
     labels = db.labels_
