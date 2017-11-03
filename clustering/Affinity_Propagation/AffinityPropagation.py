@@ -7,24 +7,30 @@ from itertools import cycle
 from numpy import array
 
 
-def compute_affinity_propagation(inputFilePath):
+def compute_affinity_propagation(preference_, X):
     # DATA FILLING
-    text = io.Input.local_read_text_file(inputFilePath)
-    input_array = text.split('\n')
+    #text = io.Input.local_read_text_file(inputFilePath)
+    #input_array = text.split('\n')
     centers = [[1, 1], [-1, -1], [1, -1]]
-    X, labels_true = make_blobs(n_samples=len(input_array), centers=centers, cluster_std=1, random_state=0)
-
+    n_samples = 300
+    #Make Blobs used for generating of labels_true array
+    if (X == None):
+        X, labels_true = make_blobs(n_samples = n_samples, centers=centers, cluster_std=1, random_state=0)
+        print("Data is none!!!")
+        print("Generating " + str(n_samples) + " samples")
+    else :
+        data, labels_true = make_blobs(n_samples=len(X), centers=centers, cluster_std=1, random_state=0)
     #slist = list()
     #for line in X:
     #    slist.append(line)
     #io.Output.write_array_to_txt_file("clustering\\Affinity_Propagation\\input_data1.txt", slist)
-    float_array = []
-    for line in input_array:
-        float_line = [float(i) for i in line.split(' ')]
-        float_array.append(float_line)
-    X = array(float_array)
+    #float_array = []
+    #for line in input_array:
+    #    float_line = [float(i) for i in line.split(' ')]
+    #    float_array.append(float_line)
+    #X = array(float_array)
 
-    af = AffinityPropagation(preference=-50).fit(X)
+    af = AffinityPropagation(preference=preference_).fit(X)
     cluster_centers_indices = af.cluster_centers_indices_
     labels = af.labels_
     n_clusters_ = len(cluster_centers_indices)

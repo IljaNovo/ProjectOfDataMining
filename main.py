@@ -87,7 +87,12 @@ def mean_shift_run(event):
 
 def affinity_propagation_run(event) :
     oformlenie()
-    aff_p.compute_affinity_propagation("clustering\\Affinity_Propagation\\input_data.txt")
+    path = "clustering\\Affinity_Propagation\\input_data.txt"
+    #parameters
+    preference = -50
+    X = io.Input.get_ndarray_from_txt(path)
+    #
+    aff_p.compute_affinity_propagation(-50, None)
     oformlenie()
     oformlenie_end()
 
