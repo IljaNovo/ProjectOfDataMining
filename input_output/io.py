@@ -63,6 +63,7 @@ class Input:
         X = array(float_array)
         return X
 
+
 class Output:
     @staticmethod
     def write_to_txt_file(filePath, file1):

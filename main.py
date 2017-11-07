@@ -21,7 +21,7 @@ import utils.text_processing as text_proc
 #import associative_rules.apriori_tid.apriori as apriori_tid
 #import classification.Linear_Least_Squares_Classifier.LLS as lls
 import clustering.Affinity_Propagation.AffinityPropagation as aff_p
-import clustering.k_means.k_means_plt as k_means
+import clustering.k_means.k_means as k_means
 from tkinter import *
 from tkinter.messagebox import *
 from associative_rules.apriori_tid.apriori import *
@@ -109,7 +109,11 @@ def dbscan_run(event):
 
 def k_means_run(event):
     oformlenie()
-    k_means.run_kmeans("clustering/k_means/data/iris.csv")
+    path = "clustering\\k_means\\input_data.txt"
+    #parameters
+    n_clusters = 3
+    X = io.Input.get_ndarray_from_txt(path)
+    k_means.run_kmeans(X,n_clusters)
     oformlenie()
     #запуск стартера, т.к. в нем есть подключение к бд
  #   dir = os.path.abspath(os.curdir)+"//clustering//k_means//run_data.sh 1"
