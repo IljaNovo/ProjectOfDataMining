@@ -92,7 +92,7 @@ def affinity_propagation_run(event) :
     preference = -50
     X = io.Input.get_ndarray_from_txt(path)
     #
-    aff_p.compute_affinity_propagation(-50, None)
+    aff_p.compute_affinity_propagation(-50, X)
     oformlenie()
     oformlenie_end()
 
@@ -123,7 +123,11 @@ def k_means_run(event):
 def hierarchical_clustering_run(event):
     oformlenie()
     print("Hierarchical clustering")
-    hc_plot.run("clustering\\Hierarchical_clustering\\input_data.txt")
+    path = "clustering\\Hierarchical_clustering\\input_data.txt"
+    #parameters
+    X = io.Input.get_ndarray_from_txt(path)
+    n_clusters = 6
+    hc_plot.run(X,n_clusters)
     oformlenie_end()
 
 def birch_run(event):

@@ -7,22 +7,22 @@ from sklearn.datasets.samples_generator import make_swiss_roll
 from numpy import array
 import input_output.io as io
 
-def run(inputFilePath):
+def run(X, n_clusters):
     # #############################################################################
     # Generate data (swiss roll dataset)
-    text = io.Input.local_read_text_file(inputFilePath)
-    input_array = text.split('\n')
+    #text = io.Input.local_read_text_file(inputFilePath)
+    #input_array = text.split('\n')
     #n_samples = len(input_array)
     #noise = 0.05
     #X, _ = make_swiss_roll(n_samples, noise)
     #with open("input_data.txt", 'w', encoding='utf-8') as file2:
     #    for line in X:
     #        file2.write(str(line) + "\n")
-    float_array = []
-    for line in input_array:
-        float_line = [float(i) for i in line.split(' ')]
-        float_array.append(float_line)
-    X = array(float_array)
+    #float_array = []
+    #for line in input_array:
+    #    float_line = [float(i) for i in line.split(' ')]
+    #    float_array.append(float_line)
+    #X = array(float_array)
     # Make it thinner
     X[:, 1] *= .5
 
@@ -30,7 +30,7 @@ def run(inputFilePath):
     # Compute clustering
     print("Compute unstructured hierarchical clustering...")
     st = time.time()
-    ward = AgglomerativeClustering(n_clusters=6, linkage='ward').fit(X)
+    ward = AgglomerativeClustering(n_clusters=n_clusters, linkage='ward').fit(X)
     elapsed_time = time.time() - st
     label = ward.labels_
     print("Elapsed time: %.2fs" % elapsed_time)
