@@ -1,4 +1,0 @@
-#centers
-1 1 -1 -1 1 -1
-#main_parametres
-450 1 0
