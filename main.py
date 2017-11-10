@@ -1,383 +1,914 @@
-# -*- coding: utf-8 -*-
-"""
-Редактор Spyder
+# -*- coding: utf-8 -*- 
 
-Это временный скриптовый файл.
-"""
-#######################################################################
-##КЛАССИФИКАЦИЯ
-#######################################################################
-import classification.C_4_5.tree as с45
-import classification.Naive_Bayes_Classifier.BayesScratch.bayes_classifier as bayes
-import classification.k_Nearest_Neighbors.knn as knn
-import clustering.Hierarchical_clustering.hclust as hc
-import clustering.Hierarchical_clustering.hierarchical_clustering_plot as hc_plot
-import clustering.DBSCAN.plot_dbscan as dbscan
-import clustering.BIRCH.birch_clustering as birch
-import clustering.mean_shift.plot_mean_shift as mean_shift
+
+import wx
+import wx.xrc
+
+import os.path
+
+
 import input_output.io as io
-import classification.Stochastic_Gradient_Descent.sgd as sgd
-import utils.text_processing as text_proc
-#import associative_rules.apriori_tid.apriori as apriori_tid
-#import classification.Linear_Least_Squares_Classifier.LLS as lls
-import clustering.Affinity_Propagation.AffinityPropagation as aff_p
-import clustering.k_means.k_means as k_means
-from tkinter import *
-from tkinter.messagebox import *
-from associative_rules.apriori_tid.apriori import *
-
-flag_child_classif = False
-flag_child_claster = False
-flag_child_search_rules = False
-
-def show_hide_child_classif(event):
-    global flag_child_classif
-    
-    if (flag_child_classif == False):
-        flag_child_classif = True
-        child_classif.deiconify()
-        root.withdraw()
-    else:
-        flag_child_classif = False
-        child_classif.withdraw()
-        root.deiconify()
-
-def show_hide_child_claster(event):
-    global flag_child_claster
-    
-    if (flag_child_claster == False):
-        flag_child_claster = True
-        child_claster.deiconify()
-        root.withdraw()
-    else:
-        flag_child_claster = False
-        child_claster.withdraw()
-        root.deiconify()
-    
-def show_hide_child_search_rules(event):
-    global flag_child_search_rules
-    
-    if (flag_child_search_rules == False):
-        flag_child_search_rules = True
-        child_search_rules.deiconify()
-        root.withdraw()
-    else:
-        flag_child_search_rules = False
-        child_search_rules.withdraw()
-        root.deiconify()
-
-
-def oformlenie():
-    print("=========================================================")
-
-def oformlenie_end():
-    print("====================End of execution=====================")
-    print("=========================================================")
-
-#######################################################################
-##КЛАСТЕРИЗАЦИЯ
-#######################################################################
-
-def mean_shift_run(event):
-    oformlenie()
-    print("Mean Shift")
-    oformlenie()
-    mean_shift.run(txter_claster.get())
-    oformlenie_end()
-
-def affinity_propagation_run(event) :
-    oformlenie()
-    path = "clustering\\Affinity_Propagation\\input_data.txt"
-    #parameters
-    preference = -50
-    X = io.Input.get_ndarray_from_txt(path)
-    #
-    aff_p.compute_affinity_propagation(-50, X)
-    oformlenie()
-    oformlenie_end()
-
-def dbscan_run(event):
-    oformlenie()
-    path = "clustering\\DBSCAN\\input_data.txt" #path to the input file
-    #parameters
-    eps = 0.3 # maximum distance between two samples or them to be considered as in the same neighborhood
-    min_samples = 10 # The number of samples (or total weight) in a neighborhood for a point to be considered as a core point. This includes the point itself.
-    X = io.Input.get_ndarray_from_txt(path)
-    dbscan.dbscan_run(X,eps,min_samples)
-    oformlenie()
-    oformlenie_end()
-
-def k_means_run(event):
-    oformlenie()
-    path = "clustering\\k_means\\input_data.txt"
-    #parameters
-    n_clusters = 3
-    X = io.Input.get_ndarray_from_txt(path)
-    k_means.run_kmeans(X,n_clusters)
-    oformlenie()
-    #запуск стартера, т.к. в нем есть подключение к бд
- #   dir = os.path.abspath(os.curdir)+"//clustering//k_means//run_data.sh 1"
- #   os.popen(dir)#"run_data.sh", cwd=r"C/1/ProjectOfDataMining/classification/Linear_Least_Squares_Classifierr")
-    oformlenie_end()
-
-def hierarchical_clustering_run(event):
-    oformlenie()
-    print("Hierarchical clustering")
-    path = "clustering\\Hierarchical_clustering\\input_data.txt"
-    #parameters
-    X = io.Input.get_ndarray_from_txt(path)
-    n_clusters = 6
-    hc_plot.run(X,n_clusters)
-    oformlenie_end()
-
-def birch_run(event):
-    oformlenie()
-    print("BIRCH clustering")
-    path = "clustering\\BIRCH\\input_data.txt"
-    threshold = 1.7 #maximum radius for cluster
-    clusters = 100 #count of clusters for BIRCH with global clustering
-    ndarray = io.Input.get_ndarray_from_txt(path)
-    birch.run(ndarray, threshold, clusters)
-    #birch.run("clustering\\BIRCH\\input_data.txt")
-    oformlenie_end()
-
-#######################################################################
-##АССОЦИАТИВНЫЕ ПРАВИЛА
-#######################################################################
-
-def run_apriori_tid(event):
-    oformlenie()
-    print("Apriori TID")
-    oformlenie()
-    data_iter = dataFromFile('associative_rules/apriori_tid/tesco.csv')
-    items, rules = runApriori(data_iter, 0.5, 0.05)
-    printResults(items, rules)
-
-#######################################################################
-##КЛАССИФИКАЦИЯ
-#######################################################################
-
-
-def С_4_5_run(event):
-    oformlenie()
-    print("C 4.5")
-    oformlenie()
-    if __name__ == '__main__':
-        с45.run_decision_tree()   
-    oformlenie_end()
-    
-def lls_run(event):
-    oformlenie()
-    print("LLS")
-    oformlenie()
-    #запуск стартера, т.к. в нем есть подключение к бд
-   # dir = os.path.abspath(os.curdir)+"//classification//Linear_Least_Squares_Classifier//run_data.sh 1"
-   # os.popen(dir)#"run_data.sh", cwd=r"C/1/ProjectOfDataMining/classification/Linear_Least_Squares_Classifierr")
-    
-    oformlenie_end()    
-
-def sgd_run(event):
-    oformlenie()
-    print("Stochastic Gradient Descent")
-    sgd.run("classification/Stochastic_Gradient_Descent/data/iris.csv")
-    oformlenie_end()
-
-def bayes_run(event):
-    oformlenie()
-    print("Naive Bayes Algorithm")
-    bayes.main("classification/Naive_Bayes_Classifier/BayesScratch/pima-indians-diabetes.csv")
-    oformlenie_end()
-
-def knn_run(event):
-    oformlenie()
-    print("k-Nearest Neighbors")
-    knn.main()   
-    oformlenie_end()
-
-def exit_prog(event):
-    exit(0);
-		
-#########
-# Скрыть/показать текстовое поле для пути к файлу с данными.
-# Осуществляется с помощью RadioButton-виджетов
-#########
-
-def show_entry_claster():
-    if radioItem_claster.get() == 2:
-        txter_claster.grid_remove()
-        lab_claster.grid_remove()
-    else:
-        lab_claster.grid(row=2, column=1)
-        txter_claster.grid(row=2, column=2)
-		
-def show_entry_classif():
-    if radioItem_classif.get() == 2:
-        txter_classif.grid_remove()
-        lab_classif.grid_remove()
-    else:
-        lab_classif.grid(row=2, column=1)
-        txter_classif.grid(row=2, column=2)
-		
-def show_entry_search_rules():
-    if radioItem_search_rules.get() == 2:
-        txter_search_rules.grid_remove()
-        lab_search_rules.grid_remove()
-    else:
-        lab_search_rules.grid(row=2, column=1)
-        txter_search_rules.grid(row=2, column=2)
-		
-root = Tk()
-root.title("Главное окно")
-root.bind("<Destroy>", exit_prog);
-
-btn1 = Button(root, text="Классификация")
-btn1.bind("<Button-1>", show_hide_child_classif)
-btn1.pack(fill=X)
-
-btn2 = Button(root, text="Кластеризация")
-btn2.bind("<Button-1>", show_hide_child_claster)
-btn2.pack(fill=X)
-
-btn3 = Button(root, text="Поиск ассоциативных правил")
-btn3.bind("<Button-1>", show_hide_child_search_rules)
-btn3.pack(fill=X)
-
-child_classif = Toplevel(root)
-child_classif.title("Классификация")
-child_classif.bind("<Destroy>", exit_prog);
-child_classif.withdraw()
-
-radioItem_classif = IntVar()
-radioItem_classif.set(1)
-
-radCsv_classif = Radiobutton(child_classif, text="Считать с csv-файла", variable=radioItem_classif, value=0, command=show_entry_classif)
-radCsv_classif.grid(row=1, column=0, sticky=W)
-
-radInternet_classif = Radiobutton(child_classif, text="Считать с интернета", variable=radioItem_classif, value=1, command=show_entry_classif)
-radInternet_classif.grid(row=2, column=0, sticky=W)
-
-radRandom_classif = Radiobutton(child_classif, text="Генерировать случайно", variable=radioItem_classif, value=2, command=show_entry_classif)
-radRandom_classif.grid(row=3, column=0, sticky=W)
-
-lab_classif = Label(child_classif, text="Путь: ")
-lab_classif.grid(row=2, column=1)
-txter_classif = Entry(child_classif, width=20)
-txter_classif.grid(row=2, column=2)
-
-child_classif_btn1 = Button(child_classif, text="C 4.5", width=50)
-child_classif_btn1.bind("<Button-1>", С_4_5_run)
-child_classif_btn1.grid(row=4, column=0, columnspan=3)
-
-child_classif_btn2 = Button(child_classif, text="k Nearest Neighbors")
-child_classif_btn2.bind("<Button-1>", knn_run)
-child_classif_btn2.grid(row=5, column=0, columnspan=3, sticky=W+N+S+E)
-
-child_classif_btn3 = Button(child_classif, text="Linear Least Squares Classifier")
-child_classif_btn3.bind("<Button-1>", lls_run)
-child_classif_btn3.grid(row=6, column=0, columnspan=3, sticky=W+N+S+E)
-
-child_classif_btn5 = Button(child_classif, text="Naive Bayes Classifier")
-child_classif_btn5.bind("<Button-1>", bayes_run)
-child_classif_btn5.grid(row=7, column=0, columnspan=3, sticky=W+N+S+E)
-
-child_classif_btn6 = Button(child_classif, text="Алгоритм опорных векторов")
-child_classif_btn6.grid(row=8, column=0, columnspan=3, sticky=W+N+S+E)
-
-child_classif_btn7 = Button(child_classif, text="Алгоритм Роккио")
-child_classif_btn7.grid(row=9, column=0, columnspan=3, sticky=W+N+S+E)
-
-child_classif_btn8 = Button(child_classif, text="Stochastic Gradient Descent")
-child_classif_btn8.bind("<Button-1>", sgd_run)
-child_classif_btn8.grid(row=10, column=0, columnspan=3, sticky=W+N+S+E)
-
-child_classif_btn4 = Button(child_classif, text="Назад")
-child_classif_btn4.bind("<Button-1>", show_hide_child_classif)
-child_classif_btn4.grid(row=11, column=0, columnspan=3, sticky=W+N+S+E)
-
-child_claster = Toplevel(root)
-child_claster.title("Кластеризация")
-child_claster.bind("<Destroy>", exit_prog);
-child_claster.withdraw()
-
-radioItem_claster = IntVar()
-radioItem_claster.set(1)
-
-radCsv_claster = Radiobutton(child_claster, text="Считать с csv-файла", variable=radioItem_claster, value=0, command=show_entry_claster)
-radCsv_claster.grid(row=1, column=0, sticky=W)
-
-radInternet_claster = Radiobutton(child_claster, text="Считать с интернета", variable=radioItem_claster, value=1, command=show_entry_claster)
-radInternet_claster.grid(row=2, column=0, sticky=W)
-
-radRandom_claster = Radiobutton(child_claster, text="Генерировать случайно", variable=radioItem_claster, value=2, command=show_entry_claster)
-radRandom_claster.grid(row=3, column=0, sticky=W)
-
-lab_claster = Label(child_claster, text="Путь: ")
-lab_claster.grid(row=2, column=1)
-txter_claster = Entry(child_claster, width=20)
-txter_claster.grid(row=2, column=2)
-
-child_claster_btn1 = Button(child_claster, text="Mean Shift", width=50)
-child_claster_btn1.bind("<Button-1>", mean_shift_run)
-child_claster_btn1.grid(row=4, column=0, columnspan=3)
-
-child_claster_btn2 = Button(child_claster, text="K-means")
-child_claster_btn2.bind("<Button-1>", k_means_run)
-child_claster_btn2.grid(row=5, column=0, columnspan=3, sticky=W+N+S+E)
-
-child_claster_btn3 = Button(child_claster, text="Hierarchical clustering")
-child_claster_btn3.bind("<Button-1>", hierarchical_clustering_run)
-child_claster_btn3.grid(row=6, column=0, columnspan=3, sticky=W+N+S+E)
-
-child_claster_btn5 = Button(child_claster, text="DBSCAN")
-child_claster_btn5.bind("<Button-1>", dbscan_run)
-child_claster_btn5.grid(row=7, column=0, columnspan=3, sticky=W+N+S+E)
-
-child_claster_btn7 = Button(child_claster, text="BIRCH")
-child_claster_btn7.bind("<Button-1>", birch_run)
-child_claster_btn7.grid(row=8, column=0, columnspan=3, sticky=W+N+S+E)
-
-child_claster_btn6 = Button(child_claster, text="Affinity Propagation")
-child_claster_btn6.bind("<Button-1>", affinity_propagation_run)
-child_claster_btn6.grid(row=9, column=0, columnspan=3, sticky=W+N+S+E)
-
-child_claster_btn4 = Button(child_claster, text="Назад")
-child_claster_btn4.bind("<Button-1>", show_hide_child_claster)
-child_claster_btn4.grid(row=10, column=0, columnspan=3, sticky=W+N+S+E)
-
-child_search_rules = Toplevel(root)
-child_search_rules.title("Поиск ассоциативных правил")
-child_search_rules.bind("<Destroy>", exit_prog);
-child_search_rules.withdraw()
-
-radioItem_search_rules = IntVar()
-radioItem_search_rules.set(1)
-
-radCsv_search_rules = Radiobutton(child_search_rules, text="Считать с csv-файла", variable=radioItem_search_rules, value=0, command=show_entry_search_rules)
-radCsv_search_rules.grid(row=1, column=0, sticky=W)
-
-radInternet_search_rules = Radiobutton(child_search_rules, text="Считать с интернета", variable=radioItem_search_rules, value=1, command=show_entry_search_rules)
-radInternet_search_rules.grid(row=2, column=0, sticky=W)
-
-radRandom_search_rules = Radiobutton(child_search_rules, text="Генерировать случайно", variable=radioItem_search_rules, value=2, command=show_entry_search_rules)
-radRandom_search_rules.grid(row=3, column=0, sticky=W)
-
-lab_search_rules = Label(child_search_rules, text="Путь: ")
-lab_search_rules.grid(row=2, column=1)
-txter_search_rules = Entry(child_search_rules, width=20)
-txter_search_rules.grid(row=2, column=2)
-
-child_search_rules_btn1 = Button(child_search_rules, text="Apriori Hybrid", width=50)
-child_search_rules_btn1.grid(row=4, column=0, columnspan=3)
-
-child_search_rules_btn2 = Button(child_search_rules, text="ID3")
-child_search_rules_btn2.grid(row=5, column=0, columnspan=3, sticky=W+N+S+E)
-
-child_search_rules_btn3 = Button(child_search_rules, text="Apriori TID")
-child_search_rules_btn3.bind("<Button-1>", run_apriori_tid)
-child_search_rules_btn3.grid(row=6, column=0, columnspan=3, sticky=W+N+S+E)
-
-child_search_rules_btn4 = Button(child_search_rules, text="Назад")
-child_search_rules_btn4.bind("<Button-1>", show_hide_child_search_rules)
-child_search_rules_btn4.grid(row=7, column=0, columnspan=3, sticky=W+N+S+E)
-
-root.mainloop()
+import clustering.k_means.k_means_plt as k_means
+import classification.Stochastic_Gradient_Descent.sgd
+
+
+###########################################################################
+## Class MainWindow
+###########################################################################
+
+class MainWindow(wx.Frame):
+    def __init__(self, parent):
+        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=u"Data Mining", pos=wx.DefaultPosition,
+                          size=wx.Size(330, 510), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
+
+        self.SetSizeHints(wx.Size(330, 510), wx.Size(330, 510))
+
+        gbSizer1 = wx.GridBagSizer(0, 0)
+        gbSizer1.SetFlexibleDirection(wx.BOTH)
+        gbSizer1.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
+
+        # region Меню
+
+        self.m_menubar1 = wx.MenuBar(0)
+        self.menu = wx.Menu()
+
+        # region Меню/Классификация
+        self.menu_classification = wx.Menu()
+
+        self.menu_classification_Support_vector_machines = wx.MenuItem(self.menu_classification, wx.ID_ANY,
+                                                                       u"Support vector machines", wx.EmptyString,
+                                                                       wx.ITEM_NORMAL)
+        self.menu_classification.Append(self.menu_classification_Support_vector_machines)
+        self.menu_classification_Stochastic_gradient_descent = wx.MenuItem(self.menu_classification, wx.ID_ANY,
+                                                                           u"Stochastic gradient descent",
+                                                                           wx.EmptyString,
+                                                                           wx.ITEM_NORMAL)
+        self.menu_classification.Append(self.menu_classification_Stochastic_gradient_descent)
+        self.menu_classification_Nearest_Neighbors = wx.MenuItem(self.menu_classification, wx.ID_ANY,
+                                                                 u"Nearest Neighbors", wx.EmptyString,
+                                                                 wx.ITEM_NORMAL)
+        self.menu_classification.Append(self.menu_classification_Nearest_Neighbors)
+        self.menu_classification_Gaussian_Processes = wx.MenuItem(self.menu_classification, wx.ID_ANY,
+                                                                  u"Gaussian Processes", wx.EmptyString,
+                                                                  wx.ITEM_NORMAL)
+        self.menu_classification.Append(self.menu_classification_Gaussian_Processes)
+        self.menu_classification_Decision_trees = wx.MenuItem(self.menu_classification, wx.ID_ANY, u"Decision trees",
+                                                              wx.EmptyString,
+                                                              wx.ITEM_NORMAL)
+        self.menu_classification.Append(self.menu_classification_Decision_trees)
+        self.menu_classification_naiv_bais = wx.MenuItem(self.menu_classification, wx.ID_ANY,
+                                                         u"Наивная байесовская классификация", wx.EmptyString,
+                                                         wx.ITEM_NORMAL)
+        self.menu_classification.Append(self.menu_classification_naiv_bais)
+        self.menu_classification_kmeanes = wx.MenuItem(self.menu_classification, wx.ID_ANY,
+                                                       u"Алгоритм k-ближайших соседей (кф)", wx.EmptyString,
+                                                       wx.ITEM_NORMAL)
+        self.menu_classification.Append(self.menu_classification_kmeanes)
+        self.menu_classification_less_sqad = wx.MenuItem(self.menu_classification, wx.ID_ANY,
+                                                         u"Алгоритм наименьших квадратов", wx.EmptyString,
+                                                         wx.ITEM_NORMAL)
+        self.menu_classification.Append(self.menu_classification_less_sqad)
+        self.menu_classification_rokkio = wx.MenuItem(self.menu_classification, wx.ID_ANY, u"Алгоритм Роккио",
+                                                      wx.EmptyString,
+                                                      wx.ITEM_NORMAL)
+        self.menu_classification.Append(self.menu_classification_rokkio)
+        self.menu_classification_vectors = wx.MenuItem(self.menu_classification, wx.ID_ANY,
+                                                       u"Алгоритм опорных векторов", wx.EmptyString,
+                                                       wx.ITEM_NORMAL)
+        self.menu_classification.Append(self.menu_classification_vectors)
+        self.menu.AppendSubMenu(self.menu_classification, u"Классификация")
+        # endregion
+
+        # region Меню/Кластеризация
+        self.menu_clusterization = wx.Menu()
+
+        self.menu_clusterization_kmeans = wx.MenuItem(self.menu_clusterization, wx.ID_ANY, u"K-means", wx.EmptyString,
+                                                      wx.ITEM_NORMAL)
+        self.menu_clusterization.Append(self.menu_clusterization_kmeans)
+        self.menu_clusterization_id3 = wx.MenuItem(self.menu_clusterization, wx.ID_ANY, u"ID3", wx.EmptyString,
+                                                   wx.ITEM_NORMAL)
+        self.menu_clusterization.Append(self.menu_clusterization_id3)
+        self.menu_clusterization_Affinity_Propagation = wx.MenuItem(self.menu_clusterization, wx.ID_ANY,
+                                                                    u"Affinity Propagation", wx.EmptyString,
+                                                                    wx.ITEM_NORMAL)
+        self.menu_clusterization.Append(self.menu_clusterization_Affinity_Propagation)
+        self.menu_clusterization_Birch = wx.MenuItem(self.menu_clusterization, wx.ID_ANY, u"Birch", wx.EmptyString,
+                                                     wx.ITEM_NORMAL)
+        self.menu_clusterization.Append(self.menu_clusterization_Birch)
+        self.menu_clusterization_Mean_Shift = wx.MenuItem(self.menu_clusterization, wx.ID_ANY, u"Mean Shift",
+                                                          wx.EmptyString,
+                                                          wx.ITEM_NORMAL)
+        self.menu_clusterization.Append(self.menu_clusterization_Mean_Shift)
+        self.menu_clusterization_Perfomance_evalution = wx.MenuItem(self.menu_clusterization, wx.ID_ANY,
+                                                                    u"Perfomance evalution", wx.EmptyString,
+                                                                    wx.ITEM_NORMAL)
+        self.menu_clusterization.Append(self.menu_clusterization_Perfomance_evalution)
+        self.menu_clusterization_Hierarchical_clustering = wx.MenuItem(self.menu_clusterization, wx.ID_ANY,
+                                                                       u"Hierarchical clustering", wx.EmptyString,
+                                                                       wx.ITEM_NORMAL)
+        self.menu_clusterization.Append(self.menu_clusterization_Hierarchical_clustering)
+        self.menu_clusterization_Adjusted_Rand_index = wx.MenuItem(self.menu_clusterization, wx.ID_ANY,
+                                                                   u"Adjusted Rand index", wx.EmptyString,
+                                                                   wx.ITEM_NORMAL)
+        self.menu_clusterization.Append(self.menu_clusterization_Adjusted_Rand_index)
+        self.menu_clusterization_DBSCAN = wx.MenuItem(self.menu_clusterization, wx.ID_ANY, u"DBSCAN", wx.EmptyString,
+                                                      wx.ITEM_NORMAL)
+        self.menu_clusterization.Append(self.menu_clusterization_DBSCAN)
+        self.menu_clusterization_MutualInformationbasedscore = wx.MenuItem(self.menu_clusterization, wx.ID_ANY,
+                                                                           u"Mutual Information based score",
+                                                                           wx.EmptyString,
+                                                                           wx.ITEM_NORMAL)
+        self.menu_clusterization.Append(self.menu_clusterization_MutualInformationbasedscore)
+        self.menu_clusterization_Silhouette_Coefficient = wx.MenuItem(self.menu_clusterization, wx.ID_ANY,
+                                                                      u"Silhouette Coefficient", wx.EmptyString,
+                                                                      wx.ITEM_NORMAL)
+        self.menu_clusterization.Append(self.menu_clusterization_Silhouette_Coefficient)
+        self.menu_clusterization_Fowlkes_Mallows_scores = wx.MenuItem(self.menu_clusterization, wx.ID_ANY,
+                                                                      u"Fowlkes-Mallows scores", wx.EmptyString,
+                                                                      wx.ITEM_NORMAL)
+        self.menu_clusterization.Append(self.menu_clusterization_Fowlkes_Mallows_scores)
+        self.menu_clusterization_V_measure = wx.MenuItem(self.menu_clusterization, wx.ID_ANY, u"V-measure",
+                                                         wx.EmptyString,
+                                                         wx.ITEM_NORMAL)
+        self.menu_clusterization.Append(self.menu_clusterization_V_measure)
+        self.menu_clusterization_Spectral_clustering = wx.MenuItem(self.menu_clusterization, wx.ID_ANY,
+                                                                   u"Spectral clustering", wx.EmptyString,
+                                                                   wx.ITEM_NORMAL)
+        self.menu_clusterization.Append(self.menu_clusterization_Spectral_clustering)
+        self.menu.AppendSubMenu(self.menu_clusterization, u"Кластеризация")
+        # endregion
+
+        # region Меню/Асоциативные правила
+        self.menu_asociative_rules = wx.Menu()
+        self.menu_asociative_rules_apriori = wx.MenuItem(self.menu_asociative_rules, wx.ID_ANY, u"Apriori",
+                                                         wx.EmptyString,
+                                                         wx.ITEM_NORMAL)
+        self.menu_asociative_rules.Append(self.menu_asociative_rules_apriori)
+        self.menu_asociative_rules_aprioriTID = wx.MenuItem(self.menu_asociative_rules, wx.ID_ANY, u"AprioriTID",
+                                                            wx.EmptyString,
+                                                            wx.ITEM_NORMAL)
+        self.menu_asociative_rules.Append(self.menu_asociative_rules_aprioriTID)
+        self.menu_asociative_rules_aprioriHybrid = wx.MenuItem(self.menu_asociative_rules, wx.ID_ANY, u"AprioriHybrid",
+                                                               wx.EmptyString,
+                                                               wx.ITEM_NORMAL)
+        self.menu_asociative_rules.Append(self.menu_asociative_rules_aprioriHybrid)
+        self.menu_asociative_rules_DHP = wx.MenuItem(self.menu_asociative_rules, wx.ID_ANY, u"DHP",
+                                                     wx.EmptyString,
+                                                     wx.ITEM_NORMAL)
+        self.menu_asociative_rules.Append(self.menu_asociative_rules_DHP)
+        self.menu_asociative_rules_PARTITION = wx.MenuItem(self.menu_asociative_rules, wx.ID_ANY, u"PARTITION",
+                                                           wx.EmptyString,
+                                                           wx.ITEM_NORMAL)
+        self.menu_asociative_rules.Append(self.menu_asociative_rules_PARTITION)
+
+        self.menu.AppendSubMenu(self.menu_asociative_rules, u"Поиск ассоциативных правил")
+        # endregion
+
+        self.m_menubar1.Append(self.menu, u"Задача")
+
+        self.SetMenuBar(self.m_menubar1)
+        # endregion
+
+        # region Рабочая область
+        self.lable_task = wx.StaticText(self, wx.ID_ANY, u"Задача: Не выбрана", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.lable_task.Wrap(-1)
+        self.lable_task.SetFont(
+            wx.Font(wx.NORMAL_FONT.GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD,
+                    False, wx.EmptyString))
+
+        gbSizer1.Add(self.lable_task, wx.GBPosition(0, 1), wx.GBSpan(1, 1), wx.ALL, 5)
+
+        self.lable_algo = wx.StaticText(self, wx.ID_ANY, u"Алгоритм: Не выбран", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.lable_algo.Wrap(-1)
+        self.lable_algo.SetFont(
+            wx.Font(wx.NORMAL_FONT.GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD,
+                    False, wx.EmptyString))
+
+        gbSizer1.Add(self.lable_algo, wx.GBPosition(1, 1), wx.GBSpan(1, 1), wx.ALL, 5)
+
+        self.lable_choice_data = wx.StaticText(self, wx.ID_ANY, u"Использовать данные из:", wx.DefaultPosition,
+                                               wx.Size(-1, -1), wx.ALIGN_CENTRE)
+        self.lable_choice_data.Wrap(-1)
+        self.lable_choice_data.SetFont(
+            wx.Font(wx.NORMAL_FONT.GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD,
+                    False, wx.EmptyString))
+        self.lable_choice_data.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_APPWORKSPACE))
+
+        gbSizer1.Add(self.lable_choice_data, wx.GBPosition(3, 1), wx.GBSpan(1, 9), wx.ALL | wx.EXPAND, 5)
+
+        self.radioBtn_data_file = wx.RadioButton(self, wx.ID_ANY, u"Файла", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.radioBtn_data_file.SetFont(
+            wx.Font(wx.NORMAL_FONT.GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_ITALIC, wx.FONTWEIGHT_NORMAL,
+                    False, wx.EmptyString))
+
+        gbSizer1.Add(self.radioBtn_data_file, wx.GBPosition(5, 1), wx.GBSpan(1, 1), wx.ALL, 5)
+
+        self.data_file_picker = wx.FilePickerCtrl(self, wx.ID_ANY, u"Укажите путь к файлу", u"Выберите файл",
+                                                  u"data (*.csv,*.txt)|*.csv;*.txt", wx.DefaultPosition,
+                                                  wx.DefaultSize, wx.FLP_DEFAULT_STYLE | wx.FLP_SMALL)
+        gbSizer1.Add(self.data_file_picker, wx.GBPosition(6, 1), wx.GBSpan(1, 9), wx.ALL | wx.EXPAND, 5)
+        self.data_file_picker.Enable(False)
+
+        self.radioBtn_link = wx.RadioButton(self, wx.ID_ANY, u"Интернета (URL)", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.radioBtn_link.SetFont(
+            wx.Font(wx.NORMAL_FONT.GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_ITALIC, wx.FONTWEIGHT_NORMAL,
+                    False, wx.EmptyString))
+
+        gbSizer1.Add(self.radioBtn_link, wx.GBPosition(7, 1), wx.GBSpan(1, 1), wx.ALL, 5)
+
+        self.data_link = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize,
+                                     wx.TE_AUTO_URL)
+        gbSizer1.Add(self.data_link, wx.GBPosition(8, 1), wx.GBSpan(1, 9), wx.ALL | wx.EXPAND, 5)
+        self.data_link.Enable(False)
+
+        self.radioBtn_random = wx.RadioButton(self, wx.ID_ANY, u"Случайные", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.radioBtn_random.SetFont(
+            wx.Font(wx.NORMAL_FONT.GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_ITALIC, wx.FONTWEIGHT_NORMAL,
+                    False, wx.EmptyString))
+
+        gbSizer1.Add(self.radioBtn_random, wx.GBPosition(9, 1), wx.GBSpan(1, 1), wx.ALL, 5)
+
+        self.lable_test_data = wx.StaticText(self, wx.ID_ANY, u"Файл проверочных данных:", wx.DefaultPosition,
+                                             wx.DefaultSize, 0)
+        self.lable_test_data.Wrap(-1)
+        self.lable_test_data.SetFont(
+            wx.Font(wx.NORMAL_FONT.GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD,
+                    False, wx.EmptyString))
+
+        gbSizer1.Add(self.lable_test_data, wx.GBPosition(12, 1), wx.GBSpan(1, 1), wx.ALL, 5)
+
+        self.algo_state = wx.StaticText(self, wx.ID_ANY, u"empty", wx.DefaultPosition,
+                                        wx.DefaultSize, 0)
+        self.algo_state.Wrap(-1)
+        self.algo_state.SetFont(
+            wx.Font(wx.NORMAL_FONT.GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD,
+                    False, wx.EmptyString))
+
+        gbSizer1.Add(self.algo_state, wx.GBPosition(20, 1), wx.GBSpan(20, 1), wx.ALL, 5)
+
+        self.data_test_file = wx.FilePickerCtrl(self, wx.ID_ANY, u"Укажите путь к файлу", u"Выберите файл",
+                                                u"data (*.csv,*.txt,*.xls)|*.csv;*.txt;*.xls", wx.DefaultPosition,
+                                                wx.DefaultSize, wx.FLP_DEFAULT_STYLE | wx.FLP_SMALL)
+        gbSizer1.Add(self.data_test_file, wx.GBPosition(13, 1), wx.GBSpan(1, 9), wx.ALL | wx.EXPAND, 5)
+
+        self.run_algo = wx.Button(self, wx.ID_ANY, u"Выполнить", wx.DefaultPosition, wx.DefaultSize, 0)
+        gbSizer1.Add(self.run_algo, wx.GBPosition(15, 1), wx.GBSpan(4, 9), wx.ALL | wx.EXPAND, 5)
+
+        self.SetSizer(gbSizer1)
+        self.Layout()
+
+        self.Centre(wx.BOTH)
+        # endregion
+
+
+
+        self.radioBtn_data_file.Bind(wx.EVT_RADIOBUTTON, self.rdn_file)
+        self.radioBtn_link.Bind(wx.EVT_RADIOBUTTON, self.rdn_link)
+        self.radioBtn_random.Bind(wx.EVT_RADIOBUTTON, self.rdn_random)
+
+        self.data_file_picker.Bind(wx.EVT_FILEPICKER_CHANGED, self.data_pick)
+        self.data_test_file.Bind(wx.EVT_FILEPICKER_CHANGED, self.data_test_pick)
+
+        self.run_algo.Bind(wx.EVT_BUTTON, self.start_btn)
+        self.Bind(wx.EVT_MENU, self.classification_Support_vector_machines,
+                  id=self.menu_classification_Support_vector_machines.GetId())
+        self.Bind(wx.EVT_MENU, self.classification_Stochastic_gradient_descent,
+                  id=self.menu_classification_Stochastic_gradient_descent.GetId())
+        self.Bind(wx.EVT_MENU, self.classification_Nearest_Neighbors,
+                  id=self.menu_classification_Nearest_Neighbors.GetId())
+        self.Bind(wx.EVT_MENU, self.classification_Gaussian_Processes,
+                  id=self.menu_classification_Gaussian_Processes.GetId())
+        self.Bind(wx.EVT_MENU, self.classification_Decision_trees, id=self.menu_classification_Decision_trees.GetId())
+        self.Bind(wx.EVT_MENU, self.classification_naiv_bais, id=self.menu_classification_naiv_bais.GetId())
+        self.Bind(wx.EVT_MENU, self.classification_kmeanes, id=self.menu_classification_kmeanes.GetId())
+        self.Bind(wx.EVT_MENU, self.classification_less_sqad, id=self.menu_classification_less_sqad.GetId())
+        self.Bind(wx.EVT_MENU, self.classification_rokkio, id=self.menu_classification_rokkio.GetId())
+        self.Bind(wx.EVT_MENU, self.classification_vectors, id=self.menu_classification_vectors.GetId())
+        self.Bind(wx.EVT_MENU, self.clusterization_kmeans, id=self.menu_clusterization_kmeans.GetId())
+        self.Bind(wx.EVT_MENU, self.clusterization_id3, id=self.menu_clusterization_id3.GetId())
+        self.Bind(wx.EVT_MENU, self.clusterization_Affinity_Propagation,
+                  id=self.menu_clusterization_Affinity_Propagation.GetId())
+        self.Bind(wx.EVT_MENU, self.clusterization_Birch, id=self.menu_clusterization_Birch.GetId())
+        self.Bind(wx.EVT_MENU, self.clusterization_Mean_Shift, id=self.menu_clusterization_Mean_Shift.GetId())
+        self.Bind(wx.EVT_MENU, self.clusterization_Perfomance_evalution,
+                  id=self.menu_clusterization_Perfomance_evalution.GetId())
+        self.Bind(wx.EVT_MENU, self.clusterization_Hierarchical_clustering,
+                  id=self.menu_clusterization_Hierarchical_clustering.GetId())
+        self.Bind(wx.EVT_MENU, self.clusterization_Adjusted_Rand_index,
+                  id=self.menu_clusterization_Adjusted_Rand_index.GetId())
+        self.Bind(wx.EVT_MENU, self.clusterization_DBSCAN, id=self.menu_clusterization_DBSCAN.GetId())
+        self.Bind(wx.EVT_MENU, self.clusterization_MutualInformationbasedscore,
+                  id=self.menu_clusterization_MutualInformationbasedscore.GetId())
+        self.Bind(wx.EVT_MENU, self.clusterization_Silhouette_Coefficient,
+                  id=self.menu_clusterization_Silhouette_Coefficient.GetId())
+        self.Bind(wx.EVT_MENU, self.clusterization_Fowlkes_Mallows_scores,
+                  id=self.menu_clusterization_Fowlkes_Mallows_scores.GetId())
+        self.Bind(wx.EVT_MENU, self.clusterization_V_measure, id=self.menu_clusterization_V_measure.GetId())
+        self.Bind(wx.EVT_MENU, self.clusterization_Spectral_clustering,
+                  id=self.menu_clusterization_Spectral_clustering.GetId())
+        self.Bind(wx.EVT_MENU, self.asociative_rules_apriori, id=self.menu_asociative_rules_apriori.GetId())
+        self.Bind(wx.EVT_MENU, self.asociative_rules_aprioriTID, id=self.menu_asociative_rules_aprioriTID.GetId())
+        self.Bind(wx.EVT_MENU, self.asociative_rules_aprioriHybrid, id=self.menu_asociative_rules_aprioriHybrid.GetId())
+        self.Bind(wx.EVT_MENU, self.asociative_rules_DHP, id=self.menu_asociative_rules_DHP.GetId())
+        self.Bind(wx.EVT_MENU, self.asociative_rules_PARTITION, id=self.menu_asociative_rules_PARTITION.GetId())
+
+    def __del__(self):
+        pass
+
+    # region Выбор задачи
+    def classification_Support_vector_machines(self, event):
+        self.lable_task.SetLabel("Задача: Классификация")
+        self.lable_algo.SetLabel("Алгоритм: Support vector machines")
+        self.algo_state.SetLabel('classification_Support_vector_machines')
+
+    def classification_Stochastic_gradient_descent(self, event):
+        self.lable_task.SetLabel("Задача: Классификация")
+        self.lable_algo.SetLabel("Алгоритм: Stochastic gradient descent")
+        self.algo_state.SetLabel('classification_Stochastic_gradient_descent')
+
+    def classification_Nearest_Neighbors(self, event):
+        self.lable_task.SetLabel("Задача: Классификация")
+        self.lable_algo.SetLabel("Алгоритм: Nearest Neighbors")
+        self.algo_state.SetLabel('classification_Nearest_Neighbors')
+
+    def classification_Gaussian_Processes(self, event):
+        self.lable_task.SetLabel("Задача: Классификация")
+        self.lable_algo.SetLabel("Алгоритм: Gaussian Processes")
+        self.algo_state.SetLabel('classification_Gaussian_Processes')
+
+    def classification_Decision_trees(self, event):
+        self.lable_task.SetLabel("Задача: Классификация")
+        self.lable_algo.SetLabel("Алгоритм: Decision trees")
+        self.algo_state.SetLabel('classification_Decision_trees')
+
+    def classification_naiv_bais(self, event):
+        self.lable_task.SetLabel("Задача: Классификация")
+        self.lable_algo.SetLabel("Алгоритм: Наивная байесовская классификация")
+        self.algo_state.SetLabel('classification_naiv_bais')
+
+    def classification_kmeanes(self, event):
+        self.lable_task.SetLabel("Задача: Классификация")
+        self.lable_algo.SetLabel("Алгоритм: K ближайших соседей")
+        self.algo_state.SetLabel('classification_kmeanes')
+
+    def classification_less_sqad(self, event):
+        self.lable_task.SetLabel("Задача: Классификация")
+        self.lable_algo.SetLabel("Алгоритм: Наименьших квадратов")
+        self.algo_state.SetLabel('classification_less_sqad')
+
+    def classification_rokkio(self, event):
+        self.lable_task.SetLabel("Задача: Классификация")
+        self.lable_algo.SetLabel("Алгоритм: Rokkio")
+        self.algo_state.SetLabel('classification_rokkio')
+
+    def classification_vectors(self, event):
+        self.lable_task.SetLabel("Задача: Классификация")
+        self.lable_algo.SetLabel("Алгоритм: Опорных векторов")
+        self.algo_state.SetLabel('classification_vectors')
+
+    def clusterization_kmeans(self, event):
+        self.lable_task.SetLabel("Задача: Кластеризация")
+        self.lable_algo.SetLabel("Алгоритм: K-means")
+        self.algo_state.SetLabel('clusterization_kmeans')
+
+    def clusterization_id3(self, event):
+        self.lable_task.SetLabel("Задача: Кластеризация")
+        self.lable_algo.SetLabel("Алгоритм: id3")
+        self.algo_state.SetLabel('clusterization_id3')
+
+    def clusterization_Affinity_Propagation(self, event):
+        self.lable_task.SetLabel("Задача: Кластеризация")
+        self.lable_algo.SetLabel("Алгоритм: Affinity Propagation")
+        self.algo_state.SetLabel('clusterization_Affinity_Propagation')
+
+    def clusterization_Birch(self, event):
+        self.lable_task.SetLabel("Задача: Кластеризация")
+        self.lable_algo.SetLabel("Алгоритм: Birch")
+        self.algo_state.SetLabel('clusterization_Birch')
+
+    def clusterization_Mean_Shift(self, event):
+        self.lable_task.SetLabel("Задача: Кластеризация")
+        self.lable_algo.SetLabel("Алгоритм: Mean Shift")
+        self.algo_state.SetLabel('clusterization_Mean_Shift')
+
+    def clusterization_Perfomance_evalution(self, event):
+        self.lable_task.SetLabel("Задача: Кластеризация")
+        self.lable_algo.SetLabel("Алгоритм: Perfomance evalution")
+        self.algo_state.SetLabel('clusterization_Perfomance_evalution')
+
+    def clusterization_Hierarchical_clustering(self, event):
+        self.lable_task.SetLabel("Задача: Кластеризация")
+        self.lable_algo.SetLabel("Алгоритм: Hierarchical clustering")
+        self.algo_state.SetLabel('clusterization_Hierarchical_clustering')
+
+    def clusterization_Adjusted_Rand_index(self, event):
+        self.lable_task.SetLabel("Задача: Кластеризация")
+        self.lable_algo.SetLabel("Алгоритм: Adjusted Rand index")
+        self.algo_state.SetLabel('clusterization_Adjusted_Rand_index')
+
+    def clusterization_DBSCAN(self, event):
+        self.lable_task.SetLabel("Задача: Кластеризация")
+        self.lable_algo.SetLabel("Алгоритм: DBSCAN")
+        self.algo_state.SetLabel('clusterization_DBSCAN')
+
+    def clusterization_MutualInformationbasedscore(self, event):
+        self.lable_task.SetLabel("Задача: Кластеризация")
+        self.lable_algo.SetLabel("Алгоритм: Mutual Information based score")
+        self.algo_state.SetLabel('clusterization_MutualInformationbasedscore')
+
+    def clusterization_Silhouette_Coefficient(self, event):
+        self.lable_task.SetLabel("Задача: Кластеризация")
+        self.lable_algo.SetLabel("Алгоритм: Silhouette Coefficient")
+        self.algo_state.SetLabel('clusterization_Silhouette_Coefficient')
+
+    def clusterization_Fowlkes_Mallows_scores(self, event):
+        self.lable_task.SetLabel("Задача: Кластеризация")
+        self.lable_algo.SetLabel("Алгоритм: Fowlkes Mallows scores")
+        self.algo_state.SetLabel('clusterization_Fowlkes_Mallows_scores')
+
+    def clusterization_V_measure(self, event):
+        self.lable_task.SetLabel("Задача: Кластеризация")
+        self.lable_algo.SetLabel("Алгоритм: V-measure")
+        self.algo_state.SetLabel('clusterization_V_measure')
+
+    def clusterization_Spectral_clustering(self, event):
+        self.lable_task.SetLabel("Задача: Кластеризация")
+        self.lable_algo.SetLabel("Алгоритм: Spectral clustering")
+        self.algo_state.SetLabel('clusterization_Spectral_clustering')
+
+    def asociative_rules_apriori(self, event):
+        self.lable_task.SetLabel("Задача: Поиск ассоциативных правил")
+        self.lable_algo.SetLabel("Алгоритм: apriori")
+        self.algo_state.SetLabel('asociative_rules_apriori')
+
+    def asociative_rules_aprioriTID(self, event):
+        self.lable_task.SetLabel("Задача: Поиск ассоциативных правил")
+        self.lable_algo.SetLabel("Алгоритм: aprioriTID")
+        self.algo_state.SetLabel('asociative_rules_aprioriTID')
+
+    def asociative_rules_aprioriHybrid(self, event):
+        self.lable_task.SetLabel("Задача: Поиск ассоциативных правил")
+        self.lable_algo.SetLabel("Алгоритм: aprioriHybrid")
+        self.algo_state.SetLabel('asociative_rules_aprioriHybrid')
+
+    def asociative_rules_DHP(self, event):
+        self.lable_task.SetLabel("Задача: Поиск ассоциативных правил")
+        self.lable_algo.SetLabel("Алгоритм: DHP")
+        self.algo_state.SetLabel('asociative_rules_DHP')
+
+    def asociative_rules_PARTITION(self, event):
+        self.lable_task.SetLabel("Задача: Поиск ассоциативных правил")
+        self.lable_algo.SetLabel("Алгоритм: PARTITION")
+        self.algo_state.SetLabel('asociative_rules_PARTITION')
+
+    # endregion
+
+    # Общие
+
+    def rdn_file(self, event):
+        self.data_file_picker.Enable(True)
+        self.data_link.Enable(False)
+
+    def data_pick(self, event):
+        event.Skip()
+
+    def rdn_link(self, event):
+        self.data_file_picker.Enable(False)
+        self.data_link.Enable(True)
+
+    def rdn_random(self, event):
+        self.data_file_picker.Enable(False)
+        self.data_link.Enable(False)
+
+    def data_test_pick(self, event):
+        event.Skip()
+
+
+
+
+
+    def file_path_local(self):
+        path_to_file = os.path.abspath(self.data_file_picker.GetPath())
+        return path_to_file
+
+    def file_path_web(self):
+        path_to_file = self.data_link.GetValue()
+        return path_to_file
+
+
+
+    def file_type_check(self):
+        current_file = 'empty'
+        if self.file_path_local().endswith('.csv'):
+            current_file = 'csv'
+        elif self.file_path_local().endswith('.txt'):
+            current_file = 'txt'
+        return current_file
+
+    def file_type_check_web(self):
+        current_file = 'empty'
+        if self.file_path_web().endswith('.csv'):
+            current_file = 'csv'
+        elif self.file_path_web().endswith('.txt'):
+            current_file = 'txt'
+        return current_file
+
+
+    def data_from_internet_csv(self):
+        data_temp = io.Input.internet_read_csv(self.file_path_web)
+        print('test')
+        return data_temp
+
+    def data_from_internet_txt(self):
+        data_temp = io.Input.internet_read_text_file(self.file_path_web)
+        print('test')
+        return data_temp
+
+    def data_from_local_csv(self):
+        data_temp = io.Input.local_read_csv(self.file_path_local())
+        print('test')
+        return data_temp
+
+    def data_from_local_txt(self):
+        data_temp = io.Input.local_read_text_file(self.file_path_local())
+        print('test')
+        return data_temp
+
+
+
+    def start_btn(self, event):
+        if self.lable_algo.GetLabel() != 'Алгоритм: Не выбран':
+            # Работа с локальным файлом
+            if self.radioBtn_data_file.GetValue():
+                if self.file_type_check() != 'empty':
+                    if self.algo_state.GetLabel() == 'classification_Support_vector_machines':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+
+                    elif self.algo_state.GetLabel() == 'classification_Stochastic_gradient_descent':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'classification_Nearest_Neighbors':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'classification_Gaussian_Processes':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+
+                    elif self.algo_state.GetLabel() == 'classification_Decision_trees':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'classification_naiv_bais':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'classification_kmeanes':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'classification_less_sqad':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'classification_rokkio':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'classification_vectors':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_kmeans':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            k_means.run_kmeans(self.file_path_local())
+
+                    elif self.algo_state.GetLabel() == 'clusterization_id3':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_Affinity_Propagation':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_Birch':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_Mean_Shift':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_Perfomance_evalution':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_Hierarchical_clustering':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_Adjusted_Rand_index':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_DBSCAN':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_MutualInformationbasedscore':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_Silhouette_Coefficient':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_Fowlkes_Mallows_scores':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_V_measure':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_Spectral_clustering':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'asociative_rules_apriori':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'asociative_rules_aprioriTID':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'asociative_rules_aprioriHybrid':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'asociative_rules_DHP':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'asociative_rules_PARTITION':
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                else:
+                    wx.MessageBox("Файл не указан или имеет неверный формат")
+
+            # Работа с веб файлом
+            elif self.radioBtn_link.GetValue():
+                if self.file_type_check_web() != 'empty':
+                    if self.algo_state.GetLabel() == 'classification_Support_vector_machines':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+
+                    elif self.algo_state.GetLabel() == 'classification_Stochastic_gradient_descent':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'classification_Nearest_Neighbors':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'classification_Gaussian_Processes':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+
+                    elif self.algo_state.GetLabel() == 'classification_Decision_trees':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'classification_naiv_bais':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'classification_kmeanes':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'classification_less_sqad':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'classification_rokkio':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'classification_vectors':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_kmeans':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            k_means.run_kmeans(self.file_path_local())
+
+                    elif self.algo_state.GetLabel() == 'clusterization_id3':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_Affinity_Propagation':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_Birch':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_Mean_Shift':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_Perfomance_evalution':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_Hierarchical_clustering':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_Adjusted_Rand_index':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_DBSCAN':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_MutualInformationbasedscore':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_Silhouette_Coefficient':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_Fowlkes_Mallows_scores':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_V_measure':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'clusterization_Spectral_clustering':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'asociative_rules_apriori':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'asociative_rules_aprioriTID':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'asociative_rules_aprioriHybrid':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'asociative_rules_DHP':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                    elif self.algo_state.GetLabel() == 'asociative_rules_PARTITION':
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                        elif self.file_type_check_web() == 'csv':
+                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+
+                else:
+                    wx.MessageBox("URL не указан или имеет неверный формат")
+
+            elif self.radioBtn_random.GetValue():
+                wx.MessageBox("Рандома не будет")
+        else:
+            wx.MessageBox("Выберите алгоритм")
+
+
+app = wx.App(False)
+frame = MainWindow(None)
+frame.Show()
+app.MainLoop()
