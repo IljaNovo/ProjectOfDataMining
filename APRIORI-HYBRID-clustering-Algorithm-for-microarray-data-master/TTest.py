@@ -1,11 +1,3 @@
-"""
-This Module will perform the T-Test on the data values in the file given
-
-Writen on: 20th Feb 2012
-
-Author: Oommen Mathew
-"""
-
 import math
 import sys
 

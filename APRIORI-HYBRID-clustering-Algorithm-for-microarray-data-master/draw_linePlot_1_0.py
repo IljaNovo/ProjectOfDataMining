@@ -37,10 +37,10 @@ for gc in gcs:
     neg_pers.append((gc, round(data_dict[gn]['neg_per'], 2)))
     nor_pos_pers.append((gc, round(35.483870967741936, 2)))
     nor_neg_pers.append((gc, round(64.516129032258064, 2)))
-    print gn, round(data_dict[gn]['pos_per']), round(data_dict[gn]['neg_per'])
+    print (gn, round(data_dict[gn]['pos_per']), round(data_dict[gn]['neg_per']))
 
 lp.data = [pos_pers, neg_pers, nor_pos_pers, nor_neg_pers]
-print lp.data
+print (lp.data)
 
 lp.joinedLines = 1
 lp.lines.symbol = makeMarker('Circle')
@@ -86,3 +86,4 @@ d.add(lgnd)
 d.add(xlbl)
 d.add(ylbl)
 d.save(fnRoot='testLinePlot1', formats=['png', 'pdf'])
+

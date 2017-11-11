@@ -1,8 +1,8 @@
 import numpy as np
 import xlwt
 from openpyxl import load_workbook
-from sklearn.cluster import MeanShift, estimate_bandwidth #РёРјРїРѕСЂС‚ Р°Р»РіРѕСЂРёС‚РјР°
-from sklearn.datasets.samples_generator import make_blobs  #РёРјРїРѕСЂС‚ Р±РёР±Р»РёРѕС‚РµРєРё РґР»СЏ РіРµРЅРµСЂР°С†РёРё
+from sklearn.cluster import MeanShift, estimate_bandwidth #импорт алгоритма
+from sklearn.datasets.samples_generator import make_blobs  #импорт библиотеки для генерации
 
 def read_Excel(var_vivoda):
     wb = load_workbook('data.xlsx')
@@ -13,19 +13,19 @@ def read_Excel(var_vivoda):
     
     print (n_samples)
     
-    X, y = make_blobs(n_samples=10000, centers=centers, cluster_std=0.6) #РіРµРЅРµСЂР°С†РёСЏ СЃР»СѓС‡Р°Р№РЅС‹С… С‡РёСЃРµР»
+    X, y = make_blobs(n_samples=10000, centers=centers, cluster_std=0.6) #генерация случайных чисел
  
     func(var_vivoda,X,y)
 ##############################################################################
-def read_RANDOM(var_vivoda): #Р“РµРЅРµСЂР°С†РёСЏ РґР°РЅРЅС‹С… СЂР°РЅРґРѕРјРЅРѕРіРѕ Р·РЅР°С‡РµРЅРёСЏ
-    # Р“РµРЅРµСЂР°С†РёСЏ РґР°РЅРЅС‹С…
-    centers = [[1, 1], [-1, -1], [1, -1], [3, 3]] #Р·Р°РґР°РЅРёРµ РєРѕР»РёС‡РµСЃС‚РІР° С†РµРЅС‚СЂРѕРІ
-    X, y = make_blobs(n_samples=10000, centers=centers, cluster_std=0.6) #РіРµРЅРµСЂР°С†РёСЏ СЃР»СѓС‡Р°Р№РЅС‹С… С‡РёСЃРµР»
+def read_RANDOM(var_vivoda): #Генерация данных рандомного значения
+    # Генерация данных
+    centers = [[1, 1], [-1, -1], [1, -1]] #задание количества центров
+    X, y = make_blobs(n_samples=10000, centers=centers, cluster_std=0.6) #генерация случайных чисел
  
-    func(var_vivoda, X, y) #РІС‹Р·РѕРІ Р°Р»РіРѕСЂРёС‚РјР°
+    func(var_vivoda, X, y) #вызов алгоритма
 
 ##############################################################################   
-def func(var_vivoda,X,y): #С„СѓРЅРєС†РёСЏ РІС‹С‡РёСЃР»СЏРµС‚ РєР»Р°СЃС‚РµСЂС‹. var_vivoda - РІР°СЂРёР°РЅС‚ РІС‹РІРѕРґР°. Р“СЂР°С„РёРє РёР»Рё Excel 
+def func(var_vivoda,X,y): #функция вычисляет кластеры. var_vivoda - вариант вывода. График или Excel 
     
     # Compute clustering with MeanShift
     
@@ -41,9 +41,9 @@ def func(var_vivoda,X,y): #С„СѓРЅРєС†РёСЏ РІС‹С‡РёСЃР»СЏРµС‚ РєР»Р°СЃС‚РµСЂС‹. v
     n_clusters_ = len(labels_unique)
     
     print("number of estimated clusters : %d" % n_clusters_)
-    print("b=", var_vivoda) #РґР»СЏ Debug
+    print("b=", var_vivoda) #для Debug
     
-    #РІС‹Р±РѕСЂ РІРёРґР° РґР°Р»СЊРЅРµР№С€РµРіРѕ РѕС‚С‡РµС‚Р°
+    #выбор вида дальнейшего отчета
     if var_vivoda==11:
         Plot_result(n_clusters_, labels, X, cluster_centers)
     if var_vivoda==12:
@@ -51,16 +51,16 @@ def func(var_vivoda,X,y): #С„СѓРЅРєС†РёСЏ РІС‹С‡РёСЃР»СЏРµС‚ РєР»Р°СЃС‚РµСЂС‹. v
 ##############################################################################    
 def Excel_result(X,y,cluster_centers):
        
-  #  print("DEBUG!!!")
+    print("DEBUG!!!")
     book = xlwt.Workbook(encoding="utf-8")
 
-    # Р”РѕР±Р°РІРёС‚СЊ Р»РёСЃС‚ РІ РєРЅРёРіСѓ 
+    # Добавить лист в книгу 
     sheet1 = book.add_sheet("List_1") 
     
-    sheet1.write(2,0, "РљРѕРѕСЂРґРёРЅР°С‚Р° С‚РѕС‡РєРё РЅР° РіСЂР°С„РёРєРµ РҐ*")
-    sheet1.write(2,1, "РљРѕРѕСЂРґРёРЅР°С‚Р° С‚РѕС‡РєРё РЅР° РіСЂР°С„РёРєРµ Y*")
-    sheet1.write(2,4, "РљРѕРѕСЂРґРёРЅР°С‚Р° С†РµРЅС‚СЂР° РЅР°Р№РґРµРЅРЅРѕРіРѕ РєР»Р°СЃСЃС‚РµСЂР° РҐ*")
-    sheet1.write(2,5, "РљРѕРѕСЂРґРёРЅР°С‚Р° С†РµРЅС‚СЂР° РЅР°Р№РґРµРЅРЅРѕРіРѕ РєР»Р°СЃСЃС‚РµСЂР° Y*")
+    sheet1.write(2,0, "Координата точки на графике Х*")
+    sheet1.write(2,1, "Координата точки на графике Y*")
+    sheet1.write(2,4, "Координата центра найденного класстера Х*")
+    sheet1.write(2,5, "Координата центра найденного класстера Y*")
     
     for x in range(len(y)):
         sheet1.write(x+3,1,float(X[x,1]))
@@ -72,7 +72,7 @@ def Excel_result(X,y,cluster_centers):
     for i in range(len(cluster_centers)):
         for j in range(len(cluster_centers[i])):
             sheet1.write(i+3,j+3,cluster_centers[i,j])
-#    print("DEBUG!!!")
+    print("DEBUG!!!")
      
     book.save("Raport.xls")    
 ##############################################################################

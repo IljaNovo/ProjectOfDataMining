@@ -1,73 +1,91 @@
 import numpy as np
 import numpy as np
 import openpyxl
+import xlwt
 import xlrd
-import csv
+from xlutils.copy import copy
+from openpyxl import load_workbook
 import matplotlib.pyplot as plt
 from openpyxl import load_workbook
 from sklearn.datasets import load_iris
 from sklearn.datasets.samples_generator import make_blobs  #импорт библиотеки для генерации
 from openpyxl import load_workbook
 from sklearn.tree import DecisionTreeClassifier
+from reportlab.lib.styles import ParagraphStyle
 
+
+import SimpleExcel
 
 #значения по умолчанию
-cel_0_1 = 0
-cel_1_1 = 1
+#cel_0_1 = 0
+#cel_1_1 = 1
 
-cel_2_1 = 0
-cel_2_2 = 2
+#cel_2_1 = 0
+#cel_2_2 = 2
 
-cel_3_1 = 0
-cel_3_3 = 3
+#cel_3_1 = 0
+#cel_3_3 = 3
 
-cel_4_1 = 1
-cel_4_3 = 2
+#cel_4_1 = 1
+#cel_4_3 = 2
 
-cel_5_1 = 1
-cel_5_3 = 3
+#cel_5_1 = 1
+#cel_5_3 = 3
 
-cel_6_1 = 2
-cel_6_3 = 3
+#cel_6_1 = 2
+#cel_6_3 = 3
 
-
-def read_Excel(b):
-    wb = load_workbook('data.xlsx')
-    sheet = wb.get_sheet_by_name('sheetname')
-
-    #n_samples = sheet['E10'].value
-    
-    #print ("!!!!!!!!!!")
-    print (n_samples)
-    
-    func(var_vivoda,X,y)
-    mass = [[sheet['B12'].value,sheet['C12'].value], [sheet['B13'].value,sheet['C13'].value],[sheet['B14'].value,sheet['C14'].value],[sheet['B15'].value,sheet['C15'].value],[sheet['B16'].value,sheet['C16'].value],[sheet['B17'].value,sheet['C17'].value]]
-    return mass
- 
+#для определения цвета
+'''def getBGColor(book, sheet, row, col):
+    xfx = sheet.cell_xf_index(row, col)
+    xf = book.xf_list[xfx]
+    bgx = xf.background.pattern_colour_index
+    pattern_colour = book.colour_map[bgx]
+    return pattern_colour
+'''
 def read_RANDOM(var_vivoda, var_vvoda): #только для этого метода, т.к. странная генерация данных 
     # Parameters1
+   # mass = [[0,0]]
+    
     n_classes = 3
     plot_colors = "bry"
     plot_step = 0.02
-    
-    func(var_vivoda, n_classes, plot_colors, plot_step, var_vvoda)
+    mass = [[0, 1], [0, 2], [0, 3], [1, 2], [1, 3], [2, 3]] #стандартные параметры
+       
+    func(var_vivoda, n_classes, plot_colors, plot_step, var_vvoda, mass)
 
+def read_Excel(var_vivoda, var_vvoda):
+    
+    var_vvoda = 1 #переопределить на вариант ввода RANDOM
+    
+    wb = xlrd.open_workbook('data.xls',formatting_info=True)
+    sheet = wb.sheet_by_index(0) 
+    
+    row = 0
+    col = 0    
 
-def func(var_vivoda, n_classes, plot_colors, plot_step, var_vvoda):
+    plot_colors = getBGColor(wb, sheet, row, col)  #получение цвета ячейки. 
     
-    book = xlwt.Workbook(encoding="utf-8")
-    sheet1 = book.add_sheet("List_1") 
+    print('Color=',plot_colors)
+  
+    cell_tmp = sheet.cell(row, col)
     
+    n_samples = valueInt(cell_tmp)    ###########?????????????????????????
+    print('n_samples=',n_samples)
+    #if cell_tmp.ctype==xlrd.XL_CELL_NUMBER:
+    #    n_samples = cell_tmp.value
+    #    print('n_samples=',n_samples)
+        
+    read_RANDOM(var_vivoda, var_vvoda)
+    
+    
+def func(var_vivoda, n_classes, plot_colors, plot_step, var_vvoda, mass):
     
     # Load data
     iris = load_iris()   #подгрузка бд из интернета, судя по документации
-                    
-    if(var_vvoda == 2):                
-        mass = read_Excel(var_vivoda) #чтение из Excel
-    if(var_vvoda == 1):
-        mass = [[0, 1], [0, 2], [0, 3], [1, 2], [1, 3], [2, 3]] #стандартные параметры
         
-        
+    X =[0,0]
+    y = [0,0]
     #здесь так же подставляются значения из Excel. Поэтому такие разные имена ячеек
     for pairidx, pair in enumerate(mass):
     
@@ -75,9 +93,7 @@ def func(var_vivoda, n_classes, plot_colors, plot_step, var_vvoda):
             # автоматическая генерация значений
             X = iris.data[:, pair]
             y = iris.target
-            
         
-    
         # Train
         clf = DecisionTreeClassifier().fit(X, y)
     
@@ -102,53 +118,41 @@ def func(var_vivoda, n_classes, plot_colors, plot_step, var_vvoda):
             idx = np.where(y == i)
             plt.scatter(X[idx, 0], X[idx, 1], c=color, label=iris.target_names[i],
                         cmap=plt.cm.Paired)
+ 
+        
+#######################-Вывод результатов в Excel-###########################           
+    if var_vivoda == 12: #если установлен вывод в Excel
+        Excel_result(X,y)
+#############################################################################                        
             
-            if var_vivoda == 2: #если установлен вывод в Excel
-                for x in range(len(X)):
-                    sheet1.write(x+3,1,float(X[x,0]))
-                    
-                for x in range(len(X)):
-                    sheet1.write(x+3,1,float(X[x,1]))
-            
-    
-        plt.axis("tight")
+    plt.axis("tight")
     
     plt.suptitle("Decision surface of a decision tree using paired features")
     plt.legend()
-    book.save("Raport.xls")
     plt.show()
-##############################################################################    
-def Excel_result(X,y,cluster_centers):
+#############################################################################    
+
+def Excel_result(X,y):
        
     print("DEBUG!!!")
     book = xlwt.Workbook(encoding="utf-8")
     
     sheet1 = book.add_sheet("List_1") 
     
-    sheet1.write(2,0, "Координата точки на графике Х*")
-    sheet1.write(2,1, "Координата точки на графике Y*")
-    sheet1.write(2,4, "Координата центра найденного класстера Х*")
-    sheet1.write(2,5, "Координата центра найденного класстера Y*")
-    
-    for x in range(len(y)):
-        sheet1.write(x+3,1,float(X[x,1]))
-    #---------------------------------------
-    for x in range(len(y)):
+    for x in range(len(X)):
         sheet1.write(x+3,0,float(X[x,0]))
-    
-    #---------------------------------------
-    for i in range(len(cluster_centers)):
-        for j in range(len(cluster_centers[i])):
-            #print(i,j)
-            sheet1.write(i+3,j+3,cluster_centers[i,j])
-    #print(range(len(cluster_centers)))
-    print("DEBUG!!!")
+                        
+    for x in range(len(X)):
+        sheet1.write(x+3,1,float(X[x,1]))
+            
+    for x in range(len(y)):
+        sheet1.write(x+3,2,float(y[x]))          
      
     book.save("Raport.xls")
-    
-    
-##############################################################################
-##############################################################################
+  
+
+############################################################################
+############################################################################
 def main():
     print("Sposob vvoda")
     print("1 - Random")
@@ -167,16 +171,20 @@ def main():
     
     print("Sposob vivoda =")
     
+    print("-----------------------------------")
     b = 10 + int(input())
+    print("Sposob vvoda =", a)
     print("Sposob vivoda =", b)
+    print("-----------------------------------")
+
 
     if a==1:
         read_RANDOM(b,a)
         print("1!")
     
-    if(a==2):
-        read_Excel(b)
+    if a==2:
+        read_Excel(b,a)
+       # print("2")
 
-    func()
 if __name__ == "__main__":
 	main()
