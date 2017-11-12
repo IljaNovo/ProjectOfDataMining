@@ -3,12 +3,27 @@
 
 import wx
 import wx.xrc
-
+import input_output.io as io
 import os.path
 
+import classification.C_4_5.tree as с45
+import classification.Naive_Bayes_Classifier.BayesScratch.bayes_classifier as bayes
+import classification.k_Nearest_Neighbors.knn as knn
+import classification.Stochastic_Gradient_Descent.sgd as sgd
+
+
+import clustering.Hierarchical_clustering.hclust as hc
+import clustering.Hierarchical_clustering.hierarchical_clustering_plot as hc_plot
+import clustering.DBSCAN.plot_dbscan as dbscan
+import clustering.BIRCH.birch_clustering as birch
+import clustering.mean_shift.mean_shift as mean_shift
+import clustering.k_means.k_means_plt as k_means_csv
+import clustering.k_means.k_means as k_means
+import clustering.Affinity_Propagation.AffinityPropagation as aff_p
+
+from associative_rules.apriori_tid.apriori import *
 
 import input_output.io as io
-import clustering.k_means.k_means_plt as k_means
 import classification.Stochastic_Gradient_Descent.sgd
 
 
@@ -123,10 +138,6 @@ class MainWindow(wx.Frame):
                                                                       u"Silhouette Coefficient", wx.EmptyString,
                                                                       wx.ITEM_NORMAL)
         self.menu_clusterization.Append(self.menu_clusterization_Silhouette_Coefficient)
-        self.menu_clusterization_Fowlkes_Mallows_scores = wx.MenuItem(self.menu_clusterization, wx.ID_ANY,
-                                                                      u"Fowlkes-Mallows scores", wx.EmptyString,
-                                                                      wx.ITEM_NORMAL)
-        self.menu_clusterization.Append(self.menu_clusterization_Fowlkes_Mallows_scores)
         self.menu_clusterization_V_measure = wx.MenuItem(self.menu_clusterization, wx.ID_ANY, u"V-measure",
                                                          wx.EmptyString,
                                                          wx.ITEM_NORMAL)
@@ -301,8 +312,6 @@ class MainWindow(wx.Frame):
                   id=self.menu_clusterization_MutualInformationbasedscore.GetId())
         self.Bind(wx.EVT_MENU, self.clusterization_Silhouette_Coefficient,
                   id=self.menu_clusterization_Silhouette_Coefficient.GetId())
-        self.Bind(wx.EVT_MENU, self.clusterization_Fowlkes_Mallows_scores,
-                  id=self.menu_clusterization_Fowlkes_Mallows_scores.GetId())
         self.Bind(wx.EVT_MENU, self.clusterization_V_measure, id=self.menu_clusterization_V_measure.GetId())
         self.Bind(wx.EVT_MENU, self.clusterization_Spectral_clustering,
                   id=self.menu_clusterization_Spectral_clustering.GetId())
@@ -420,11 +429,6 @@ class MainWindow(wx.Frame):
         self.lable_task.SetLabel("Задача: Кластеризация")
         self.lable_algo.SetLabel("Алгоритм: Silhouette Coefficient")
         self.algo_state.SetLabel('clusterization_Silhouette_Coefficient')
-
-    def clusterization_Fowlkes_Mallows_scores(self, event):
-        self.lable_task.SetLabel("Задача: Кластеризация")
-        self.lable_algo.SetLabel("Алгоритм: Fowlkes Mallows scores")
-        self.algo_state.SetLabel('clusterization_Fowlkes_Mallows_scores')
 
     def clusterization_V_measure(self, event):
         self.lable_task.SetLabel("Задача: Кластеризация")
@@ -605,9 +609,12 @@ class MainWindow(wx.Frame):
 
                     elif self.algo_state.GetLabel() == 'clusterization_kmeans':
                         if self.file_type_check() == 'txt':
-                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                            # parameters
+                            n_clusters = 3
+                            X = io.Input.get_ndarray_from_txt(self.file_path_local())
+                            k_means.run_kmeans(X, n_clusters)
                         elif self.file_type_check() == 'csv':
-                            k_means.run_kmeans(self.file_path_local())
+                            k_means.run_kmeans_csv(self.file_path_local())
 
                     elif self.algo_state.GetLabel() == 'clusterization_id3':
                         if self.file_type_check() == 'txt':
@@ -617,19 +624,28 @@ class MainWindow(wx.Frame):
 
                     elif self.algo_state.GetLabel() == 'clusterization_Affinity_Propagation':
                         if self.file_type_check() == 'txt':
-                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                            # parameters
+                            preference = -50
+                            X = io.Input.get_ndarray_from_txt(self.file_path_local())
+                            #
+                            aff_p.compute_affinity_propagation(-50, X)
                         elif self.file_type_check() == 'csv':
-                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+                            wx.MessageBox("Affinity Propagation doesn't work with csv files!!!")
 
                     elif self.algo_state.GetLabel() == 'clusterization_Birch':
                         if self.file_type_check() == 'txt':
-                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                            threshold = 1.7  # maximum radius for cluster
+                            clusters = 100  # count of clusters for BIRCH with global clustering
+                            X = io.Input.get_ndarray_from_txt(self.file_path_local())
+                            birch.run(X, threshold, clusters)
                         elif self.file_type_check() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
                     elif self.algo_state.GetLabel() == 'clusterization_Mean_Shift':
                         if self.file_type_check() == 'txt':
-                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                            X = io.Input.get_ndarray_from_txt(self.file_path_local())
+                            bandwidth = 1.04388
+                            mean_shift.run_mean_shift(X, None)
                         elif self.file_type_check() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
@@ -641,7 +657,10 @@ class MainWindow(wx.Frame):
 
                     elif self.algo_state.GetLabel() == 'clusterization_Hierarchical_clustering':
                         if self.file_type_check() == 'txt':
-                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                            # parameters
+                            X = io.Input.get_ndarray_from_txt(self.file_path_local())
+                            n_clusters = 6
+                            hc_plot.run(X, n_clusters)
                         elif self.file_type_check() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
@@ -653,9 +672,13 @@ class MainWindow(wx.Frame):
 
                     elif self.algo_state.GetLabel() == 'clusterization_DBSCAN':
                         if self.file_type_check() == 'txt':
-                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                            # parameters
+                            eps = 0.3  # maximum distance between two samples or them to be considered as in the same neighborhood
+                            min_samples = 10  # The number of samples (or total weight) in a neighborhood for a point to be considered as a core point. This includes the point itself.
+                            X = io.Input.get_ndarray_from_txt(self.file_path_local())
+                            dbscan.dbscan_run(X, eps, min_samples)
                         elif self.file_type_check() == 'csv':
-                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+                            wx.MessageBox("DBSCAN algorithm doesn't work with csv files!")
 
                     elif self.algo_state.GetLabel() == 'clusterization_MutualInformationbasedscore':
                         if self.file_type_check() == 'txt':
@@ -664,12 +687,6 @@ class MainWindow(wx.Frame):
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
                     elif self.algo_state.GetLabel() == 'clusterization_Silhouette_Coefficient':
-                        if self.file_type_check() == 'txt':
-                            wx.MessageBox("OMG! THIS IS PROBLEM!")
-                        elif self.file_type_check() == 'csv':
-                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
-
-                    elif self.algo_state.GetLabel() == 'clusterization_Fowlkes_Mallows_scores':
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check() == 'csv':
@@ -846,12 +863,6 @@ class MainWindow(wx.Frame):
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
                     elif self.algo_state.GetLabel() == 'clusterization_Silhouette_Coefficient':
-                        if self.file_type_check_web() == 'txt':
-                            wx.MessageBox("OMG! THIS IS PROBLEM!")
-                        elif self.file_type_check_web() == 'csv':
-                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
-
-                    elif self.algo_state.GetLabel() == 'clusterization_Fowlkes_Mallows_scores':
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check_web() == 'csv':

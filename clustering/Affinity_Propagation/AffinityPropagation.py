@@ -14,12 +14,12 @@ def compute_affinity_propagation(preference_, X):
     centers = [[1, 1], [-1, -1], [1, -1]]
     n_samples = 300
     #Make Blobs used for generating of labels_true array
-    if (X == None):
-        X, labels_true = make_blobs(n_samples = n_samples, centers=centers, cluster_std=1, random_state=0)
-        print("Data is none!!!")
-        print("Generating " + str(n_samples) + " samples")
-    else :
-        data, labels_true = make_blobs(n_samples=len(X), centers=centers, cluster_std=1, random_state=0)
+    #if (X == None):
+    #    X, labels_true = make_blobs(n_samples = n_samples, centers=centers, cluster_std=1, random_state=0)
+    #    print("Data is none!!!")
+    #    print("Generating " + str(n_samples) + " samples")
+    #else :
+    data, labels_true = make_blobs(n_samples=len(X), centers=centers, cluster_std=1, random_state=0)
     #slist = list()
     #for line in X:
     #    slist.append(line)
