@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*- 
+﻿# -*- coding: utf-8 -*- 
 
 
 import wx
@@ -83,10 +83,6 @@ class MainWindow(wx.Frame):
                                                          u"Алгоритм наименьших квадратов", wx.EmptyString,
                                                          wx.ITEM_NORMAL)
         self.menu_classification.Append(self.menu_classification_less_sqad)
-        self.menu_classification_rokkio = wx.MenuItem(self.menu_classification, wx.ID_ANY, u"Алгоритм Роккио",
-                                                      wx.EmptyString,
-                                                      wx.ITEM_NORMAL)
-        self.menu_classification.Append(self.menu_classification_rokkio)
         self.menu_classification_vectors = wx.MenuItem(self.menu_classification, wx.ID_ANY,
                                                        u"Алгоритм опорных векторов", wx.EmptyString,
                                                        wx.ITEM_NORMAL)
@@ -95,58 +91,58 @@ class MainWindow(wx.Frame):
         # endregion
 
         # region Меню/Кластеризация
-        self.menu_clusterization = wx.Menu()
+        self.menu_clustering = wx.Menu()
 
-        self.menu_clusterization_kmeans = wx.MenuItem(self.menu_clusterization, wx.ID_ANY, u"K-means", wx.EmptyString,
+        self.menu_clustering_kmeans = wx.MenuItem(self.menu_clustering, wx.ID_ANY, u"K-means", wx.EmptyString,
                                                       wx.ITEM_NORMAL)
-        self.menu_clusterization.Append(self.menu_clusterization_kmeans)
-        self.menu_clusterization_id3 = wx.MenuItem(self.menu_clusterization, wx.ID_ANY, u"ID3", wx.EmptyString,
+        self.menu_clustering.Append(self.menu_clustering_kmeans)
+        self.menu_clustering_id3 = wx.MenuItem(self.menu_clustering, wx.ID_ANY, u"ID3", wx.EmptyString,
                                                    wx.ITEM_NORMAL)
-        self.menu_clusterization.Append(self.menu_clusterization_id3)
-        self.menu_clusterization_Affinity_Propagation = wx.MenuItem(self.menu_clusterization, wx.ID_ANY,
+        self.menu_clustering.Append(self.menu_clustering_id3)
+        self.menu_clustering_Affinity_Propagation = wx.MenuItem(self.menu_clustering, wx.ID_ANY,
                                                                     u"Affinity Propagation", wx.EmptyString,
                                                                     wx.ITEM_NORMAL)
-        self.menu_clusterization.Append(self.menu_clusterization_Affinity_Propagation)
-        self.menu_clusterization_Birch = wx.MenuItem(self.menu_clusterization, wx.ID_ANY, u"Birch", wx.EmptyString,
+        self.menu_clustering.Append(self.menu_clustering_Affinity_Propagation)
+        self.menu_clustering_Birch = wx.MenuItem(self.menu_clustering, wx.ID_ANY, u"Birch", wx.EmptyString,
                                                      wx.ITEM_NORMAL)
-        self.menu_clusterization.Append(self.menu_clusterization_Birch)
-        self.menu_clusterization_Mean_Shift = wx.MenuItem(self.menu_clusterization, wx.ID_ANY, u"Mean Shift",
+        self.menu_clustering.Append(self.menu_clustering_Birch)
+        self.menu_clustering_Mean_Shift = wx.MenuItem(self.menu_clustering, wx.ID_ANY, u"Mean Shift",
                                                           wx.EmptyString,
                                                           wx.ITEM_NORMAL)
-        self.menu_clusterization.Append(self.menu_clusterization_Mean_Shift)
-        self.menu_clusterization_Perfomance_evalution = wx.MenuItem(self.menu_clusterization, wx.ID_ANY,
+        self.menu_clustering.Append(self.menu_clustering_Mean_Shift)
+        self.menu_clustering_Perfomance_evalution = wx.MenuItem(self.menu_clustering, wx.ID_ANY,
                                                                     u"Perfomance evalution", wx.EmptyString,
                                                                     wx.ITEM_NORMAL)
-        self.menu_clusterization.Append(self.menu_clusterization_Perfomance_evalution)
-        self.menu_clusterization_Hierarchical_clustering = wx.MenuItem(self.menu_clusterization, wx.ID_ANY,
+        self.menu_clustering.Append(self.menu_clustering_Perfomance_evalution)
+        self.menu_clustering_Hierarchical_clustering = wx.MenuItem(self.menu_clustering, wx.ID_ANY,
                                                                        u"Hierarchical clustering", wx.EmptyString,
                                                                        wx.ITEM_NORMAL)
-        self.menu_clusterization.Append(self.menu_clusterization_Hierarchical_clustering)
-        self.menu_clusterization_Adjusted_Rand_index = wx.MenuItem(self.menu_clusterization, wx.ID_ANY,
+        self.menu_clustering.Append(self.menu_clustering_Hierarchical_clustering)
+        self.menu_clustering_Adjusted_Rand_index = wx.MenuItem(self.menu_clustering, wx.ID_ANY,
                                                                    u"Adjusted Rand index", wx.EmptyString,
                                                                    wx.ITEM_NORMAL)
-        self.menu_clusterization.Append(self.menu_clusterization_Adjusted_Rand_index)
-        self.menu_clusterization_DBSCAN = wx.MenuItem(self.menu_clusterization, wx.ID_ANY, u"DBSCAN", wx.EmptyString,
+        self.menu_clustering.Append(self.menu_clustering_Adjusted_Rand_index)
+        self.menu_clustering_DBSCAN = wx.MenuItem(self.menu_clustering, wx.ID_ANY, u"DBSCAN", wx.EmptyString,
                                                       wx.ITEM_NORMAL)
-        self.menu_clusterization.Append(self.menu_clusterization_DBSCAN)
-        self.menu_clusterization_MutualInformationbasedscore = wx.MenuItem(self.menu_clusterization, wx.ID_ANY,
+        self.menu_clustering.Append(self.menu_clustering_DBSCAN)
+        self.menu_clustering_MutualInformationbasedscore = wx.MenuItem(self.menu_clustering, wx.ID_ANY,
                                                                            u"Mutual Information based score",
                                                                            wx.EmptyString,
                                                                            wx.ITEM_NORMAL)
-        self.menu_clusterization.Append(self.menu_clusterization_MutualInformationbasedscore)
-        self.menu_clusterization_Silhouette_Coefficient = wx.MenuItem(self.menu_clusterization, wx.ID_ANY,
+        self.menu_clustering.Append(self.menu_clustering_MutualInformationbasedscore)
+        self.menu_clustering_Silhouette_Coefficient = wx.MenuItem(self.menu_clustering, wx.ID_ANY,
                                                                       u"Silhouette Coefficient", wx.EmptyString,
                                                                       wx.ITEM_NORMAL)
-        self.menu_clusterization.Append(self.menu_clusterization_Silhouette_Coefficient)
-        self.menu_clusterization_V_measure = wx.MenuItem(self.menu_clusterization, wx.ID_ANY, u"V-measure",
+        self.menu_clustering.Append(self.menu_clustering_Silhouette_Coefficient)
+        self.menu_clustering_V_measure = wx.MenuItem(self.menu_clustering, wx.ID_ANY, u"V-measure",
                                                          wx.EmptyString,
                                                          wx.ITEM_NORMAL)
-        self.menu_clusterization.Append(self.menu_clusterization_V_measure)
-        self.menu_clusterization_Spectral_clustering = wx.MenuItem(self.menu_clusterization, wx.ID_ANY,
+        self.menu_clustering.Append(self.menu_clustering_V_measure)
+        self.menu_clustering_Spectral_clustering = wx.MenuItem(self.menu_clustering, wx.ID_ANY,
                                                                    u"Spectral clustering", wx.EmptyString,
                                                                    wx.ITEM_NORMAL)
-        self.menu_clusterization.Append(self.menu_clusterization_Spectral_clustering)
-        self.menu.AppendSubMenu(self.menu_clusterization, u"Кластеризация")
+        self.menu_clustering.Append(self.menu_clustering_Spectral_clustering)
+        self.menu.AppendSubMenu(self.menu_clustering, u"Кластеризация")
         # endregion
 
         # region Меню/Асоциативные правила
@@ -293,28 +289,27 @@ class MainWindow(wx.Frame):
         self.Bind(wx.EVT_MENU, self.classification_naiv_bais, id=self.menu_classification_naiv_bais.GetId())
         self.Bind(wx.EVT_MENU, self.classification_kmeanes, id=self.menu_classification_kmeanes.GetId())
         self.Bind(wx.EVT_MENU, self.classification_less_sqad, id=self.menu_classification_less_sqad.GetId())
-        self.Bind(wx.EVT_MENU, self.classification_rokkio, id=self.menu_classification_rokkio.GetId())
         self.Bind(wx.EVT_MENU, self.classification_vectors, id=self.menu_classification_vectors.GetId())
-        self.Bind(wx.EVT_MENU, self.clusterization_kmeans, id=self.menu_clusterization_kmeans.GetId())
-        self.Bind(wx.EVT_MENU, self.clusterization_id3, id=self.menu_clusterization_id3.GetId())
-        self.Bind(wx.EVT_MENU, self.clusterization_Affinity_Propagation,
-                  id=self.menu_clusterization_Affinity_Propagation.GetId())
-        self.Bind(wx.EVT_MENU, self.clusterization_Birch, id=self.menu_clusterization_Birch.GetId())
-        self.Bind(wx.EVT_MENU, self.clusterization_Mean_Shift, id=self.menu_clusterization_Mean_Shift.GetId())
-        self.Bind(wx.EVT_MENU, self.clusterization_Perfomance_evalution,
-                  id=self.menu_clusterization_Perfomance_evalution.GetId())
-        self.Bind(wx.EVT_MENU, self.clusterization_Hierarchical_clustering,
-                  id=self.menu_clusterization_Hierarchical_clustering.GetId())
-        self.Bind(wx.EVT_MENU, self.clusterization_Adjusted_Rand_index,
-                  id=self.menu_clusterization_Adjusted_Rand_index.GetId())
-        self.Bind(wx.EVT_MENU, self.clusterization_DBSCAN, id=self.menu_clusterization_DBSCAN.GetId())
-        self.Bind(wx.EVT_MENU, self.clusterization_MutualInformationbasedscore,
-                  id=self.menu_clusterization_MutualInformationbasedscore.GetId())
-        self.Bind(wx.EVT_MENU, self.clusterization_Silhouette_Coefficient,
-                  id=self.menu_clusterization_Silhouette_Coefficient.GetId())
-        self.Bind(wx.EVT_MENU, self.clusterization_V_measure, id=self.menu_clusterization_V_measure.GetId())
-        self.Bind(wx.EVT_MENU, self.clusterization_Spectral_clustering,
-                  id=self.menu_clusterization_Spectral_clustering.GetId())
+        self.Bind(wx.EVT_MENU, self.clustering_kmeans, id=self.menu_clustering_kmeans.GetId())
+        self.Bind(wx.EVT_MENU, self.clustering_id3, id=self.menu_clustering_id3.GetId())
+        self.Bind(wx.EVT_MENU, self.clustering_Affinity_Propagation,
+                  id=self.menu_clustering_Affinity_Propagation.GetId())
+        self.Bind(wx.EVT_MENU, self.clustering_Birch, id=self.menu_clustering_Birch.GetId())
+        self.Bind(wx.EVT_MENU, self.clustering_Mean_Shift, id=self.menu_clustering_Mean_Shift.GetId())
+        self.Bind(wx.EVT_MENU, self.clustering_Perfomance_evalution,
+                  id=self.menu_clustering_Perfomance_evalution.GetId())
+        self.Bind(wx.EVT_MENU, self.clustering_Hierarchical_clustering,
+                  id=self.menu_clustering_Hierarchical_clustering.GetId())
+        self.Bind(wx.EVT_MENU, self.clustering_Adjusted_Rand_index,
+                  id=self.menu_clustering_Adjusted_Rand_index.GetId())
+        self.Bind(wx.EVT_MENU, self.clustering_DBSCAN, id=self.menu_clustering_DBSCAN.GetId())
+        self.Bind(wx.EVT_MENU, self.clustering_MutualInformationbasedscore,
+                  id=self.menu_clustering_MutualInformationbasedscore.GetId())
+        self.Bind(wx.EVT_MENU, self.clustering_Silhouette_Coefficient,
+                  id=self.menu_clustering_Silhouette_Coefficient.GetId())
+        self.Bind(wx.EVT_MENU, self.clustering_V_measure, id=self.menu_clustering_V_measure.GetId())
+        self.Bind(wx.EVT_MENU, self.clustering_Spectral_clustering,
+                  id=self.menu_clustering_Spectral_clustering.GetId())
         self.Bind(wx.EVT_MENU, self.asociative_rules_apriori, id=self.menu_asociative_rules_apriori.GetId())
         self.Bind(wx.EVT_MENU, self.asociative_rules_aprioriTID, id=self.menu_asociative_rules_aprioriTID.GetId())
         self.Bind(wx.EVT_MENU, self.asociative_rules_aprioriHybrid, id=self.menu_asociative_rules_aprioriHybrid.GetId())
@@ -365,80 +360,75 @@ class MainWindow(wx.Frame):
         self.lable_algo.SetLabel("Алгоритм: Наименьших квадратов")
         self.algo_state.SetLabel('classification_less_sqad')
 
-    def classification_rokkio(self, event):
-        self.lable_task.SetLabel("Задача: Классификация")
-        self.lable_algo.SetLabel("Алгоритм: Rokkio")
-        self.algo_state.SetLabel('classification_rokkio')
-
     def classification_vectors(self, event):
         self.lable_task.SetLabel("Задача: Классификация")
         self.lable_algo.SetLabel("Алгоритм: Опорных векторов")
         self.algo_state.SetLabel('classification_vectors')
 
-    def clusterization_kmeans(self, event):
+    def clustering_kmeans(self, event):
         self.lable_task.SetLabel("Задача: Кластеризация")
         self.lable_algo.SetLabel("Алгоритм: K-means")
-        self.algo_state.SetLabel('clusterization_kmeans')
+        self.algo_state.SetLabel('clustering_kmeans')
 
-    def clusterization_id3(self, event):
+    def clustering_id3(self, event):
         self.lable_task.SetLabel("Задача: Кластеризация")
         self.lable_algo.SetLabel("Алгоритм: id3")
-        self.algo_state.SetLabel('clusterization_id3')
+        self.algo_state.SetLabel('clustering_id3')
 
-    def clusterization_Affinity_Propagation(self, event):
+    def clustering_Affinity_Propagation(self, event):
         self.lable_task.SetLabel("Задача: Кластеризация")
         self.lable_algo.SetLabel("Алгоритм: Affinity Propagation")
-        self.algo_state.SetLabel('clusterization_Affinity_Propagation')
+        self.algo_state.SetLabel('clustering_Affinity_Propagation')
 
-    def clusterization_Birch(self, event):
+    def clustering_Birch(self, event):
         self.lable_task.SetLabel("Задача: Кластеризация")
         self.lable_algo.SetLabel("Алгоритм: Birch")
-        self.algo_state.SetLabel('clusterization_Birch')
+        self.algo_state.SetLabel('clustering_Birch')
 
-    def clusterization_Mean_Shift(self, event):
+    def clustering_Mean_Shift(self, event):
         self.lable_task.SetLabel("Задача: Кластеризация")
         self.lable_algo.SetLabel("Алгоритм: Mean Shift")
-        self.algo_state.SetLabel('clusterization_Mean_Shift')
+        self.algo_state.SetLabel('clustering_Mean_Shift')
 
-    def clusterization_Perfomance_evalution(self, event):
+    def clustering_Perfomance_evalution(self, event):
         self.lable_task.SetLabel("Задача: Кластеризация")
         self.lable_algo.SetLabel("Алгоритм: Perfomance evalution")
-        self.algo_state.SetLabel('clusterization_Perfomance_evalution')
+        self.algo_state.SetLabel('clustering_Perfomance_evalution')
 
-    def clusterization_Hierarchical_clustering(self, event):
+    def clustering_Hierarchical_clustering(self, event):
         self.lable_task.SetLabel("Задача: Кластеризация")
         self.lable_algo.SetLabel("Алгоритм: Hierarchical clustering")
-        self.algo_state.SetLabel('clusterization_Hierarchical_clustering')
+        self.algo_state.SetLabel('clustering_Hierarchical_clustering')
 
-    def clusterization_Adjusted_Rand_index(self, event):
+    def clustering_Adjusted_Rand_index(self, event):
         self.lable_task.SetLabel("Задача: Кластеризация")
         self.lable_algo.SetLabel("Алгоритм: Adjusted Rand index")
-        self.algo_state.SetLabel('clusterization_Adjusted_Rand_index')
+        self.algo_state.SetLabel('clustering_Adjusted_Rand_index')
 
-    def clusterization_DBSCAN(self, event):
+    def clustering_DBSCAN(self, event):
         self.lable_task.SetLabel("Задача: Кластеризация")
         self.lable_algo.SetLabel("Алгоритм: DBSCAN")
-        self.algo_state.SetLabel('clusterization_DBSCAN')
+        self.algo_state.SetLabel('clustering_DBSCAN')
 
-    def clusterization_MutualInformationbasedscore(self, event):
+    def clustering_MutualInformationbasedscore(self, event):
         self.lable_task.SetLabel("Задача: Кластеризация")
         self.lable_algo.SetLabel("Алгоритм: Mutual Information based score")
-        self.algo_state.SetLabel('clusterization_MutualInformationbasedscore')
+        self.algo_state.SetLabel('clustering_MutualInformationbasedscore')
 
-    def clusterization_Silhouette_Coefficient(self, event):
+    def clustering_Silhouette_Coefficient(self, event):
         self.lable_task.SetLabel("Задача: Кластеризация")
         self.lable_algo.SetLabel("Алгоритм: Silhouette Coefficient")
-        self.algo_state.SetLabel('clusterization_Silhouette_Coefficient')
+        self.algo_state.SetLabel('clustering_Silhouette_Coefficient')
 
-    def clusterization_V_measure(self, event):
+    def clustering_V_measure(self, event):
         self.lable_task.SetLabel("Задача: Кластеризация")
         self.lable_algo.SetLabel("Алгоритм: V-measure")
-        self.algo_state.SetLabel('clusterization_V_measure')
+        self.algo_state.SetLabel('clustering_V_measure')
 
-    def clusterization_Spectral_clustering(self, event):
+    def clustering_Spectral_clustering(self, event):
         self.lable_task.SetLabel("Задача: Кластеризация")
         self.lable_algo.SetLabel("Алгоритм: Spectral clustering")
-        self.algo_state.SetLabel('clusterization_Spectral_clustering')
+        self.algo_state.SetLabel('clustering_Spectral_clustering')
 
     def asociative_rules_apriori(self, event):
         self.lable_task.SetLabel("Задача: Поиск ассоциативных правил")
@@ -595,34 +585,28 @@ class MainWindow(wx.Frame):
                         elif self.file_type_check() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
-                    elif self.algo_state.GetLabel() == 'classification_rokkio':
-                        if self.file_type_check() == 'txt':
-                            wx.MessageBox("OMG! THIS IS PROBLEM!")
-                        elif self.file_type_check() == 'csv':
-                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
-
                     elif self.algo_state.GetLabel() == 'classification_vectors':
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
-                    elif self.algo_state.GetLabel() == 'clusterization_kmeans':
+                    elif self.algo_state.GetLabel() == 'clustering_kmeans':
                         if self.file_type_check() == 'txt':
                             # parameters
                             n_clusters = 3
                             X = io.Input.get_ndarray_from_txt(self.file_path_local())
                             k_means.run_kmeans(X, n_clusters)
                         elif self.file_type_check() == 'csv':
-                            k_means.run_kmeans_csv(self.file_path_local())
+                            k_means_csv.run_kmeans(self.file_path_local())
 
-                    elif self.algo_state.GetLabel() == 'clusterization_id3':
+                    elif self.algo_state.GetLabel() == 'clustering_id3':
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
-                    elif self.algo_state.GetLabel() == 'clusterization_Affinity_Propagation':
+                    elif self.algo_state.GetLabel() == 'clustering_Affinity_Propagation':
                         if self.file_type_check() == 'txt':
                             # parameters
                             preference = -50
@@ -630,47 +614,47 @@ class MainWindow(wx.Frame):
                             #
                             aff_p.compute_affinity_propagation(-50, X)
                         elif self.file_type_check() == 'csv':
-                            wx.MessageBox("Affinity Propagation doesn't work with csv files!!!")
+                            wx.MessageBox("Affinity Propagation doesn't work with csv files!")
 
-                    elif self.algo_state.GetLabel() == 'clusterization_Birch':
+                    elif self.algo_state.GetLabel() == 'clustering_Birch':
                         if self.file_type_check() == 'txt':
                             threshold = 1.7  # maximum radius for cluster
                             clusters = 100  # count of clusters for BIRCH with global clustering
                             X = io.Input.get_ndarray_from_txt(self.file_path_local())
                             birch.run(X, threshold, clusters)
                         elif self.file_type_check() == 'csv':
-                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+                            wx.MessageBox("BIRCH algorithm doesn't work with csv files!")
 
-                    elif self.algo_state.GetLabel() == 'clusterization_Mean_Shift':
+                    elif self.algo_state.GetLabel() == 'clustering_Mean_Shift':
                         if self.file_type_check() == 'txt':
                             X = io.Input.get_ndarray_from_txt(self.file_path_local())
                             bandwidth = 1.04388
                             mean_shift.run_mean_shift(X, None)
                         elif self.file_type_check() == 'csv':
-                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+                            wx.MessageBox("Mean Shift algorithm doesn't work with csv files!")
 
-                    elif self.algo_state.GetLabel() == 'clusterization_Perfomance_evalution':
+                    elif self.algo_state.GetLabel() == 'clustering_Perfomance_evalution':
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
-                    elif self.algo_state.GetLabel() == 'clusterization_Hierarchical_clustering':
+                    elif self.algo_state.GetLabel() == 'clustering_Hierarchical_clustering':
                         if self.file_type_check() == 'txt':
                             # parameters
                             X = io.Input.get_ndarray_from_txt(self.file_path_local())
                             n_clusters = 6
                             hc_plot.run(X, n_clusters)
                         elif self.file_type_check() == 'csv':
-                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+                            wx.MessageBox("Hierarchical Clustering algorithm doesn't work with csv files!")
 
-                    elif self.algo_state.GetLabel() == 'clusterization_Adjusted_Rand_index':
+                    elif self.algo_state.GetLabel() == 'clustering_Adjusted_Rand_index':
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
-                    elif self.algo_state.GetLabel() == 'clusterization_DBSCAN':
+                    elif self.algo_state.GetLabel() == 'clustering_DBSCAN':
                         if self.file_type_check() == 'txt':
                             # parameters
                             eps = 0.3  # maximum distance between two samples or them to be considered as in the same neighborhood
@@ -680,25 +664,25 @@ class MainWindow(wx.Frame):
                         elif self.file_type_check() == 'csv':
                             wx.MessageBox("DBSCAN algorithm doesn't work with csv files!")
 
-                    elif self.algo_state.GetLabel() == 'clusterization_MutualInformationbasedscore':
+                    elif self.algo_state.GetLabel() == 'clustering_MutualInformationbasedscore':
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
-                    elif self.algo_state.GetLabel() == 'clusterization_Silhouette_Coefficient':
+                    elif self.algo_state.GetLabel() == 'clustering_Silhouette_Coefficient':
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
-                    elif self.algo_state.GetLabel() == 'clusterization_V_measure':
+                    elif self.algo_state.GetLabel() == 'clustering_V_measure':
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
-                    elif self.algo_state.GetLabel() == 'clusterization_Spectral_clustering':
+                    elif self.algo_state.GetLabel() == 'clustering_Spectral_clustering':
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check() == 'csv':
@@ -790,91 +774,85 @@ class MainWindow(wx.Frame):
                         elif self.file_type_check_web() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
-                    elif self.algo_state.GetLabel() == 'classification_rokkio':
-                        if self.file_type_check_web() == 'txt':
-                            wx.MessageBox("OMG! THIS IS PROBLEM!")
-                        elif self.file_type_check_web() == 'csv':
-                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
-
                     elif self.algo_state.GetLabel() == 'classification_vectors':
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check_web() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
-                    elif self.algo_state.GetLabel() == 'clusterization_kmeans':
+                    elif self.algo_state.GetLabel() == 'clustering_kmeans':
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check_web() == 'csv':
                             k_means.run_kmeans(self.file_path_local())
 
-                    elif self.algo_state.GetLabel() == 'clusterization_id3':
+                    elif self.algo_state.GetLabel() == 'clustering_id3':
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check_web() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
-                    elif self.algo_state.GetLabel() == 'clusterization_Affinity_Propagation':
+                    elif self.algo_state.GetLabel() == 'clustering_Affinity_Propagation':
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check_web() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
-                    elif self.algo_state.GetLabel() == 'clusterization_Birch':
+                    elif self.algo_state.GetLabel() == 'clustering_Birch':
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check_web() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
-                    elif self.algo_state.GetLabel() == 'clusterization_Mean_Shift':
+                    elif self.algo_state.GetLabel() == 'clustering_Mean_Shift':
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check_web() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
-                    elif self.algo_state.GetLabel() == 'clusterization_Perfomance_evalution':
+                    elif self.algo_state.GetLabel() == 'clustering_Perfomance_evalution':
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check_web() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
-                    elif self.algo_state.GetLabel() == 'clusterization_Hierarchical_clustering':
+                    elif self.algo_state.GetLabel() == 'clustering_Hierarchical_clustering':
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check_web() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
-                    elif self.algo_state.GetLabel() == 'clusterization_Adjusted_Rand_index':
+                    elif self.algo_state.GetLabel() == 'clustering_Adjusted_Rand_index':
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check_web() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
-                    elif self.algo_state.GetLabel() == 'clusterization_DBSCAN':
+                    elif self.algo_state.GetLabel() == 'clustering_DBSCAN':
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check_web() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
-                    elif self.algo_state.GetLabel() == 'clusterization_MutualInformationbasedscore':
+                    elif self.algo_state.GetLabel() == 'clustering_MutualInformationbasedscore':
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check_web() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
-                    elif self.algo_state.GetLabel() == 'clusterization_Silhouette_Coefficient':
+                    elif self.algo_state.GetLabel() == 'clustering_Silhouette_Coefficient':
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check_web() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
-                    elif self.algo_state.GetLabel() == 'clusterization_V_measure':
+                    elif self.algo_state.GetLabel() == 'clustering_V_measure':
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check_web() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
-                    elif self.algo_state.GetLabel() == 'clusterization_Spectral_clustering':
+                    elif self.algo_state.GetLabel() == 'clustering_Spectral_clustering':
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check_web() == 'csv':
