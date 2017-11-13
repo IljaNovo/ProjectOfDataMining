@@ -1,10 +1,10 @@
 import numpy as np
 import xlwt
 from openpyxl import load_workbook
-from sklearn.cluster import MeanShift, estimate_bandwidth #импорт алгоритма
-from sklearn.datasets.samples_generator import make_blobs  #импорт библиотеки для генерации
+from sklearn.cluster import MeanShift, estimate_bandwidth #РёРјРїРѕСЂС‚ Р°Р»РіРѕСЂРёС‚РјР°
+from sklearn.datasets.samples_generator import make_blobs  #РёРјРїРѕСЂС‚ Р±РёР±Р»РёРѕС‚РµРєРё РґР»СЏ РіРµРЅРµСЂР°С†РёРё
 
-def read_Excel(var_vivoda):
+def read_Excel(var_vivoda): #С‡С‚РµРЅРёРµ С†РµРЅС‚СЂРѕРІ
     wb = load_workbook('data.xlsx')
     sheet = wb.get_sheet_by_name('sheetname')
 
@@ -13,19 +13,19 @@ def read_Excel(var_vivoda):
     
     print (n_samples)
     
-    X, y = make_blobs(n_samples=10000, centers=centers, cluster_std=0.6) #генерация случайных чисел
+    X, y = make_blobs(n_samples=10000, centers=centers, cluster_std=0.6) #РіРµРЅРµСЂР°С†РёСЏ СЃР»СѓС‡Р°Р№РЅС‹С… С‡РёСЃРµР»
  
     func(var_vivoda,X,y)
 ##############################################################################
-def read_RANDOM(var_vivoda): #Генерация данных рандомного значения
-    # Генерация данных
-    centers = [[1, 1], [-1, -1], [1, -1]] #задание количества центров
-    X, y = make_blobs(n_samples=10000, centers=centers, cluster_std=0.6) #генерация случайных чисел
+def read_RANDOM(var_vivoda): #Р“РµРЅРµСЂР°С†РёСЏ РґР°РЅРЅС‹С… СЂР°РЅРґРѕРјРЅРѕРіРѕ Р·РЅР°С‡РµРЅРёСЏ
+    # Р“РµРЅРµСЂР°С†РёСЏ РґР°РЅРЅС‹С…
+    centers = [[1, 1], [-1, -1], [1, -1], [3, 3]] #Р·Р°РґР°РЅРёРµ РєРѕР»РёС‡РµСЃС‚РІР° С†РµРЅС‚СЂРѕРІ
+    X, y = make_blobs(n_samples=10000, centers=centers, cluster_std=0.6) #РіРµРЅРµСЂР°С†РёСЏ СЃР»СѓС‡Р°Р№РЅС‹С… С‡РёСЃРµР»
  
-    func(var_vivoda, X, y) #вызов алгоритма
+    func(var_vivoda, X, y) #РІС‹Р·РѕРІ Р°Р»РіРѕСЂРёС‚РјР°
 
 ##############################################################################   
-def func(var_vivoda,X,y): #функция вычисляет кластеры. var_vivoda - вариант вывода. График или Excel 
+def func(var_vivoda,X,y): #С„СѓРЅРєС†РёСЏ РІС‹С‡РёСЃР»СЏРµС‚ РєР»Р°СЃС‚РµСЂС‹. var_vivoda - РІР°СЂРёР°РЅС‚ РІС‹РІРѕРґР°. Р“СЂР°С„РёРє РёР»Рё Excel 
     
     # Compute clustering with MeanShift
     
@@ -41,9 +41,9 @@ def func(var_vivoda,X,y): #функция вычисляет кластеры. var_vivoda - вариант выво
     n_clusters_ = len(labels_unique)
     
     print("number of estimated clusters : %d" % n_clusters_)
-    print("b=", var_vivoda) #для Debug
+    print("b=", var_vivoda) #РґР»СЏ Debug
     
-    #выбор вида дальнейшего отчета
+    #РІС‹Р±РѕСЂ РІРёРґР° РґР°Р»СЊРЅРµР№С€РµРіРѕ РѕС‚С‡РµС‚Р°
     if var_vivoda==11:
         Plot_result(n_clusters_, labels, X, cluster_centers)
     if var_vivoda==12:
@@ -51,16 +51,16 @@ def func(var_vivoda,X,y): #функция вычисляет кластеры. var_vivoda - вариант выво
 ##############################################################################    
 def Excel_result(X,y,cluster_centers):
        
-    print("DEBUG!!!")
+  #  print("DEBUG!!!")
     book = xlwt.Workbook(encoding="utf-8")
 
-    # Добавить лист в книгу 
+    # Р”РѕР±Р°РІРёС‚СЊ Р»РёСЃС‚ РІ РєРЅРёРіСѓ 
     sheet1 = book.add_sheet("List_1") 
     
-    sheet1.write(2,0, "Координата точки на графике Х*")
-    sheet1.write(2,1, "Координата точки на графике Y*")
-    sheet1.write(2,4, "Координата центра найденного класстера Х*")
-    sheet1.write(2,5, "Координата центра найденного класстера Y*")
+    sheet1.write(2,0, "РљРѕРѕСЂРґРёРЅР°С‚Р° С‚РѕС‡РєРё РЅР° РіСЂР°С„РёРєРµ РҐ*")
+    sheet1.write(2,1, "РљРѕРѕСЂРґРёРЅР°С‚Р° С‚РѕС‡РєРё РЅР° РіСЂР°С„РёРєРµ Y*")
+    sheet1.write(2,4, "РљРѕРѕСЂРґРёРЅР°С‚Р° С†РµРЅС‚СЂР° РЅР°Р№РґРµРЅРЅРѕРіРѕ РєР»Р°СЃСЃС‚РµСЂР° РҐ*")
+    sheet1.write(2,5, "РљРѕРѕСЂРґРёРЅР°С‚Р° С†РµРЅС‚СЂР° РЅР°Р№РґРµРЅРЅРѕРіРѕ РєР»Р°СЃСЃС‚РµСЂР° Y*")
     
     for x in range(len(y)):
         sheet1.write(x+3,1,float(X[x,1]))
@@ -72,7 +72,7 @@ def Excel_result(X,y,cluster_centers):
     for i in range(len(cluster_centers)):
         for j in range(len(cluster_centers[i])):
             sheet1.write(i+3,j+3,cluster_centers[i,j])
-    print("DEBUG!!!")
+#    print("DEBUG!!!")
      
     book.save("Raport.xls")    
 ##############################################################################
@@ -96,25 +96,25 @@ def Plot_result(n_clusters_, labels, X, cluster_centers):
     plt.show()
 ##############################################################################
 def main():
-    print("Sposob vvoda")
+    print("Input Method:")
     print("1 - Random")
     print("2 - Excel")
-    print("3 - sait")
+    print("3 - Sitet")
     
-    print("Sposob vvoda =")
+    print("Input Method =")
 
     a = int(input())
-    print("Sposob vvoda =",a)
+    #print("Sposob vvoda =",a)
     
     print("-----------------------------------")
-    print("Sposob vivoda")
-    print("1 - graphic")
+    print("Output method")
+    print("1 - Plot")
     print("2 - Excel")
     
-    print("Sposob vivoda =")
+    print("Output method =")
     
     b = 10 + int(input())
-    print("Sposob vivoda =", b)
+    #print("Sposob vivoda =", b)
 
     if a==1:
         read_RANDOM(b)

@@ -9,6 +9,31 @@ from matplotlib.colors import ListedColormap
 from sklearn import neighbors, datasets
 
 ##############################################################################
+def read_Excel(var_vivoda): #чтение центров
+    wb = load_workbook('data.xlsx')
+    sheet = wb.get_sheet_by_name('sheetname')
+
+  #  centers =[[float(sheet['C7'].value),float(sheet['C8'].value)],[float(sheet['D7'].value),float(sheet['D8'].value)],[float(sheet['E7'].value),float(sheet['E8'].value)]]
+  #  n_samples = sheet['E10'].value
+    
+  #  print (n_samples)
+  
+    
+   # X, y = make_blobs(n_samples=10000, centers=centers, cluster_std=0.6) #генерация случайных чисел
+ 
+    n_neighbors = int(sheet['B1'].value)  #читается
+    print("n_neighbors=",n_neighbors)  
+
+    centers = [[1, 1], [-1, -1], [1, -1], [3, 3]]
+    X, y = make_blobs(n_samples=10000, centers=centers, cluster_std=0.6) #генерация случайных чисел           
+    
+    cmap_light = ListedColormap(['#FFAAAA', '#AAFFAA', '#AAAAFF'])
+    cmap_bold = ListedColormap(['#FF0000', '#00FF00', '#0000FF'])   
+
+    h = .02  # step size in the mesh
+    
+    func(cmap_bold,cmap_light,h,X,y,n_neighbors,var_vivoda)
+##############################################################################
 def read_RANDOM(var_vivoda): #Генерация данных рандомного значения
     n_neighbors = 15
     

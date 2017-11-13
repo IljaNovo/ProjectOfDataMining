@@ -16,36 +16,8 @@ from reportlab.lib.styles import ParagraphStyle
 
 import SimpleExcel
 
-#значения по умолчанию
-#cel_0_1 = 0
-#cel_1_1 = 1
 
-#cel_2_1 = 0
-#cel_2_2 = 2
-
-#cel_3_1 = 0
-#cel_3_3 = 3
-
-#cel_4_1 = 1
-#cel_4_3 = 2
-
-#cel_5_1 = 1
-#cel_5_3 = 3
-
-#cel_6_1 = 2
-#cel_6_3 = 3
-
-#для определения цвета
-'''def getBGColor(book, sheet, row, col):
-    xfx = sheet.cell_xf_index(row, col)
-    xf = book.xf_list[xfx]
-    bgx = xf.background.pattern_colour_index
-    pattern_colour = book.colour_map[bgx]
-    return pattern_colour
-'''
 def read_RANDOM(var_vivoda, var_vvoda): #только для этого метода, т.к. странная генерация данных 
-    # Parameters1
-   # mass = [[0,0]]
     
     n_classes = 3
     plot_colors = "bry"
@@ -63,14 +35,10 @@ def read_Excel(var_vivoda, var_vvoda):
     
     row = 0
     col = 0    
-
-    plot_colors = getBGColor(wb, sheet, row, col)  #получение цвета ячейки. 
-    
-    print('Color=',plot_colors)
-  
+ 
     cell_tmp = sheet.cell(row, col)
     
-    n_samples = valueInt(cell_tmp)    ###########?????????????????????????
+    n_samples = sheet.cell(row, col) #valueInt(cell_tmp)    ###########?????????????????????????
     print('n_samples=',n_samples)
     #if cell_tmp.ctype==xlrd.XL_CELL_NUMBER:
     #    n_samples = cell_tmp.value
@@ -154,33 +122,29 @@ def Excel_result(X,y):
 ############################################################################
 ############################################################################
 def main():
-    print("Sposob vvoda")
+    print("Input Method:")
     print("1 - Random")
     print("2 - Excel")
-    print("3 - sait")
+    print("3 - Sitet")
     
-    print("Sposob vvoda =")
+    print("Input Method =")
 
     a = int(input())
-    print("Sposob vvoda =",a)
+#    print("Sposob vvoda =",a)
     
     print("-----------------------------------")
-    print("Sposob vivoda")
-    print("1 - graphic")
+    print("Output method")
+    print("1 - Plot")
     print("2 - Excel")
     
-    print("Sposob vivoda =")
+    print("Output method =")
     
-    print("-----------------------------------")
+ #   print("-----------------------------------")
     b = 10 + int(input())
-    print("Sposob vvoda =", a)
-    print("Sposob vivoda =", b)
-    print("-----------------------------------")
-
 
     if a==1:
         read_RANDOM(b,a)
-        print("1!")
+      #  print("1!")
     
     if a==2:
         read_Excel(b,a)
