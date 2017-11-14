@@ -71,10 +71,10 @@ class MainWindow(wx.Frame):
                                                               wx.EmptyString,
                                                               wx.ITEM_NORMAL)
         self.menu_classification.Append(self.menu_classification_Decision_trees)
-        self.menu_classification_naiv_bais = wx.MenuItem(self.menu_classification, wx.ID_ANY,
-                                                         u"Наивная байесовская классификация", wx.EmptyString,
+        self.menu_classification_naive_bayes = wx.MenuItem(self.menu_classification, wx.ID_ANY,
+                                                         u"Наивная Байесовская классификация", wx.EmptyString,
                                                          wx.ITEM_NORMAL)
-        self.menu_classification.Append(self.menu_classification_naiv_bais)
+        self.menu_classification.Append(self.menu_classification_naive_bayes)
         self.menu_classification_kmeanes = wx.MenuItem(self.menu_classification, wx.ID_ANY,
                                                        u"Алгоритм k-ближайших соседей (кф)", wx.EmptyString,
                                                        wx.ITEM_NORMAL)
@@ -286,7 +286,7 @@ class MainWindow(wx.Frame):
         self.Bind(wx.EVT_MENU, self.classification_Gaussian_Processes,
                   id=self.menu_classification_Gaussian_Processes.GetId())
         self.Bind(wx.EVT_MENU, self.classification_Decision_trees, id=self.menu_classification_Decision_trees.GetId())
-        self.Bind(wx.EVT_MENU, self.classification_naiv_bais, id=self.menu_classification_naiv_bais.GetId())
+        self.Bind(wx.EVT_MENU, self.classification_naive_bayes, id=self.menu_classification_naive_bayes.GetId())
         self.Bind(wx.EVT_MENU, self.classification_kmeanes, id=self.menu_classification_kmeanes.GetId())
         self.Bind(wx.EVT_MENU, self.classification_less_sqad, id=self.menu_classification_less_sqad.GetId())
         self.Bind(wx.EVT_MENU, self.classification_vectors, id=self.menu_classification_vectors.GetId())
@@ -345,10 +345,10 @@ class MainWindow(wx.Frame):
         self.lable_algo.SetLabel("Алгоритм: Decision trees")
         self.algo_state.SetLabel('classification_Decision_trees')
 
-    def classification_naiv_bais(self, event):
+    def classification_naive_bayes(self, event):
         self.lable_task.SetLabel("Задача: Классификация")
         self.lable_algo.SetLabel("Алгоритм: Наивная байесовская классификация")
-        self.algo_state.SetLabel('classification_naiv_bais')
+        self.algo_state.SetLabel('classification_naive_bayes')
 
     def classification_kmeanes(self, event):
         self.lable_task.SetLabel("Задача: Классификация")
@@ -567,12 +567,14 @@ class MainWindow(wx.Frame):
                         elif self.file_type_check() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
-                    elif self.algo_state.GetLabel() == 'classification_naiv_bais':
+                    elif self.algo_state.GetLabel() == 'classification_naive_bayes':
                         if self.file_type_check() == 'txt':
-                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                            wx.MessageBox("Naive Bayes doesn't work with txt files!")
                         elif self.file_type_check() == 'csv':
-                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
-
+                            bayes.main(self.file_path_local())
+                            wx.MessageBox("Naive Bayes result in classification\\Naive_Bayes_Classifier\\BayesScratch\\result.txt")
+                            osCommandString = "notepad.exe classification/Naive_Bayes_Classifier/BayesScratch/result.txt"
+                            os.system(osCommandString)
                     elif self.algo_state.GetLabel() == 'classification_kmeanes':
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
@@ -756,7 +758,7 @@ class MainWindow(wx.Frame):
                         elif self.file_type_check_web() == 'csv':
                             wx.MessageBox("OMG! THIS IS PROBLEM v2!")
 
-                    elif self.algo_state.GetLabel() == 'classification_naiv_bais':
+                    elif self.algo_state.GetLabel() == 'classification_naive_bayes':
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check_web() == 'csv':
