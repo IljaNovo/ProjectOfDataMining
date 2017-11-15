@@ -700,7 +700,9 @@ class MainWindow(wx.Frame):
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
                         elif self.file_type_check() == 'csv':
-                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+                            data_iter = dataFromFile(self.file_path_local())
+                            items, rules = runApriori(data_iter, 0.5, 0.05)
+                            printResults(items, rules)
 
                     elif self.algo_state.GetLabel() == 'asociative_rules_aprioriHybrid':
                         if self.file_type_check() == 'txt':
