@@ -544,9 +544,9 @@ class MainWindow(wx.Frame):
 
                     elif self.algo_state.GetLabel() == 'classification_Stochastic_gradient_descent':
                         if self.file_type_check() == 'txt':
-                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                            wx.MessageBox("Stochastic Gradient Descent doesn't work with txt files!")
                         elif self.file_type_check() == 'csv':
-                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
+                            sgd.run(self.file_path_local())
 
                     elif self.algo_state.GetLabel() == 'classification_Nearest_Neighbors':
                         if self.file_type_check() == 'txt':
