@@ -698,7 +698,9 @@ class MainWindow(wx.Frame):
 
                     elif self.algo_state.GetLabel() == 'asociative_rules_aprioriTID':
                         if self.file_type_check() == 'txt':
-                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                            data_iter = dataFromFile(self.file_path_local())
+                            items, rules = runApriori(data_iter, 0.5, 0.05)
+                            printResults(items, rules)
                         elif self.file_type_check() == 'csv':
                             data_iter = dataFromFile(self.file_path_local())
                             items, rules = runApriori(data_iter, 0.5, 0.05)
