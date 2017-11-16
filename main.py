@@ -178,8 +178,6 @@ class MainWindow(wx.Frame):
 
 
         self.menu_classification_Support_vector_machines.Enable(False)
-        self.menu_classification_Nearest_Neighbors.Enable(False)
-        self.menu_classification_Nearest_Neighbors.Enable(False)
         self.menu_classification_Gaussian_Processes.Enable(False)
         self.menu_classification_Decision_trees.Enable(False)
         self.menu_classification_kmeans.Enable(False)
@@ -410,12 +408,24 @@ class MainWindow(wx.Frame):
         self.lable_algo.SetLabel("Алгоритм: Stochastic gradient descent")
         self.algo_state.SetLabel('classification_Stochastic_gradient_descent')
         self.advanced_settings_disable()
+        self.settings_lable_1.Enable(True)
+        self.settings_lable_1.SetLabel('Размер шага в сетке')
+        self.settings_value_1.Enable(True)
+        self.settings_value_1.SetValue('0.02')
 
     def classification_Nearest_Neighbors(self, event):
         self.lable_task.SetLabel("Задача: Классификация")
         self.lable_algo.SetLabel("Алгоритм: Nearest Neighbors")
         self.algo_state.SetLabel('classification_Nearest_Neighbors')
         self.advanced_settings_disable()
+        self.settings_lable_1.Enable(True)
+        self.settings_lable_1.SetLabel('n_neighbors')
+        self.settings_value_1.Enable(True)
+        self.settings_value_1.SetValue('15')
+        self.settings_lable_2.Enable(True)
+        self.settings_lable_2.SetLabel('Размер шага в сетке')
+        self.settings_value_2.Enable(True)
+        self.settings_value_2.SetValue('0,02')
 
     def classification_Gaussian_Processes(self, event):
         self.lable_task.SetLabel("Задача: Классификация")
@@ -683,21 +693,19 @@ class MainWindow(wx.Frame):
 
 
                     elif self.algo_state.GetLabel() == 'classification_Stochastic_gradient_descent':
+                        h = self.advanced_settings_float(self.settings_value_1.GetValue())  # step size in the mesh
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("Txt файлы временно не поддерживаются")
                         elif self.file_type_check() == 'csv':
-                            #parameters
-                            h = .02  # step size in the mesh
                             data = io.Input.load_csv_for_classification(self.file_path_local())
                             sgd.run(data, h)
 
                     elif self.algo_state.GetLabel() == 'classification_Nearest_Neighbors':
+                        n_neighbors = self.advanced_settings_int(self.settings_value_1.GetValue())
+                        h = self.advanced_settings_float(self.settings_value_2.GetValue())  # step size in the mesh
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("Txt файлы временно не поддерживаются")
                         elif self.file_type_check() == 'csv':
-                            #parameters
-                            n_neighbors = 15
-                            h = .02  # step size in the mesh
                             data = io.Input.load_csv_for_classification(self.file_path_local())
                             knn.run(data,n_neighbors,h)
                     elif self.algo_state.GetLabel() == 'classification_Gaussian_Processes':
