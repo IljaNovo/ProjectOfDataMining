@@ -63,6 +63,17 @@ class Input:
         X = array(float_array)
         return X
 
+    @staticmethod
+    def get_ndarray_from_web_txt(url):
+        text = Input.internet_read_text_file(url)
+        input_array = text.split('\n')
+        float_array = []
+        for line in input_array:
+            float_line = [float(i) for i in line.split(' ')]
+            float_array.append(float_line)
+        X = array(float_array)
+        return X
+
 
 class Output:
     @staticmethod
