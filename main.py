@@ -686,7 +686,11 @@ class MainWindow(wx.Frame):
 
                     elif self.algo_state.GetLabel() == 'classification_Stochastic_gradient_descent':
                         if self.file_type_check() == 'txt':
+
                             wx.MessageBox("Txt файлы временно не поддерживаются")
+
+                            wx.MessageBox("Stochastic Gradient Descent doesn't work with txt files!")
+
                         elif self.file_type_check() == 'csv':
                             sgd.run(self.file_path_local())
 
@@ -845,10 +849,18 @@ class MainWindow(wx.Frame):
                         minSupport = self.advanced_settings_float(self.settings_value_1.GetValue())
                         minConfidence = self.advanced_settings_float(self.settings_value_2.GetValue())
                         if self.file_type_check() == 'txt':
+
                             wx.MessageBox("Txt файлы временно не поддерживаются")
                         elif self.file_type_check() == 'csv':
                             data_iter = dataFromFile(self.file_path_local())
                             items, rules = runApriori(data_iter, minSupport, minConfidence)
+                            data_iter = dataFromFile(self.file_path_local())
+                            items, rules = runApriori(data_iter, 0.5, 0.05)
+                            printResults(items, rules)
+                        elif self.file_type_check() == 'csv':
+                            data_iter = dataFromFile(self.file_path_local())
+                            items, rules = runApriori(data_iter, 0.5, 0.05)
+
                             printResults(items, rules)
 
                     elif self.algo_state.GetLabel() == 'asociative_rules_aprioriHybrid':
