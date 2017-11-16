@@ -57,7 +57,7 @@ def run(X, n_clusters):
     # Compute clustering
     print("Compute structured hierarchical clustering...")
     st = time.time()
-    ward = AgglomerativeClustering(n_clusters=6, connectivity=connectivity,
+    ward = AgglomerativeClustering(n_clusters=n_clusters, connectivity=connectivity,
                                    linkage='ward').fit(X)
     elapsed_time = time.time() - st
     label = ward.labels_
