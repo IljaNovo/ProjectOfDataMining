@@ -287,11 +287,10 @@ def prune_tree(root, node, validate_set, best_score):
 
         return new_score
 
-def run_decision_tree():
-
-    dataset = csvdata("")
-    training_set = csvdata("")
-    test_set = csvdata("")
+def run_decision_tree(path, k_num):
+    dataset = csvdata(path)
+    training_set = csvdata(path)
+    test_set = csvdata(path)
 
     # Load data set
     #with open("data.csv") as f:
@@ -339,7 +338,7 @@ def run_decision_tree():
     # dataset.rows = [x for i, x in enumerate(dataset.rows) if i % 10 != 9]
     # validate_set.rows = [x for i, x in enumerate(dataset.rows) if i % 10 == 9]
 
-    K=10
+    K= k_num
     # Stores accuracy of the 10 runs
     accuracy = []
     start = time.clock()
@@ -377,7 +376,3 @@ def run_decision_tree():
     f.write("accuracy: %.4f" % mean_accuracy)
     f.close()
 
-print("vipolneno!")
-
-if __name__ == "__main__":
-    run_decision_tree()

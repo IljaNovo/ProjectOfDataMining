@@ -6,10 +6,11 @@ import wx.xrc
 import input_output.io as io
 import os.path
 
-#import classification.C_4_5.tree as с45
+import classification.C_4_5.tree as c45
 import classification.Naive_Bayes_Classifier.BayesScratch.bayes_classifier as bayes
 import classification.k_Nearest_Neighbors.knn as knn
 import classification.Stochastic_Gradient_Descent.sgd as sgd
+import classification.Linear_Least_Squares_Classifier.LLS as lls
 
 
 import clustering.Hierarchical_clustering.hclust as hc
@@ -36,7 +37,7 @@ class MainWindow(wx.Frame):
     def __init__(self, parent):
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=u"Data Mining", pos=wx.DefaultPosition,
                           size=wx.Size(320, 530), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
-        self.SetSizeHints(wx.Size(320, 530), wx.Size(320, 530))
+        self.SetSizeHints(wx.Size(320, 530), wx.Size(470, 530))
 
         gbSizer1 = wx.GridBagSizer(0, 0)
         gbSizer1.SetFlexibleDirection(wx.BOTH)
@@ -172,7 +173,7 @@ class MainWindow(wx.Frame):
 
         self.menu_classification_Support_vector_machines.Enable(False)
         self.menu_classification_Gaussian_Processes.Enable(False)
-        self.menu_classification_Decision_trees.Enable(False)
+        #self.menu_classification_Decision_trees.Enable(False)
         self.menu_classification_less_sqad.Enable(False)
         self.menu_clustering_id3.Enable(False)
         self.menu_clustering_Perfomance_evalution.Enable(False)
@@ -427,6 +428,10 @@ class MainWindow(wx.Frame):
         self.lable_algo.SetLabel("Алгоритм: Decision trees")
         self.algo_state.SetLabel('classification_Decision_trees')
         self.advanced_settings_disable()
+        self.settings_value_1.Enable(True)
+        self.settings_lable_1.Enable(True)
+        self.settings_lable_1.SetLabel('Кол-во проходов')
+        self.settings_value_1.SetValue('6')
 
     def classification_naive_bayes(self, event):
         self.lable_task.SetLabel("Задача: Классификация")
@@ -640,6 +645,7 @@ class MainWindow(wx.Frame):
         return current_file
 
 
+
     def advanced_settings_int(self, var):
         a = int(float(var))
         return a
@@ -650,24 +656,26 @@ class MainWindow(wx.Frame):
 
     def check_input(self, event):
         key = event.GetKeyCode()
-        acceptable_characters = "1234567890.-"
+        acceptable_characters = "1234567890.-\b"
         if chr(key) in acceptable_characters:
             event.Skip()
             return
         else:
             return False
 
+
+
     def start_btn(self, event):
         if self.lable_algo.GetLabel() != 'Алгоритм: Не выбран':
             # Работа с локальным файлом
             if self.radioBtn_data_file.GetValue():
                 if self.file_type_check() != 'empty':
+                    ##### Классификация local
                     if self.algo_state.GetLabel() == 'classification_Support_vector_machines':
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("Txt файлы временно не поддерживаются")
                         elif self.file_type_check() == 'csv':
                             wx.MessageBox("Csv файлы временно не поддерживаются")
-
 
                     elif self.algo_state.GetLabel() == 'classification_Stochastic_gradient_descent':
                         h = self.advanced_settings_float(self.settings_value_1.GetValue())  # step size in the mesh
@@ -685,18 +693,23 @@ class MainWindow(wx.Frame):
                         elif self.file_type_check() == 'csv':
                             data = io.Input.load_csv_for_classification(self.file_path_local())
                             knn.run(data,n_neighbors,h)
+
                     elif self.algo_state.GetLabel() == 'classification_Gaussian_Processes':
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("Txt файлы временно не поддерживаются")
                         elif self.file_type_check() == 'csv':
                             wx.MessageBox("Csv файлы временно не поддерживаются")
 
-
                     elif self.algo_state.GetLabel() == 'classification_Decision_trees':
+                        k = self.advanced_settings_int(self.settings_value_1.GetValue())
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("Txt файлы временно не поддерживаются")
                         elif self.file_type_check() == 'csv':
-                            wx.MessageBox("Csv файлы временно не поддерживаются")
+                            data = io.Input.local_read_csv(self.file_path_local())
+                            c45.run_decision_tree(data, k)
+                            wx.MessageBox("Decision trees (c4.5) result in classification\\C_4_5\\result.txt")
+                            os_command_string = "notepad.exe classification/C_4_5/result.txt"
+                            os.system(os_command_string)
 
                     elif self.algo_state.GetLabel() == 'classification_naive_bayes':
                         splitRatio = self.advanced_settings_float(self.settings_value_1.GetValue())
@@ -714,13 +727,16 @@ class MainWindow(wx.Frame):
                         elif self.file_type_check() == 'csv':
                             wx.MessageBox("Csv файлы временно не поддерживаются")
 
+
+
+                    ##### Кластеризация local
                     elif self.algo_state.GetLabel() == 'clustering_kmeans':
                         n_clusters = self.advanced_settings_int(self.settings_value_1.GetValue())
                         if self.file_type_check() == 'txt':
                             X = io.Input.get_ndarray_from_txt(self.file_path_local())
                             k_means.run_kmeans(X, n_clusters)
                         elif self.file_type_check() == 'csv':
-                            k_means_csv.run_kmeans(self.file_path_local())
+                            wx.MessageBox("Csv файлы временно не поддерживаются")
 
                     elif self.algo_state.GetLabel() == 'clustering_id3':
                         if self.file_type_check() == 'txt':
@@ -732,7 +748,6 @@ class MainWindow(wx.Frame):
                         preference = self.advanced_settings_int(self.settings_value_1.GetValue())
                         if self.file_type_check() == 'txt':
                             X = io.Input.get_ndarray_from_txt(self.file_path_local())
-                            #
                             aff_p.compute_affinity_propagation(preference, X)
                         elif self.file_type_check() == 'csv':
                             wx.MessageBox("Csv файлы временно не поддерживаются")
@@ -811,6 +826,10 @@ class MainWindow(wx.Frame):
                         elif self.file_type_check() == 'csv':
                             wx.MessageBox("Csv файлы временно не поддерживаются")
 
+
+
+
+                    ##### Ассоциативные правила local
                     elif self.algo_state.GetLabel() == 'asociative_rules_apriori':
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("Txt файлы временно не поддерживаются")
@@ -821,18 +840,10 @@ class MainWindow(wx.Frame):
                         minSupport = self.advanced_settings_float(self.settings_value_1.GetValue())
                         minConfidence = self.advanced_settings_float(self.settings_value_2.GetValue())
                         if self.file_type_check() == 'txt':
-
                             wx.MessageBox("Txt файлы временно не поддерживаются")
                         elif self.file_type_check() == 'csv':
                             data_iter = dataFromFile(self.file_path_local())
                             items, rules = runApriori(data_iter, minSupport, minConfidence)
-                            data_iter = dataFromFile(self.file_path_local())
-                            items, rules = runApriori(data_iter, 0.5, 0.05)
-                            printResults(items, rules)
-                        elif self.file_type_check() == 'csv':
-                            data_iter = dataFromFile(self.file_path_local())
-                            items, rules = runApriori(data_iter, 0.5, 0.05)
-
                             printResults(items, rules)
 
                     elif self.algo_state.GetLabel() == 'asociative_rules_aprioriHybrid':
@@ -859,6 +870,7 @@ class MainWindow(wx.Frame):
             # Работа с веб файлом
             elif self.radioBtn_link.GetValue():
                 if self.file_type_check_web() != 'empty':
+                    ##### Классификация web
                     if self.algo_state.GetLabel() == 'classification_Support_vector_machines':
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("Работа с txt файлами временно не поддерживается")
@@ -883,12 +895,16 @@ class MainWindow(wx.Frame):
                         elif self.file_type_check_web() == 'csv':
                             wx.MessageBox("Работа с csv файлами временно не поддерживается")
 
-
                     elif self.algo_state.GetLabel() == 'classification_Decision_trees':
+                        k = self.advanced_settings_int(self.settings_value_1.GetValue())
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("Работа с txt файлами временно не поддерживается")
                         elif self.file_type_check_web() == 'csv':
-                            wx.MessageBox("Работа с csv файлами временно не поддерживается")
+                            data = io.Input.internet_read_csv(self.file_path_web())
+                            c45.run_decision_tree(data, k)
+                            wx.MessageBox("Decision trees (c4.5) result in classification\\C_4_5\\result.txt")
+                            os_command_string = "notepad.exe classification/C_4_5/result.txt"
+                            os.system(os_command_string)
 
                     elif self.algo_state.GetLabel() == 'classification_naive_bayes':
                         if self.file_type_check_web() == 'txt':
@@ -902,6 +918,11 @@ class MainWindow(wx.Frame):
                         elif self.file_type_check_web() == 'csv':
                             wx.MessageBox("Работа с csv файлами временно не поддерживается")
 
+
+
+
+
+                    ##### Кластеризация web
                     elif self.algo_state.GetLabel() == 'clustering_kmeans':
                         n_clusters = self.advanced_settings_int(self.settings_value_1.GetValue())
                         if self.file_type_check_web() == 'txt':
@@ -999,6 +1020,10 @@ class MainWindow(wx.Frame):
                         elif self.file_type_check_web() == 'csv':
                             wx.MessageBox("Работа с csv файлами временно не поддерживается")
 
+
+
+
+                    ##### Ассоциативные правила web
                     elif self.algo_state.GetLabel() == 'asociative_rules_apriori':
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("Работа с txt файлами временно не поддерживается")

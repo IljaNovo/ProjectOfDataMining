@@ -110,7 +110,7 @@ def test(a,b, split):
 def usage():
 	return 'usage: %s <data file> [head/tail]\n' % os.path.basename( sys.argv[ 0 ] )
 
-def main():
+def main(path):
 	# Check command-line arguments
 	if len(sys.argv) < 2:
 		print (usage())
@@ -123,7 +123,7 @@ def main():
 	
 	data = []
 	classes = []
-	f = open(sys.argv[1]) # open data file
+	f = path # open data file
    #f = open("iris.csv")
 	try:
 		# parse file
@@ -191,6 +191,3 @@ def main():
 	split = int(size * 0.1)
 	test(x,y,split)
 
-# Python doesnt call main() by default
-if __name__ == "__main__":
-	main()
