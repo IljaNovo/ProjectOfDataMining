@@ -415,7 +415,7 @@ class MainWindow(wx.Frame):
         self.settings_lable_2.Enable(True)
         self.settings_lable_2.SetLabel('Размер шага в сетке')
         self.settings_value_2.Enable(True)
-        self.settings_value_2.SetValue('0,02')
+        self.settings_value_2.SetValue('0.02')
 
     def classification_Gaussian_Processes(self, event):
         self.lable_task.SetLabel("Задача: Классификация")

@@ -45,7 +45,7 @@ def run_kmeans(X, n_clusters):
 
 	fig = plt.figure(figsize=(8, 3))
 	fig.subplots_adjust(left=0.02, right=0.98, bottom=0.05, top=0.9)
-	colors = ['#4EACC5', '#FF9C34', '#4E9A06']
+	colors = ['#1360db', '#db13bc', '#e0143d', '#1ec6d8', '#1dd82a', '#d0e512', '#d18700', '#4c4341', '#7a580e', '#1f3642']
 
 	# We want to have the same colors for the same cluster from the
 	# MiniBatchKMeans and the KMeans algorithm. Let's pair the cluster centers per
