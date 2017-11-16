@@ -546,14 +546,20 @@ class MainWindow(wx.Frame):
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("Stochastic Gradient Descent doesn't work with txt files!")
                         elif self.file_type_check() == 'csv':
-                            sgd.run(self.file_path_local())
+                            #parameters
+                            h = .02  # step size in the mesh
+                            data = io.Input.load_csv_for_classification(self.file_path_local())
+                            sgd.run(data, h)
 
                     elif self.algo_state.GetLabel() == 'classification_Nearest_Neighbors':
                         if self.file_type_check() == 'txt':
-                            wx.MessageBox("OMG! THIS IS PROBLEM!")
+                            wx.MessageBox("K-Nearest Neighbors doesn't work with txt files")
                         elif self.file_type_check() == 'csv':
-                            wx.MessageBox("OMG! THIS IS PROBLEM v2!")
-
+                            #parameters
+                            n_neighbors = 15
+                            h = .02  # step size in the mesh
+                            data = io.Input.load_csv_for_classification(self.file_path_local())
+                            knn.run(data,n_neighbors,h)
                     elif self.algo_state.GetLabel() == 'classification_Gaussian_Processes':
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("OMG! THIS IS PROBLEM!")
