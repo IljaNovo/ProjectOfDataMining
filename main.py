@@ -3,6 +3,7 @@
 
 import wx
 import wx.xrc
+
 import input_output.io as io
 import os.path
 
@@ -23,7 +24,6 @@ import clustering.k_means.k_means as k_means
 import clustering.Affinity_Propagation.AffinityPropagation as aff_p
 
 from associative_rules.apriori_tid.apriori import *
-import input_output.io as io
 
 
 ###########################################################################
@@ -170,10 +170,9 @@ class MainWindow(wx.Frame):
         self.SetMenuBar(self.m_menubar1)
 
 
-
+        #Выклчюенные элементы меню
         self.menu_classification_Support_vector_machines.Enable(False)
         self.menu_classification_Gaussian_Processes.Enable(False)
-        #self.menu_classification_Decision_trees.Enable(False)
         self.menu_classification_less_sqad.Enable(False)
         self.menu_clustering_id3.Enable(False)
         self.menu_clustering_Perfomance_evalution.Enable(False)
@@ -186,11 +185,11 @@ class MainWindow(wx.Frame):
         self.menu_asociative_rules_aprioriHybrid.Enable(False)
         self.menu_asociative_rules_DHP.Enable(False)
         self.menu_asociative_rules_PARTITION.Enable(False)
-
-
         # endregion
 
-        # region Рабочая область
+
+
+        # region Интерфейс
         self.lable_task = wx.StaticText(self, wx.ID_ANY, u"Задача: Не выбрана", wx.DefaultPosition, wx.DefaultSize, 0)
         self.lable_task.Wrap(-1)
         self.lable_task.SetFont(
@@ -314,6 +313,7 @@ class MainWindow(wx.Frame):
 
 
 
+        # region События
         self.radioBtn_data_file.Bind(wx.EVT_RADIOBUTTON, self.rdn_file)
         self.radioBtn_link.Bind(wx.EVT_RADIOBUTTON, self.rdn_link)
         self.radioBtn_random.Bind(wx.EVT_RADIOBUTTON, self.rdn_random)
@@ -362,13 +362,14 @@ class MainWindow(wx.Frame):
         self.Bind(wx.EVT_MENU, self.asociative_rules_aprioriHybrid, id=self.menu_asociative_rules_aprioriHybrid.GetId())
         self.Bind(wx.EVT_MENU, self.asociative_rules_DHP, id=self.menu_asociative_rules_DHP.GetId())
         self.Bind(wx.EVT_MENU, self.asociative_rules_PARTITION, id=self.menu_asociative_rules_PARTITION.GetId())
+        #endregion
 
 
     def __del__(self):
         pass
 
     # region Выбор задачи
-    def advanced_settings_disable(self):
+    def advanced_settings_disable(self): # Сброс и отключение элемнетов расширенной настройки
         self.settings_lable_1.Enable(False)
         self.settings_lable_2.Enable(False)
         self.settings_lable_3.Enable(False)
@@ -618,17 +619,17 @@ class MainWindow(wx.Frame):
 
 
 
-    def file_path_local(self):
+    def file_path_local(self): #Получение полного локального пути к файлу
         path_to_file = os.path.abspath(self.data_file_picker.GetPath())
         return path_to_file
 
-    def file_path_web(self):
+    def file_path_web(self): #Получение веб пути к файлу
         path_to_file = self.data_link.GetValue()
         return path_to_file
 
 
 
-    def file_type_check(self):
+    def file_type_check(self): #Проверка расширения локального файла
         current_file = 'empty'
         if self.file_path_local().endswith('.csv'):
             current_file = 'csv'
@@ -636,7 +637,7 @@ class MainWindow(wx.Frame):
             current_file = 'txt'
         return current_file
 
-    def file_type_check_web(self):
+    def file_type_check_web(self): #Проверка расширения веб файла
         current_file = 'empty'
         if self.file_path_web().endswith('.csv'):
             current_file = 'csv'
@@ -646,15 +647,15 @@ class MainWindow(wx.Frame):
 
 
 
-    def advanced_settings_int(self, var):
+    def advanced_settings_int(self, var): #Конвертирование параметра в int
         a = int(float(var))
         return a
 
-    def advanced_settings_float(self, var):
+    def advanced_settings_float(self, var): #Конвертирование параметра в float
         a = float(var)
         return a
 
-    def check_input(self, event):
+    def check_input(self, event): #Ограничение допустимых символов ввода
         key = event.GetKeyCode()
         acceptable_characters = "1234567890.-\b"
         if chr(key) in acceptable_characters:
@@ -1062,7 +1063,7 @@ class MainWindow(wx.Frame):
                     wx.MessageBox("URL не указан или имеет неверный формат")
 
             elif self.radioBtn_random.GetValue():
-                wx.MessageBox("Рандома временно недоступен")
+                wx.MessageBox("Рандом временно недоступен")
         else:
             wx.MessageBox("Выберите алгоритм")
 
