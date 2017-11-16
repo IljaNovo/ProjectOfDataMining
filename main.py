@@ -841,7 +841,9 @@ class MainWindow(wx.Frame):
                         minSupport = self.advanced_settings_float(self.settings_value_1.GetValue())
                         minConfidence = self.advanced_settings_float(self.settings_value_2.GetValue())
                         if self.file_type_check() == 'txt':
-                            wx.MessageBox("Txt файлы временно не поддерживаются")
+                            data_iter = dataFromFile(self.file_path_local())
+                            items, rules = runApriori(data_iter, minSupport, minConfidence)
+                            printResults(items, rules)
                         elif self.file_type_check() == 'csv':
                             data_iter = dataFromFile(self.file_path_local())
                             items, rules = runApriori(data_iter, minSupport, minConfidence)
