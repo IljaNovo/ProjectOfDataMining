@@ -75,18 +75,11 @@ class MainWindow(wx.Frame):
                                                          u"Наивная Байесовская классификация", wx.EmptyString,
                                                          wx.ITEM_NORMAL)
         self.menu_classification.Append(self.menu_classification_naive_bayes)
-        self.menu_classification_kmeans = wx.MenuItem(self.menu_classification, wx.ID_ANY,
-                                                       u"Алгоритм k-ближайших соседей (кф)", wx.EmptyString,
-                                                       wx.ITEM_NORMAL)
-        self.menu_classification.Append(self.menu_classification_kmeans)
+
         self.menu_classification_less_sqad = wx.MenuItem(self.menu_classification, wx.ID_ANY,
                                                          u"Алгоритм наименьших квадратов", wx.EmptyString,
                                                          wx.ITEM_NORMAL)
         self.menu_classification.Append(self.menu_classification_less_sqad)
-        self.menu_classification_vectors = wx.MenuItem(self.menu_classification, wx.ID_ANY,
-                                                       u"Алгоритм опорных векторов", wx.EmptyString,
-                                                       wx.ITEM_NORMAL)
-        self.menu_classification.Append(self.menu_classification_vectors)
         self.menu.AppendSubMenu(self.menu_classification, u"Классификация")
         # endregion
 
@@ -180,9 +173,7 @@ class MainWindow(wx.Frame):
         self.menu_classification_Support_vector_machines.Enable(False)
         self.menu_classification_Gaussian_Processes.Enable(False)
         self.menu_classification_Decision_trees.Enable(False)
-        self.menu_classification_kmeans.Enable(False)
         self.menu_classification_less_sqad.Enable(False)
-        self.menu_classification_vectors.Enable(False)
         self.menu_clustering_id3.Enable(False)
         self.menu_clustering_Perfomance_evalution.Enable(False)
         self.menu_clustering_Adjusted_Rand_index.Enable(False)
@@ -344,9 +335,7 @@ class MainWindow(wx.Frame):
                   id=self.menu_classification_Gaussian_Processes.GetId())
         self.Bind(wx.EVT_MENU, self.classification_Decision_trees, id=self.menu_classification_Decision_trees.GetId())
         self.Bind(wx.EVT_MENU, self.classification_naive_bayes, id=self.menu_classification_naive_bayes.GetId())
-        self.Bind(wx.EVT_MENU, self.classification_kmeans, id=self.menu_classification_kmeans.GetId())
         self.Bind(wx.EVT_MENU, self.classification_less_sqad, id=self.menu_classification_less_sqad.GetId())
-        self.Bind(wx.EVT_MENU, self.classification_vectors, id=self.menu_classification_vectors.GetId())
         self.Bind(wx.EVT_MENU, self.clustering_kmeans, id=self.menu_clustering_kmeans.GetId())
         self.Bind(wx.EVT_MENU, self.clustering_id3, id=self.menu_clustering_id3.GetId())
         self.Bind(wx.EVT_MENU, self.clustering_Affinity_Propagation,
@@ -449,22 +438,10 @@ class MainWindow(wx.Frame):
         self.settings_lable_1.SetLabel('SplitRatio')
         self.settings_value_1.SetValue('0.67')
 
-    def classification_kmeans(self, event):
-        self.lable_task.SetLabel("Задача: Классификация")
-        self.lable_algo.SetLabel("Алгоритм: K ближайших соседей")
-        self.algo_state.SetLabel('classification_kmeans')
-        self.advanced_settings_disable()
-
     def classification_less_sqad(self, event):
         self.lable_task.SetLabel("Задача: Классификация")
         self.lable_algo.SetLabel("Алгоритм: Наименьших квадратов")
         self.algo_state.SetLabel('classification_less_sqad')
-        self.advanced_settings_disable()
-
-    def classification_vectors(self, event):
-        self.lable_task.SetLabel("Задача: Классификация")
-        self.lable_algo.SetLabel("Алгоритм: Опорных векторов")
-        self.algo_state.SetLabel('classification_vectors')
         self.advanced_settings_disable()
 
     def clustering_kmeans(self, event):
@@ -731,24 +708,11 @@ class MainWindow(wx.Frame):
                             os_command_string = "notepad.exe classification/Naive_Bayes_Classifier/BayesScratch/result.txt"
                             os.system(os_command_string)
 
-                    elif self.algo_state.GetLabel() == 'classification_kmeans':
-                        if self.file_type_check() == 'txt':
-                            wx.MessageBox("Txt файлы временно не поддерживаются")
-                        elif self.file_type_check() == 'csv':
-                            wx.MessageBox("Csv файлы временно не поддерживаются")
-
                     elif self.algo_state.GetLabel() == 'classification_less_sqad':
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("Txt файлы временно не поддерживаются")
                         elif self.file_type_check() == 'csv':
                             wx.MessageBox("Csv файлы временно не поддерживаются")
-
-                    elif self.algo_state.GetLabel() == 'classification_vectors':
-                        if self.file_type_check() == 'txt':
-                            wx.MessageBox("Txt файлы временно не поддерживаются")
-                        elif self.file_type_check() == 'csv':
-                            wx.MessageBox("Csv файлы временно не поддерживаются")
-
 
                     elif self.algo_state.GetLabel() == 'clustering_kmeans':
                         n_clusters = self.advanced_settings_int(self.settings_value_1.GetValue())
@@ -932,19 +896,7 @@ class MainWindow(wx.Frame):
                         elif self.file_type_check_web() == 'csv':
                             wx.MessageBox("Работа с csv файлами временно не поддерживается")
 
-                    elif self.algo_state.GetLabel() == 'classification_kmeans':
-                        if self.file_type_check_web() == 'txt':
-                            wx.MessageBox("Работа с txt файлами временно не поддерживается")
-                        elif self.file_type_check_web() == 'csv':
-                            wx.MessageBox("Работа с csv файлами временно не поддерживается")
-
                     elif self.algo_state.GetLabel() == 'classification_less_sqad':
-                        if self.file_type_check_web() == 'txt':
-                            wx.MessageBox("Работа с txt файлами временно не поддерживается")
-                        elif self.file_type_check_web() == 'csv':
-                            wx.MessageBox("Работа с csv файлами временно не поддерживается")
-
-                    elif self.algo_state.GetLabel() == 'classification_vectors':
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("Работа с txt файлами временно не поддерживается")
                         elif self.file_type_check_web() == 'csv':
