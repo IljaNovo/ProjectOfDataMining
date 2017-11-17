@@ -74,6 +74,7 @@ def run_kmeans(X, n_clusters):
 	ax.set_yticks(())
 	plt.text(-3.5, 1.8,  'train time: %.2fs\ninertia: %f' % (
 		t_batch, k_means.inertia_))
+	io.Output.write_to_txt_file_two_value("!Results/clustering_KMEANS_result.txt", X, k_means_labels)
 
 	# MiniBatchKMeans
 	ax = fig.add_subplot(1, 3, 2)

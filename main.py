@@ -185,6 +185,7 @@ class MainWindow(wx.Frame):
         self.menu_asociative_rules_aprioriHybrid.Enable(False)
         self.menu_asociative_rules_DHP.Enable(False)
         self.menu_asociative_rules_PARTITION.Enable(False)
+        self.menu_classification_Decision_trees.Enable(False)
         # endregion
 
 
@@ -707,10 +708,10 @@ class MainWindow(wx.Frame):
                             wx.MessageBox("Txt файлы временно не поддерживаются")
                         elif self.file_type_check() == 'csv':
                             data = io.Input.local_read_csv(self.file_path_local())
-                            c45.run_decision_tree(data, k)
-                            wx.MessageBox("Decision trees (c4.5) result in classification\\C_4_5\\result.txt")
-                            os_command_string = "notepad.exe classification/C_4_5/result.txt"
-                            os.system(os_command_string)
+                            #c45.run_decision_tree(data, k)
+                            #wx.MessageBox("Decision trees (c4.5) result in classification\\C_4_5\\result.txt")
+                            #os_command_string = "notepad.exe classification/C_4_5/result.txt"
+                            #os.system(os_command_string)
 
                     elif self.algo_state.GetLabel() == 'classification_naive_bayes':
                         splitRatio = self.advanced_settings_float(self.settings_value_1.GetValue())
@@ -718,8 +719,8 @@ class MainWindow(wx.Frame):
                             wx.MessageBox("Txt файлы временно не поддерживаются")
                         elif self.file_type_check() == 'csv':
                             bayes.main(self.file_path_local(), splitRatio)
-                            wx.MessageBox("Naive Bayes result in classification\\Naive_Bayes_Classifier\\BayesScratch\\result.txt")
-                            os_command_string = "notepad.exe classification/Naive_Bayes_Classifier/BayesScratch/result.txt"
+                            wx.MessageBox("Naive Bayes result in !Results/classification_NBC_result.txt")
+                            os_command_string = "notepad.exe !Results/classification_NBC_result.txt"
                             os.system(os_command_string)
 
                     elif self.algo_state.GetLabel() == 'classification_less_sqad':

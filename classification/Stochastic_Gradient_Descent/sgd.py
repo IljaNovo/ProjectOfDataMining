@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn import datasets
 from sklearn.linear_model import SGDClassifier
+import input_output.io as io
 import csv
 
 def run(data, h):
@@ -55,6 +56,7 @@ def run(data, h):
     coef = clf.coef_
     intercept = clf.intercept_
 
+    io.Output.write_to_txt_file_two_value("!Results/classification_SGD_result.txt", X, y)
 
     def plot_hyperplane(c, color):
         def line(x0):

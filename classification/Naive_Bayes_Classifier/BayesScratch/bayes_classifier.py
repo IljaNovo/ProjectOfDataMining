@@ -108,7 +108,7 @@ def main(path, splitRatio_b):
     # prepare model
     summaries = summarizeByClass(trainingSet)
     # test model
-    io.Output.write_to_txt_file("classification/Naive_Bayes_Classifier/BayesScratch/result.txt", trainingSet)
+    io.Output.write_array_to_txt_file("!Results/classification_NBC_result.txt", trainingSet)
     predictions = getPredictions(summaries, testSet)
     accuracy = getAccuracy(testSet, predictions)
     print(('Accuracy: {0}%').format(accuracy))

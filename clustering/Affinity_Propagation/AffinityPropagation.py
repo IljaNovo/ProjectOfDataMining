@@ -43,6 +43,7 @@ def compute_affinity_propagation(preference_, X):
 #    print("Silhouette Coefficient: %0.3f" % metrics.silhouette_score(X, labels, metric='sqeuclidean'))
     print("Fowlkes Mallows Score: %0.3f" % metrics.fowlkes_mallows_score(labels_true, labels))
 
+
     plt.close('all')
     plt.figure(1)
     plt.clf()
@@ -54,6 +55,8 @@ def compute_affinity_propagation(preference_, X):
         plt.plot(cluster_center[0], cluster_center[1], 'o', markerfacecolor=col, markeredgecolor='k', markersize=14)
         for x in X[class_members]:
             plt.plot([cluster_center[0], x[0]], [cluster_center[1], x[1]], col)
+        io.Output.write_to_txt_file_two_value("!Results/clustering_AP_result.txt", X, labels)
+
 
     plt.title('Estimated number of clusters: %d' % n_clusters_)
     plt.show()

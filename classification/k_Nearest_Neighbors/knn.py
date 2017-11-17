@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 from sklearn import neighbors, datasets
+import input_output.io as io
 
 
 def run(data,n_neighbors,h):
@@ -46,5 +47,6 @@ def run(data,n_neighbors,h):
         plt.ylim(yy.min(), yy.max())
         plt.title("3-Class classification (k = %i, weights = '%s')"
                   % (n_neighbors, weights))
+        io.Output.write_to_txt_file_two_value("!Results/classification_KNN_result.txt", X, y)
 
     plt.show()

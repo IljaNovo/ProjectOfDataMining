@@ -109,6 +109,17 @@ class Output:
             print('Неизвестная ошибка!')
 
     @staticmethod
+    def write_to_txt_file_two_value(filePath, list1, list2):
+        try:
+            with open(filePath, 'w', encoding='utf-8') as file:
+                for x, y in zip(list1, list2):
+                    file.write(str(x) + " [" + str(y) + " class/cluster]\n")
+        except TimeoutError:
+            print('Истекло время ожидания')
+        except Exception:
+            print('Неизвестная ошибка!')
+
+    @staticmethod
     def write_to_csv_file(filePath, csvTable):
         try:
             csvTable.to_csv(filePath)
