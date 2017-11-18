@@ -185,7 +185,6 @@ class MainWindow(wx.Frame):
         self.menu_asociative_rules_aprioriHybrid.Enable(False)
         self.menu_asociative_rules_DHP.Enable(False)
         self.menu_asociative_rules_PARTITION.Enable(False)
-        self.menu_classification_Decision_trees.Enable(False)
         # endregion
 
 
@@ -707,12 +706,12 @@ class MainWindow(wx.Frame):
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("Txt файлы временно не поддерживаются")
                         elif self.file_type_check() == 'csv':
-                            data = io.Input.local_read_csv(self.file_path_local())
-                            #c45.run_decision_tree(data, k)
-                            #wx.MessageBox("Decision trees (c4.5) result in classification\\C_4_5\\result.txt")
-                            #os_command_string = "notepad.exe classification/C_4_5/result.txt"
-                            #os.system(os_command_string)
-
+                            #parameters
+                            n_classes = 3
+                            plot_colors = "ryb"
+                            plot_step = 0.02
+                            data = io.Input.load_csv_for_classification(self.file_path_local())
+                            dtc.dtc_run(data, n_classes,plot_colors,plot_step)
                     elif self.algo_state.GetLabel() == 'classification_naive_bayes':
                         splitRatio = self.advanced_settings_float(self.settings_value_1.GetValue())
                         if self.file_type_check() == 'txt':
