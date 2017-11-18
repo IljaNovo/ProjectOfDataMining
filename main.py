@@ -11,6 +11,7 @@ import classification.C_4_5.tree as c45
 import classification.Naive_Bayes_Classifier.BayesScratch.bayes_classifier as bayes
 import classification.k_Nearest_Neighbors.knn as knn
 import classification.Stochastic_Gradient_Descent.sgd as sgd
+import classification.Support_Vector_Machine.support_vector_machine as svm
 import classification.Linear_Least_Squares_Classifier.LLS as lls
 import classification.Decision_Tree_Classification.decision_tree_classification as dtc
 
@@ -171,7 +172,6 @@ class MainWindow(wx.Frame):
 
 
         #Выклчюенные элементы меню
-        self.menu_classification_Support_vector_machines.Enable(False)
         self.menu_classification_Gaussian_Processes.Enable(False)
         self.menu_classification_less_sqad.Enable(False)
         self.menu_clustering_id3.Enable(False)
@@ -676,7 +676,8 @@ class MainWindow(wx.Frame):
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("Txt файлы временно не поддерживаются")
                         elif self.file_type_check() == 'csv':
-                            wx.MessageBox("Csv файлы временно не поддерживаются")
+                            data = io.Input.load_csv_for_classification(self.file_path_local())
+                            svm.svm_run(data)
 
                     elif self.algo_state.GetLabel() == 'classification_Stochastic_gradient_descent':
                         h = self.advanced_settings_float(self.settings_value_1.GetValue())  # step size in the mesh
