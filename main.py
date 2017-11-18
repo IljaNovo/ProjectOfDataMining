@@ -14,6 +14,7 @@ import classification.Stochastic_Gradient_Descent.sgd as sgd
 import classification.Support_Vector_Machine.support_vector_machine as svm
 import classification.Linear_Least_Squares_Classifier.LLS as lls
 import classification.Decision_Tree_Classification.decision_tree_classification as dtc
+import classification.Gaussian_Processes_Classification.gaussian_processes as gpc
 
 import clustering.Hierarchical_clustering.hclust as hc
 import clustering.Hierarchical_clustering.hierarchical_clustering_plot as hc_plot
@@ -172,7 +173,6 @@ class MainWindow(wx.Frame):
 
 
         #Выклчюенные элементы меню
-        self.menu_classification_Gaussian_Processes.Enable(False)
         self.menu_classification_less_sqad.Enable(False)
         self.menu_clustering_id3.Enable(False)
         self.menu_clustering_Perfomance_evalution.Enable(False)
@@ -700,7 +700,10 @@ class MainWindow(wx.Frame):
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("Txt файлы временно не поддерживаются")
                         elif self.file_type_check() == 'csv':
-                            wx.MessageBox("Csv файлы временно не поддерживаются")
+                            #parameters
+                            h = .02  # step size in the mesh
+                            data = io.Input.load_csv_for_classification(self.file_path_local())
+                            gpc.gaussian_processes_run(data, h)
 
                     elif self.algo_state.GetLabel() == 'classification_Decision_trees':
                         k = self.advanced_settings_int(self.settings_value_1.GetValue())
