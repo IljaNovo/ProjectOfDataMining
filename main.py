@@ -10,7 +10,7 @@ import os.path
 import classification.Naive_Bayes_Classifier.BayesScratch.bayes_classifier as bayes
 import classification.k_Nearest_Neighbors.knn as knn
 import classification.Stochastic_Gradient_Descent.sgd as sgd
-
+import classification.Decision_Tree_Regression.decision_tree_regression as dtg
 
 import clustering.Hierarchical_clustering.hclust as hc
 import clustering.Hierarchical_clustering.hierarchical_clustering_plot as hc_plot
@@ -67,10 +67,10 @@ class MainWindow(wx.Frame):
                                                                   u"Gaussian Processes", wx.EmptyString,
                                                                   wx.ITEM_NORMAL)
         self.menu_classification.Append(self.menu_classification_Gaussian_Processes)
-        self.menu_classification_Decision_trees = wx.MenuItem(self.menu_classification, wx.ID_ANY, u"Decision trees",
+        self.menu_classification_Decision_tree = wx.MenuItem(self.menu_classification, wx.ID_ANY, u"Decision Tree Regression",
                                                               wx.EmptyString,
                                                               wx.ITEM_NORMAL)
-        self.menu_classification.Append(self.menu_classification_Decision_trees)
+        self.menu_classification.Append(self.menu_classification_Decision_tree)
         self.menu_classification_naive_bayes = wx.MenuItem(self.menu_classification, wx.ID_ANY,
                                                          u"Наивная Байесовская классификация", wx.EmptyString,
                                                          wx.ITEM_NORMAL)
@@ -172,7 +172,6 @@ class MainWindow(wx.Frame):
 
         self.menu_classification_Support_vector_machines.Enable(False)
         self.menu_classification_Gaussian_Processes.Enable(False)
-        self.menu_classification_Decision_trees.Enable(False)
         self.menu_classification_less_sqad.Enable(False)
         self.menu_clustering_id3.Enable(False)
         self.menu_clustering_Perfomance_evalution.Enable(False)
@@ -333,7 +332,7 @@ class MainWindow(wx.Frame):
                   id=self.menu_classification_Nearest_Neighbors.GetId())
         self.Bind(wx.EVT_MENU, self.classification_Gaussian_Processes,
                   id=self.menu_classification_Gaussian_Processes.GetId())
-        self.Bind(wx.EVT_MENU, self.classification_Decision_trees, id=self.menu_classification_Decision_trees.GetId())
+        self.Bind(wx.EVT_MENU, self.classification_Decision_tree, id=self.menu_classification_Decision_tree.GetId())
         self.Bind(wx.EVT_MENU, self.classification_naive_bayes, id=self.menu_classification_naive_bayes.GetId())
         self.Bind(wx.EVT_MENU, self.classification_less_sqad, id=self.menu_classification_less_sqad.GetId())
         self.Bind(wx.EVT_MENU, self.clustering_kmeans, id=self.menu_clustering_kmeans.GetId())
@@ -410,10 +409,10 @@ class MainWindow(wx.Frame):
         self.algo_state.SetLabel('classification_Gaussian_Processes')
         self.advanced_settings_disable()
 
-    def classification_Decision_trees(self, event):
+    def classification_Decision_tree(self, event):
         self.lable_task.SetLabel("Задача: Классификация")
-        self.lable_algo.SetLabel("Алгоритм: Decision trees")
-        self.algo_state.SetLabel('classification_Decision_trees')
+        self.lable_algo.SetLabel("Алгоритм: Decision Tree Regression")
+        self.algo_state.SetLabel('classification_Decision_tree')
         self.advanced_settings_disable()
 
     def classification_naive_bayes(self, event):
@@ -682,9 +681,10 @@ class MainWindow(wx.Frame):
                             wx.MessageBox("Csv файлы временно не поддерживаются")
 
 
-                    elif self.algo_state.GetLabel() == 'classification_Decision_trees':
+                    elif self.algo_state.GetLabel() == 'classification_Decision_tree':
                         if self.file_type_check() == 'txt':
-                            wx.MessageBox("Txt файлы временно не поддерживаются")
+                            data = io.Input.local_read_text_file(self.file_path_local())
+                            dtg.run(data)
                         elif self.file_type_check() == 'csv':
                             wx.MessageBox("Csv файлы временно не поддерживаются")
 
@@ -874,7 +874,7 @@ class MainWindow(wx.Frame):
                             wx.MessageBox("Работа с csv файлами временно не поддерживается")
 
 
-                    elif self.algo_state.GetLabel() == 'classification_Decision_trees':
+                    elif self.algo_state.GetLabel() == 'classification_Decision_tree':
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("Работа с txt файлами временно не поддерживается")
                         elif self.file_type_check_web() == 'csv':
