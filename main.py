@@ -24,6 +24,7 @@ import clustering.mean_shift.mean_shift as mean_shift
 import clustering.k_means.k_means_plt as k_means_csv
 import clustering.k_means.k_means as k_means
 import clustering.Affinity_Propagation.AffinityPropagation as aff_p
+import clustering.Spectral_Clustering.spectral_clustering_segmenting as scc
 
 from associative_rules.apriori_tid.apriori import *
 
@@ -180,7 +181,6 @@ class MainWindow(wx.Frame):
         self.menu_clustering_MutualInformationbasedscore.Enable(False)
         self.menu_clustering_Silhouette_Coefficient.Enable(False)
         self.menu_clustering_V_measure.Enable(False)
-        self.menu_clustering_Spectral_clustering.Enable(False)
         self.menu_asociative_rules_apriori.Enable(False)
         self.menu_asociative_rules_aprioriHybrid.Enable(False)
         self.menu_asociative_rules_DHP.Enable(False)
@@ -826,6 +826,8 @@ class MainWindow(wx.Frame):
                             wx.MessageBox("Csv файлы временно не поддерживаются")
 
                     elif self.algo_state.GetLabel() == 'clustering_Spectral_clustering':
+                        dat = io.Input.get_dat_file("asdas")
+                        scc.spectral_clustering_run(dat)
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("Txt файлы временно не поддерживаются")
                         elif self.file_type_check() == 'csv':

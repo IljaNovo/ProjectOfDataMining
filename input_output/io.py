@@ -3,6 +3,8 @@ import requests
 from numpy import array
 import numpy as np
 import csv
+import scipy as sp
+from numpy.core import multiarray
 
 class Input:
     # Чтение csv таблиц из интернета
@@ -96,6 +98,27 @@ class Input:
         X = array(float_array)
         return X
 
+    @staticmethod
+    def get_dat_file(file_path):
+        try:  # SciPy >= 0.16 have face in misc
+            dat = Input.face(gray=True)
+        except ImportError:
+            dat = sp.face(gray=True)
+        return dat
+
+    @staticmethod
+    def face(gray=False):
+        import bz2
+        import os
+        with open(os.path.join('C:\\Users\\vladimir.kornilov\\Python\\ProjectOfDataMining\\!Datasets\\image.dat'), 'rb') as f:
+            rawdata = f.read()
+        data = bz2.decompress(rawdata)
+        fromstring = multiarray.fromstring
+        face = fromstring(data, dtype='uint8')
+        face.shape = (768, 1024, 3)
+        if gray is True:
+            face = (0.21 * face[:, :, 0] + 0.71 * face[:, :, 1] + 0.07 * face[:, :, 2]).astype('uint8')
+        return face
 
 class Output:
     @staticmethod
