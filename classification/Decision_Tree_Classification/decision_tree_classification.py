@@ -42,7 +42,7 @@ def dtc_run(data, n_classes,plot_colors,plot_step) :
         # Plot the training points
         for i, color in zip(range(n_classes), plot_colors):
             idx = np.where(y == i)
-            plt.scatter(X[idx, 0], X[idx, 1], c=color, label=iris.target_names[i],
+            plt.scatter(X[idx, 0], X[idx, 1], c=color, label=data.target_names[i],
                         cmap=plt.cm.RdYlBu, edgecolor='black', s=15)
 
     plt.suptitle("Decision surface of a decision tree using paired features")

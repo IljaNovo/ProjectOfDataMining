@@ -12,7 +12,7 @@ import classification.Naive_Bayes_Classifier.BayesScratch.bayes_classifier as ba
 import classification.k_Nearest_Neighbors.knn as knn
 import classification.Stochastic_Gradient_Descent.sgd as sgd
 import classification.Linear_Least_Squares_Classifier.LLS as lls
-
+import classification.Decision_Tree_Classification.decision_tree_classification as dtc
 
 import clustering.Hierarchical_clustering.hclust as hc
 import clustering.Hierarchical_clustering.hierarchical_clustering_plot as hc_plot
