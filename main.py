@@ -8,7 +8,8 @@ import input_output.io as io
 import os.path
 
 import classification.C_4_5.tree as c45
-import classification.Naive_Bayes_Classifier.BayesScratch.bayes_classifier as bayes
+import classification.Naive_Bayes_Classifier.BayesScratch.bayes_classifier as bayes1
+import classification.Naive_Bayes_Classifier.naive_bayes as bayes
 import classification.k_Nearest_Neighbors.knn as knn
 import classification.Stochastic_Gradient_Descent.sgd as sgd
 import classification.Support_Vector_Machine.support_vector_machine as svm
@@ -446,10 +447,10 @@ class MainWindow(wx.Frame):
         self.lable_algo.SetLabel("Алгоритм: Наивная байесовская классификация")
         self.algo_state.SetLabel('classification_naive_bayes')
         self.advanced_settings_disable()
-        self.settings_value_1.Enable(True)
         self.settings_lable_1.Enable(True)
-        self.settings_lable_1.SetLabel('SplitRatio')
-        self.settings_value_1.SetValue('0.67')
+        self.settings_lable_1.SetLabel('Размерность сетки')
+        self.settings_value_1.Enable(True)
+        self.settings_value_1.SetValue('0.02')
 
     def classification_less_sqad(self, event):
         self.lable_task.SetLabel("Задача: Классификация")
@@ -721,14 +722,12 @@ class MainWindow(wx.Frame):
                             dtc.dtc_run(data, plot_step)
 
                     elif self.algo_state.GetLabel() == 'classification_naive_bayes':
-                        splitRatio = self.advanced_settings_float(self.settings_value_1.GetValue())
+                        plot_step = self.advanced_settings_float(self.settings_value_1.GetValue())
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("Txt файлы временно не поддерживаются")
                         elif self.file_type_check() == 'csv':
-                            bayes.main(self.file_path_local(), splitRatio)
-                            wx.MessageBox("Naive Bayes result in !Results/classification_NBC_result.txt")
-                            os_command_string = "notepad.exe !Results/classification_NBC_result.txt"
-                            os.system(os_command_string)
+                            data = io.Input.load_csv_for_classification(self.file_path_local())
+                            bayes.bayes_run(data, plot_step)
 
                     elif self.algo_state.GetLabel() == 'classification_less_sqad':
                         if self.file_type_check() == 'txt':
@@ -924,11 +923,12 @@ class MainWindow(wx.Frame):
                             dtc.dtc_run(data, plot_step)
 
                     elif self.algo_state.GetLabel() == 'classification_naive_bayes':
-                        splitRatio = self.advanced_settings_float(self.settings_value_1.GetValue())
+                        plot_step = self.advanced_settings_float(self.settings_value_1.GetValue())
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("Работа с txt файлами временно не поддерживается")
                         elif self.file_type_check_web() == 'csv':
-                            wx.MessageBox("Работа с csv файлами временно не поддерживается")
+                            data = io.Input.load_csv_for_classification_from_webresource(self.file_path_web())
+                            bayes.bayes_run(data, plot_step)
 
                     elif self.algo_state.GetLabel() == 'classification_less_sqad':
                         if self.file_type_check_web() == 'txt':
