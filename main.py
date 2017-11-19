@@ -58,7 +58,7 @@ class MainWindow(wx.Frame):
                                                                            wx.ITEM_NORMAL)
         self.menu_classification.Append(self.menu_classification_Stochastic_gradient_descent)
         self.menu_classification_Nearest_Neighbors = wx.MenuItem(self.menu_classification, wx.ID_ANY,
-                                                                 u"Nearest Neighbors", wx.EmptyString,
+                                                                 u"K-Nearest Neighbors", wx.EmptyString,
                                                                  wx.ITEM_NORMAL)
         self.menu_classification.Append(self.menu_classification_Nearest_Neighbors)
         self.menu_classification_Gaussian_Processes = wx.MenuItem(self.menu_classification, wx.ID_ANY,
@@ -370,7 +370,7 @@ class MainWindow(wx.Frame):
 
     def classification_Nearest_Neighbors(self, event):
         self.lable_task.SetLabel("Задача: Классификация")
-        self.lable_algo.SetLabel("Алгоритм: Nearest Neighbors")
+        self.lable_algo.SetLabel("Алгоритм: K-Nearest Neighbors")
         self.algo_state.SetLabel('classification_Nearest_Neighbors')
         self.advanced_settings_disable()
         self.settings_lable_1.Enable(True)
@@ -613,7 +613,7 @@ class MainWindow(wx.Frame):
                     if self.algo_state.GetLabel() == 'classification_Support_vector_machines':
                         C = self.advanced_settings_int(self.settings_value_1.GetValue())
                         if self.file_type_check() == 'txt':
-                            wx.MessageBox("Txt файлы временно не поддерживаются")
+                            wx.MessageBox("Txt файлы временно не поддерживаются алгоритмом SVM", "Функция недоступна")
                         elif self.file_type_check() == 'csv':
                             data = io.Input.load_csv_for_classification(self.file_path_local())
                             svm.svm_run(data, C)
@@ -621,7 +621,7 @@ class MainWindow(wx.Frame):
                     elif self.algo_state.GetLabel() == 'classification_Stochastic_gradient_descent':
                         h = self.advanced_settings_float(self.settings_value_1.GetValue())  # step size in the mesh
                         if self.file_type_check() == 'txt':
-                            wx.MessageBox("Txt файлы временно не поддерживаются")
+                            wx.MessageBox("Txt файлы временно не поддерживаются алгоритмом SGD", "Функция недоступна")
                         elif self.file_type_check() == 'csv':
                             data = io.Input.load_csv_for_classification(self.file_path_local())
                             sgd.run(data, h)
@@ -630,7 +630,7 @@ class MainWindow(wx.Frame):
                         n_neighbors = self.advanced_settings_int(self.settings_value_1.GetValue())
                         h = self.advanced_settings_float(self.settings_value_2.GetValue())  # step size in the mesh
                         if self.file_type_check() == 'txt':
-                            wx.MessageBox("Txt файлы временно не поддерживаются")
+                            wx.MessageBox("Txt файлы временно не поддерживаются алгоритмом KNN", "Функция недоступна")
                         elif self.file_type_check() == 'csv':
                             data = io.Input.load_csv_for_classification(self.file_path_local())
                             knn.run(data,n_neighbors,h)
@@ -638,7 +638,7 @@ class MainWindow(wx.Frame):
                     elif self.algo_state.GetLabel() == 'classification_Gaussian_Processes':
                         h = self.advanced_settings_float(self.settings_value_1.GetValue())  # step size in the mesh
                         if self.file_type_check() == 'txt':
-                            wx.MessageBox("Txt файлы временно не поддерживаются")
+                            wx.MessageBox("Txt файлы временно не поддерживаются алгоритмом GP", "Функция недоступна")
                         elif self.file_type_check() == 'csv':
                             data = io.Input.load_csv_for_classification(self.file_path_local())
                             gpc.gaussian_processes_run(data, h)
@@ -646,7 +646,7 @@ class MainWindow(wx.Frame):
                     elif self.algo_state.GetLabel() == 'classification_Decision_trees':
                         plot_step = self.advanced_settings_float(self.settings_value_1.GetValue())
                         if self.file_type_check() == 'txt':
-                            wx.MessageBox("Txt файлы временно не поддерживаются")
+                            wx.MessageBox("Txt файлы временно не поддерживаются алгоритмом DT", "Функция недоступна")
                         elif self.file_type_check() == 'csv':
                             data = io.Input.load_csv_for_classification(self.file_path_local())
                             dtc.dtc_run(data, plot_step)
@@ -654,7 +654,7 @@ class MainWindow(wx.Frame):
                     elif self.algo_state.GetLabel() == 'classification_naive_bayes':
                         plot_step = self.advanced_settings_float(self.settings_value_1.GetValue())
                         if self.file_type_check() == 'txt':
-                            wx.MessageBox("Txt файлы временно не поддерживаются")
+                            wx.MessageBox("Txt файлы временно не поддерживаются алгоритмом NB", "Функция недоступна")
                         elif self.file_type_check() == 'csv':
                             data = io.Input.load_csv_for_classification(self.file_path_local())
                             bayes.bayes_run(data, plot_step)
@@ -674,7 +674,7 @@ class MainWindow(wx.Frame):
                             X = io.Input.get_ndarray_from_txt(self.file_path_local())
                             k_means.run_kmeans(X, n_clusters)
                         elif self.file_type_check() == 'csv':
-                            wx.MessageBox("Csv файлы временно не поддерживаются")
+                            wx.MessageBox("Csv файлы временно не поддерживаются алгоритмом K-means", "Функция недоступна")
 
                     elif self.algo_state.GetLabel() == 'clustering_id3':
                         if self.file_type_check() == 'txt':
@@ -688,7 +688,7 @@ class MainWindow(wx.Frame):
                             X = io.Input.get_ndarray_from_txt(self.file_path_local())
                             aff_p.compute_affinity_propagation(preference, X)
                         elif self.file_type_check() == 'csv':
-                            wx.MessageBox("Csv файлы временно не поддерживаются")
+                            wx.MessageBox("Csv файлы временно не поддерживаются алгоритмом AP", "Функция недоступна")
 
                     elif self.algo_state.GetLabel() == 'clustering_Birch':
                         threshold = self.advanced_settings_float(
@@ -699,7 +699,7 @@ class MainWindow(wx.Frame):
                              X = io.Input.get_ndarray_from_txt(self.file_path_local())
                              birch.run(X, threshold, clusters)
                         elif self.file_type_check() == 'csv':
-                            wx.MessageBox("Csv файлы временно не поддерживаются")
+                            wx.MessageBox("Csv файлы временно не поддерживаются алгоритмом BIRCH", "Функция недоступна")
 
                     elif self.algo_state.GetLabel() == 'clustering_Mean_Shift':
                         bandwidth = self.advanced_settings_float(self.settings_value_1.GetValue())
@@ -707,7 +707,7 @@ class MainWindow(wx.Frame):
                             X = io.Input.get_ndarray_from_txt(self.file_path_local())
                             mean_shift.run_mean_shift(X, bandwidth)
                         elif self.file_type_check() == 'csv':
-                            wx.MessageBox("Csv файлы временно не поддерживаются")
+                            wx.MessageBox("Csv файлы временно не поддерживаются алгоритмом MS", "Функция недоступна")
 
                     elif self.algo_state.GetLabel() == 'clustering_Hierarchical_clustering':
                         n_clusters = self.advanced_settings_int(self.settings_value_1.GetValue())
@@ -715,7 +715,7 @@ class MainWindow(wx.Frame):
                             X = io.Input.get_ndarray_from_txt(self.file_path_local())
                             hc_plot.run(X, n_clusters)
                         elif self.file_type_check() == 'csv':
-                            wx.MessageBox("Csv файлы временно не поддерживаются")
+                            wx.MessageBox("Csv файлы временно не поддерживаются алгоритмом HC", "Функция недоступна")
 
                     elif self.algo_state.GetLabel() == 'clustering_DBSCAN':
                         eps = self.advanced_settings_float(
@@ -726,7 +726,7 @@ class MainWindow(wx.Frame):
                             X = io.Input.get_ndarray_from_txt(self.file_path_local())
                             dbscan.dbscan_run(X, eps, min_samples)
                         elif self.file_type_check() == 'csv':
-                            wx.MessageBox("Csv файлы временно не поддерживаются")
+                            wx.MessageBox("Csv файлы временно не поддерживаются алгоритмом DBSCAN", "Функция недоступна")
 
                     elif self.algo_state.GetLabel() == 'clustering_Spectral_clustering':
                         if self.file_type_check() == 'txt':
@@ -784,7 +784,7 @@ class MainWindow(wx.Frame):
                     if self.algo_state.GetLabel() == 'classification_Support_vector_machines':
                         C = self.advanced_settings_int(self.settings_value_1.GetValue())
                         if self.file_type_check_web() == 'txt':
-                            wx.MessageBox("Работа с txt файлами временно не поддерживается")
+                            wx.MessageBox("Работа с web txt файлами временно не поддерживается алгоритмом SVM", "Функция недоступна")
                         elif self.file_type_check_web() == 'csv':
                             data = io.Input.load_csv_for_classification_from_webresource(self.file_path_web())
                             svm.svm_run(data,C)
@@ -792,7 +792,7 @@ class MainWindow(wx.Frame):
                     elif self.algo_state.GetLabel() == 'classification_Stochastic_gradient_descent':
                         h = self.advanced_settings_float(self.settings_value_1.GetValue())  # step size in the mesh
                         if self.file_type_check_web() == 'txt':
-                            wx.MessageBox("Работа с txt файлами временно не поддерживается")
+                            wx.MessageBox("Работа с web txt файлами временно не поддерживается алгоритмом SGD", "Функция недоступна")
                         elif self.file_type_check_web() == 'csv':
                             data = io.Input.load_csv_for_classification_from_webresource(self.file_path_web())
                             sgd.run(data, h)
@@ -801,7 +801,7 @@ class MainWindow(wx.Frame):
                         n_neighbors = self.advanced_settings_int(self.settings_value_1.GetValue())
                         h = self.advanced_settings_float(self.settings_value_2.GetValue())  # step size in the mesh
                         if self.file_type_check_web() == 'txt':
-                            wx.MessageBox("Работа с txt файлами временно не поддерживается")
+                            wx.MessageBox("Работа с web txt файлами временно не поддерживается алгоритмом KNN", "Функция недоступна")
                         elif self.file_type_check_web() == 'csv':
                             data = io.Input.load_csv_for_classification_from_webresource(self.file_path_web())
                             knn.run(data, n_neighbors, h)
@@ -809,7 +809,7 @@ class MainWindow(wx.Frame):
                     elif self.algo_state.GetLabel() == 'classification_Gaussian_Processes':
                         h = self.advanced_settings_float(self.settings_value_1.GetValue())  # step size in the mesh
                         if self.file_type_check_web() == 'txt':
-                            wx.MessageBox("Работа с txt файлами временно не поддерживается")
+                            wx.MessageBox("Работа с web txt файлами временно не поддерживается алгоритмом GP", "Функция недоступна")
                         elif self.file_type_check_web() == 'csv':
                             data = io.Input.load_csv_for_classification_from_webresource(self.file_path_web())
                             gpc.gaussian_processes_run(data, h)
@@ -817,7 +817,7 @@ class MainWindow(wx.Frame):
                     elif self.algo_state.GetLabel() == 'classification_Decision_trees':
                         plot_step = self.advanced_settings_float(self.settings_value_1.GetValue())
                         if self.file_type_check_web() == 'txt':
-                            wx.MessageBox("Работа с txt файлами временно не поддерживается")
+                            wx.MessageBox("Работа с web txt файлами временно не поддерживается алгоритмом DT", "Функция недоступна")
                         elif self.file_type_check_web() == 'csv':
                             data = io.Input.load_csv_for_classification_from_webresource(self.file_path_web())
                             dtc.dtc_run(data, plot_step)
@@ -825,7 +825,7 @@ class MainWindow(wx.Frame):
                     elif self.algo_state.GetLabel() == 'classification_naive_bayes':
                         plot_step = self.advanced_settings_float(self.settings_value_1.GetValue())
                         if self.file_type_check_web() == 'txt':
-                            wx.MessageBox("Работа с txt файлами временно не поддерживается")
+                            wx.MessageBox("Работа с web txt файлами временно не поддерживается алгоритмом NB", "Функция недоступна")
                         elif self.file_type_check_web() == 'csv':
                             data = io.Input.load_csv_for_classification_from_webresource(self.file_path_web())
                             bayes.bayes_run(data, plot_step)
@@ -844,7 +844,7 @@ class MainWindow(wx.Frame):
                             X = io.Input.get_ndarray_from_web_txt(self.file_path_web())
                             k_means.run_kmeans(X, n_clusters)
                         elif self.file_type_check_web() == 'csv':
-                            wx.MessageBox("Работа с csv файлами временно не поддерживается")
+                            wx.MessageBox("Работа с web csv файлами временно не поддерживается алгоритмом K-means", "Функция недоступна")
 
                     elif self.algo_state.GetLabel() == 'clustering_id3':
                         if self.file_type_check_web() == 'txt':
@@ -858,7 +858,7 @@ class MainWindow(wx.Frame):
                             X = io.Input.get_ndarray_from_web_txt(self.file_path_web())
                             aff_p.compute_affinity_propagation(preference, X)
                         elif self.file_type_check_web() == 'csv':
-                            wx.MessageBox("Работа с csv файлами временно не поддерживается")
+                            wx.MessageBox("Работа с web csv файлами временно не поддерживается алгоритмом AP", "Функция недоступна")
 
                     elif self.algo_state.GetLabel() == 'clustering_Birch':
                         threshold = self.advanced_settings_float(
@@ -869,7 +869,7 @@ class MainWindow(wx.Frame):
                             X = io.Input.get_ndarray_from_web_txt(self.file_path_web())
                             birch.run(X, threshold, clusters)
                         elif self.file_type_check_web() == 'csv':
-                            wx.MessageBox("Работа с csv файлами временно не поддерживается")
+                            wx.MessageBox("Работа с web csv файлами временно не поддерживается алгоритмом BIRCH", "Функция недоступна")
 
                     elif self.algo_state.GetLabel() == 'clustering_Mean_Shift':
                         bandwidth = self.advanced_settings_float(self.settings_value_1.GetValue())
@@ -877,7 +877,7 @@ class MainWindow(wx.Frame):
                             X = io.Input.get_ndarray_from_web_txt(self.file_path_web())
                             mean_shift.run_mean_shift(X, bandwidth)
                         elif self.file_type_check_web() == 'csv':
-                            wx.MessageBox("Работа с csv файлами временно не поддерживается")
+                            wx.MessageBox("Работа с web csv файлами временно не поддерживается алгоритмом MS", "Функция недоступна")
 
                     elif self.algo_state.GetLabel() == 'clustering_Hierarchical_clustering':
                         n_clusters = self.advanced_settings_int(self.settings_value_1.GetValue())
@@ -885,7 +885,7 @@ class MainWindow(wx.Frame):
                             X = io.Input.get_ndarray_from_web_txt(self.file_path_web())
                             hc_plot.run(X, n_clusters)
                         elif self.file_type_check_web() == 'csv':
-                            wx.MessageBox("Работа с csv файлами временно не поддерживается")
+                            wx.MessageBox("Работа с web csv файлами временно не поддерживается алгоритмом HC", "Функция недоступна")
 
                     elif self.algo_state.GetLabel() == 'clustering_DBSCAN':
                         eps = self.advanced_settings_float(
@@ -896,7 +896,7 @@ class MainWindow(wx.Frame):
                             X = io.Input.get_ndarray_from_web_txt(self.file_path_web())
                             dbscan.dbscan_run(X, eps, min_samples)
                         elif self.file_type_check_web() == 'csv':
-                            wx.MessageBox("Работа с csv файлами временно не поддерживается")
+                            wx.MessageBox("Работа с web csv файлами временно не поддерживается алгоритмом DBSCAN", "Функция недоступна")
 
                     elif self.algo_state.GetLabel() == 'clustering_Spectral_clustering':
                         if self.file_type_check_web() == 'txt':
@@ -943,12 +943,12 @@ class MainWindow(wx.Frame):
                             wx.MessageBox("Работа с csv файлами временно не поддерживается")
 
                 else:
-                    wx.MessageBox("URL не указан или имеет неверный формат")
+                    wx.MessageBox("URL не указан или имеет неверный формат", "Ошибка")
 
             elif self.radioBtn_random.GetValue():
-                wx.MessageBox("Рандом временно недоступен")
+                wx.MessageBox("Рандом временно недоступен", "Функция недоступна")
         else:
-            wx.MessageBox("Выберите алгоритм")
+            wx.MessageBox("Выберите алгоритм в меню программы", "Ошибка")
 
 
 app = wx.App(False)
