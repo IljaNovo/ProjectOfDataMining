@@ -82,5 +82,6 @@ def dbscan_run(X, eps_, min_samples_):
         plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=tuple(col),
                  markeredgecolor='k', markersize=6)
 
+    io.Output.write_to_txt_file_two_value("!Results/clustering_DBSCAN_result.txt", X, labels)
     plt.title('Estimated number of clusters: %d' % n_clusters_)
     plt.show()

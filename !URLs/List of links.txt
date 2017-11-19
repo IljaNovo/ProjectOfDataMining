@@ -1,0 +1,16 @@
+﻿Кластеризация
+Mean Shift - http://my-files.ru/Save/m4ol1j/Clustering_MS_input_data.txt
+K means - http://my-files.ru/Save/8lrqld/Clustering_KMEANS_input_data.txt
+Hierarchical_clustering - http://my-files.ru/Save/0stbzt/Clustering_HC_input_data.txt
+DBSCAN - http://my-files.ru/Save/jm7848/Clustering_DBSCAN_input_data.txt
+BIRCH - http://my-files.ru/Save/fpknji/Clustering_BIRCH_input_data.txt
+Affinity Propagation - http://my-files.ru/Save/uvfn53/Clustering_AP_input_data.txt
+
+
+Классификация
+Универсальная - http://my-files.ru/Save/d9e5jh/Classification_universal_iris.csv
+Наивная Байесовская классификация - http://my-files.ru/Save/im9akr/Classification_NBC_pima-indians-diabetes.csv
+
+
+Ассоциативные правила
+AprioriTID - http://my-files.ru/Save/s07669/Associativerules_apriori_tid_tesco.csv

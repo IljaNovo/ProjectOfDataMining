@@ -56,7 +56,7 @@ def run(data, h):
     coef = clf.coef_
     intercept = clf.intercept_
 
-    io.Output.write_to_txt_file_two_value("!Results/classification_SGD_result.txt", X, y)
+    #io.Output.write_to_txt_file_two_value("!Results/classification_SGD_result.txt", X, y)
 
     def plot_hyperplane(c, color):
         def line(x0):
@@ -69,4 +69,5 @@ def run(data, h):
     for i, color in zip(clf.classes_, colors):
         plot_hyperplane(i, color)
     plt.legend()
+    plt.savefig('!Results/classification_SGD_result.png', bbox_inches='tight')
     plt.show()

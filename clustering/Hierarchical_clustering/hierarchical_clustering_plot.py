@@ -46,6 +46,8 @@ def run(X, n_clusters):
                    color=plt.cm.jet(np.float(l) / np.max(label + 1)),
                    s=20, edgecolor='k')
     plt.title('Without connectivity constraints (time %.2fs)' % elapsed_time)
+    io.Output.write_to_txt_file_two_value("!Results/clustering_HC_without_constraints_result.txt", X, label)
+
 
 
     # #############################################################################
@@ -74,5 +76,6 @@ def run(X, n_clusters):
                    color=plt.cm.jet(float(l) / np.max(label + 1)),
                    s=20, edgecolor='k')
     plt.title('With connectivity constraints (time %.2fs)' % elapsed_time)
+    io.Output.write_to_txt_file_two_value("!Results/clustering_HC_with_constraints_result.txt", X, label)
 
     plt.show()

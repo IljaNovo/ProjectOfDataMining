@@ -62,6 +62,7 @@ def run(X, threshold_,cluster_count ):
         ax.set_autoscaley_on(False)
         ax.set_title('Birch %s' % info)
 
+
     # Compute clustering with MiniBatchKMeans.
     mbk = MiniBatchKMeans(init='k-means++', n_clusters=100, batch_size=100,
                           n_init=10, max_no_improvement=10, verbose=0,
@@ -84,4 +85,5 @@ def run(X, threshold_,cluster_count ):
     ax.set_ylim([-25, 25])
     ax.set_title("MiniBatchKMeans")
     ax.set_autoscaley_on(False)
+    io.Output.write_to_txt_file_two_value("!Results/clustering_BIRCH_result.txt", X, labels)
     plt.show()

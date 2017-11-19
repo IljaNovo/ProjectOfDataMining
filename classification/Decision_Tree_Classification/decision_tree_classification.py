@@ -1,14 +1,15 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from itertools import cycle
 
 from sklearn.datasets import load_iris
 from sklearn.tree import DecisionTreeClassifier
 
 
-def dtc_run(data, n_classes,plot_colors,plot_step) :
+def dtc_run(data, plot_step):
     # Parameters
-    #n_classes = 3
-    #plot_colors = "ryb"
+    n_classes = 3
+    plot_colors = "ryb"
     #plot_step = 0.02
 
     # Load data
@@ -48,4 +49,5 @@ def dtc_run(data, n_classes,plot_colors,plot_step) :
     plt.suptitle("Decision surface of a decision tree using paired features")
     plt.legend(loc='lower right', borderpad=0, handletextpad=0)
     plt.axis("tight")
+    plt.savefig('!Results/classification_DTC_result.png', bbox_inches='tight')
     plt.show()
