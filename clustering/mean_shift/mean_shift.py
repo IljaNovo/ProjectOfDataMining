@@ -53,4 +53,7 @@ def run_mean_shift(X, bandwidth):
                  markeredgecolor='k', markersize=14)
     plt.title('Estimated number of clusters: %d' % n_clusters_)
     io.Output.write_to_txt_file_two_value("!Results/clustering_MS_result.txt", X, labels)
+
+    fig = plt.gcf()
+    fig.canvas.set_window_title('[Result] Mean Shift clustering')
     plt.show()

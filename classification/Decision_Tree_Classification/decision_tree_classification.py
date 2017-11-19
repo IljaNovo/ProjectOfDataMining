@@ -50,4 +50,6 @@ def dtc_run(data, plot_step):
     plt.legend(loc='lower right', borderpad=0, handletextpad=0)
     plt.axis("tight")
     plt.savefig('!Results/classification_DTC_result.png', bbox_inches='tight')
+    fig = plt.gcf()
+    fig.canvas.set_window_title('[Result] Decision Tree classification')
     plt.show()

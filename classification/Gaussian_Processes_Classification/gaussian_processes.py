@@ -48,4 +48,6 @@ def gaussian_processes_run(data, h) :
 
     plt.tight_layout()
     plt.savefig('!Results/classification_GP_result.png', bbox_inches='tight')
+    fig = plt.gcf()
+    fig.canvas.set_window_title('[Result] Gaussian Processes classification')
     plt.show()

@@ -70,4 +70,6 @@ def run(data, h):
         plot_hyperplane(i, color)
     plt.legend()
     plt.savefig('!Results/classification_SGD_result.png', bbox_inches='tight')
+    fig = plt.gcf()
+    fig.canvas.set_window_title('[Result] Stochastic Gradient Descent classification')
     plt.show()

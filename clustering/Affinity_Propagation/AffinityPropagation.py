@@ -59,6 +59,8 @@ def compute_affinity_propagation(preference_, X):
 
 
     plt.title('Estimated number of clusters: %d' % n_clusters_)
+    fig = plt.gcf()
+    fig.canvas.set_window_title('[Result] Affinity Propagation clustering')
     plt.show()
 
 def process_data(data) :

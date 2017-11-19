@@ -83,5 +83,6 @@ def svm_run(data, C):
 
     #io.Output.write_to_txt_file_two_value("!Results/classification_SVM_result.txt", X, y)
     plt.savefig('!Results/classification_SVM_result.png', bbox_inches='tight')
-
+    fig = plt.gcf()
+    fig.canvas.set_window_title('[Result] Support Vector Machine classification')
     plt.show()

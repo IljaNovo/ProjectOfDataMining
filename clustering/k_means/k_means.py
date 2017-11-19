@@ -107,4 +107,6 @@ def run_kmeans(X, n_clusters):
 	ax.set_xticks(())
 	ax.set_yticks(())
 
+	fig = plt.gcf()
+	fig.canvas.set_window_title('[Result] K-means clustering')
 	plt.show()

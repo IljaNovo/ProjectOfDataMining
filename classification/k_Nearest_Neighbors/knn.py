@@ -47,7 +47,9 @@ def run(data,n_neighbors,h):
         plt.ylim(yy.min(), yy.max())
         plt.title("3-Class classification (k = %i, weights = '%s')"
                   % (n_neighbors, weights))
+        plt.gcf().canvas.set_window_title("[Result] K-Nearest Neighbors classification (weights = '%s')"
+                  % (weights))
+        plt.savefig("!Results/classification_KNN_%s_result.png" % (weights), bbox_inches='tight')
         #io.Output.write_to_txt_file_two_value("!Results/classification_KNN_result.txt", X, y)
-    plt.savefig('!Results/classification_KNN_result.png', bbox_inches='tight')
 
     plt.show()

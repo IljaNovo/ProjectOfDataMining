@@ -84,4 +84,7 @@ def dbscan_run(X, eps_, min_samples_):
 
     io.Output.write_to_txt_file_two_value("!Results/clustering_DBSCAN_result.txt", X, labels)
     plt.title('Estimated number of clusters: %d' % n_clusters_)
+
+    fig = plt.gcf()
+    fig.canvas.set_window_title('[Result] DBSCAN clustering')
     plt.show()

@@ -86,4 +86,7 @@ def run(X, threshold_,cluster_count ):
     ax.set_title("MiniBatchKMeans")
     ax.set_autoscaley_on(False)
     io.Output.write_to_txt_file_two_value("!Results/clustering_BIRCH_result.txt", X, labels)
+
+    fig = plt.gcf()
+    fig.canvas.set_window_title('[Result] BIRCH clustering')
     plt.show()
