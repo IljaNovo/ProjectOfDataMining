@@ -8,8 +8,7 @@ Affinity Propagation - http://my-files.ru/Save/uvfn53/Clustering_AP_input_data.t
 
 
 Классификация
-Универсальная - http://my-files.ru/Save/d9e5jh/Classification_universal_iris.csv
-Наивная Байесовская классификация - http://my-files.ru/Save/im9akr/Classification_NBC_pima-indians-diabetes.csv
+Универсальный датасет (iris) - http://my-files.ru/Save/d9e5jh/Classification_universal_iris.csv
 
 
 Ассоциативные правила

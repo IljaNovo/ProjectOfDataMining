@@ -1,31 +1,26 @@
 ﻿# -*- coding: utf-8 -*- 
 
-
 import wx
 import wx.xrc
 
 import input_output.io as io
 import os.path
 
-import classification.C_4_5.tree as c45
-import classification.Naive_Bayes_Classifier.BayesScratch.bayes_classifier as bayes1
-import classification.Naive_Bayes_Classifier.naive_bayes as bayes
-import classification.k_Nearest_Neighbors.knn as knn
-import classification.Stochastic_Gradient_Descent.sgd as sgd
-import classification.Support_Vector_Machine.support_vector_machine as svm
-import classification.Linear_Least_Squares_Classifier.LLS as lls
-import classification.Decision_Tree_Classification.decision_tree_classification as dtc
-import classification.Gaussian_Processes_Classification.gaussian_processes as gpc
+import classification.naive_bayes_classification as bayes
+import classification.k_nearest_neighbors_classification as knn
+import classification.stochastic_gradient_descent_classification as sgd
+import classification.support_vector_machine_classification as svm
+import classification.decision_tree_classification as dtc
+import classification.gaussian_processes_classification as gpc
 
-import clustering.Hierarchical_clustering.hierarchical_clustering_plot as hc_plot
-import clustering.DBSCAN.plot_dbscan as dbscan
-import clustering.BIRCH.birch_clustering as birch
-import clustering.mean_shift.mean_shift as mean_shift
-import clustering.k_means.k_means_plt as k_means_csv
-import clustering.k_means.k_means as k_means
-import clustering.Affinity_Propagation.AffinityPropagation as aff_p
+import clustering.hierarchical_clustering as hc_plot
+import clustering.dbscan_clustering as dbscan
+import clustering.birch_clustering as birch
+import clustering.mean_shift_clustering as mean_shift
+import clustering.k_means_clustering as k_means
+import clustering.affinity_propagation_clustering as aff_p
 
-from associative_rules.apriori_tid.apriori import *
+from associative_rules.apriori_associative_rules import *
 
 
 ###########################################################################
@@ -75,12 +70,12 @@ class MainWindow(wx.Frame):
                                                               wx.ITEM_NORMAL)
         self.menu_classification.Append(self.menu_classification_Decision_trees)
         self.menu_classification_naive_bayes = wx.MenuItem(self.menu_classification, wx.ID_ANY,
-                                                         u"Наивная Байесовская классификация", wx.EmptyString,
+                                                         u"Naive Bayes classification", wx.EmptyString,
                                                          wx.ITEM_NORMAL)
         self.menu_classification.Append(self.menu_classification_naive_bayes)
 
         self.menu_classification_less_sqad = wx.MenuItem(self.menu_classification, wx.ID_ANY,
-                                                         u"Алгоритм наименьших квадратов", wx.EmptyString,
+                                                         u"Linear Least Squares classification", wx.EmptyString,
                                                          wx.ITEM_NORMAL)
         self.menu_classification.Append(self.menu_classification_less_sqad)
         self.menu.AppendSubMenu(self.menu_classification, u"Классификация")
@@ -106,34 +101,13 @@ class MainWindow(wx.Frame):
                                                           wx.EmptyString,
                                                           wx.ITEM_NORMAL)
         self.menu_clustering.Append(self.menu_clustering_Mean_Shift)
-        self.menu_clustering_Perfomance_evalution = wx.MenuItem(self.menu_clustering, wx.ID_ANY,
-                                                                    u"Perfomance evalution", wx.EmptyString,
-                                                                    wx.ITEM_NORMAL)
-        self.menu_clustering.Append(self.menu_clustering_Perfomance_evalution)
         self.menu_clustering_Hierarchical_clustering = wx.MenuItem(self.menu_clustering, wx.ID_ANY,
                                                                        u"Hierarchical clustering", wx.EmptyString,
                                                                        wx.ITEM_NORMAL)
         self.menu_clustering.Append(self.menu_clustering_Hierarchical_clustering)
-        self.menu_clustering_Adjusted_Rand_index = wx.MenuItem(self.menu_clustering, wx.ID_ANY,
-                                                                   u"Adjusted Rand index", wx.EmptyString,
-                                                                   wx.ITEM_NORMAL)
-        self.menu_clustering.Append(self.menu_clustering_Adjusted_Rand_index)
         self.menu_clustering_DBSCAN = wx.MenuItem(self.menu_clustering, wx.ID_ANY, u"DBSCAN", wx.EmptyString,
                                                       wx.ITEM_NORMAL)
         self.menu_clustering.Append(self.menu_clustering_DBSCAN)
-        self.menu_clustering_MutualInformationbasedscore = wx.MenuItem(self.menu_clustering, wx.ID_ANY,
-                                                                           u"Mutual Information based score",
-                                                                           wx.EmptyString,
-                                                                           wx.ITEM_NORMAL)
-        self.menu_clustering.Append(self.menu_clustering_MutualInformationbasedscore)
-        self.menu_clustering_Silhouette_Coefficient = wx.MenuItem(self.menu_clustering, wx.ID_ANY,
-                                                                      u"Silhouette Coefficient", wx.EmptyString,
-                                                                      wx.ITEM_NORMAL)
-        self.menu_clustering.Append(self.menu_clustering_Silhouette_Coefficient)
-        self.menu_clustering_V_measure = wx.MenuItem(self.menu_clustering, wx.ID_ANY, u"V-measure",
-                                                         wx.EmptyString,
-                                                         wx.ITEM_NORMAL)
-        self.menu_clustering.Append(self.menu_clustering_V_measure)
         self.menu_clustering_Spectral_clustering = wx.MenuItem(self.menu_clustering, wx.ID_ANY,
                                                                    u"Spectral clustering", wx.EmptyString,
                                                                    wx.ITEM_NORMAL)
@@ -175,11 +149,6 @@ class MainWindow(wx.Frame):
         #Выклчюенные элементы меню
         self.menu_classification_less_sqad.Enable(False)
         self.menu_clustering_id3.Enable(False)
-        self.menu_clustering_Perfomance_evalution.Enable(False)
-        self.menu_clustering_Adjusted_Rand_index.Enable(False)
-        self.menu_clustering_MutualInformationbasedscore.Enable(False)
-        self.menu_clustering_Silhouette_Coefficient.Enable(False)
-        self.menu_clustering_V_measure.Enable(False)
         self.menu_clustering_Spectral_clustering.Enable(False)
         self.menu_asociative_rules_apriori.Enable(False)
         self.menu_asociative_rules_aprioriHybrid.Enable(False)
@@ -343,18 +312,9 @@ class MainWindow(wx.Frame):
                   id=self.menu_clustering_Affinity_Propagation.GetId())
         self.Bind(wx.EVT_MENU, self.clustering_Birch, id=self.menu_clustering_Birch.GetId())
         self.Bind(wx.EVT_MENU, self.clustering_Mean_Shift, id=self.menu_clustering_Mean_Shift.GetId())
-        self.Bind(wx.EVT_MENU, self.clustering_Perfomance_evalution,
-                  id=self.menu_clustering_Perfomance_evalution.GetId())
         self.Bind(wx.EVT_MENU, self.clustering_Hierarchical_clustering,
                   id=self.menu_clustering_Hierarchical_clustering.GetId())
-        self.Bind(wx.EVT_MENU, self.clustering_Adjusted_Rand_index,
-                  id=self.menu_clustering_Adjusted_Rand_index.GetId())
         self.Bind(wx.EVT_MENU, self.clustering_DBSCAN, id=self.menu_clustering_DBSCAN.GetId())
-        self.Bind(wx.EVT_MENU, self.clustering_MutualInformationbasedscore,
-                  id=self.menu_clustering_MutualInformationbasedscore.GetId())
-        self.Bind(wx.EVT_MENU, self.clustering_Silhouette_Coefficient,
-                  id=self.menu_clustering_Silhouette_Coefficient.GetId())
-        self.Bind(wx.EVT_MENU, self.clustering_V_measure, id=self.menu_clustering_V_measure.GetId())
         self.Bind(wx.EVT_MENU, self.clustering_Spectral_clustering,
                   id=self.menu_clustering_Spectral_clustering.GetId())
         self.Bind(wx.EVT_MENU, self.asociative_rules_apriori, id=self.menu_asociative_rules_apriori.GetId())
@@ -394,7 +354,7 @@ class MainWindow(wx.Frame):
         self.algo_state.SetLabel('classification_Support_vector_machines')
         self.advanced_settings_disable()
         self.settings_lable_1.Enable(True)
-        self.settings_lable_1.SetLabel('C (оптимизация)')
+        self.settings_lable_1.SetLabel('C (оптимизация):')
         self.settings_value_1.Enable(True)
         self.settings_value_1.SetValue('5')
 
@@ -404,7 +364,7 @@ class MainWindow(wx.Frame):
         self.algo_state.SetLabel('classification_Stochastic_gradient_descent')
         self.advanced_settings_disable()
         self.settings_lable_1.Enable(True)
-        self.settings_lable_1.SetLabel('Размер шага в сетке')
+        self.settings_lable_1.SetLabel('Размерность сетки:')
         self.settings_value_1.Enable(True)
         self.settings_value_1.SetValue('0.02')
 
@@ -414,11 +374,11 @@ class MainWindow(wx.Frame):
         self.algo_state.SetLabel('classification_Nearest_Neighbors')
         self.advanced_settings_disable()
         self.settings_lable_1.Enable(True)
-        self.settings_lable_1.SetLabel('Ближайших соседей')
+        self.settings_lable_1.SetLabel('Ближайших соседей:')
         self.settings_value_1.Enable(True)
         self.settings_value_1.SetValue('15')
         self.settings_lable_2.Enable(True)
-        self.settings_lable_2.SetLabel('Размер шага в сетке')
+        self.settings_lable_2.SetLabel('Размерность сетки:')
         self.settings_value_2.Enable(True)
         self.settings_value_2.SetValue('0.02')
 
@@ -428,7 +388,7 @@ class MainWindow(wx.Frame):
         self.algo_state.SetLabel('classification_Gaussian_Processes')
         self.advanced_settings_disable()
         self.settings_lable_1.Enable(True)
-        self.settings_lable_1.SetLabel('Размерность сетки')
+        self.settings_lable_1.SetLabel('Размерность сетки:')
         self.settings_value_1.Enable(True)
         self.settings_value_1.SetValue('0.02')
 
@@ -438,7 +398,7 @@ class MainWindow(wx.Frame):
         self.algo_state.SetLabel('classification_Decision_trees')
         self.advanced_settings_disable()
         self.settings_lable_1.Enable(True)
-        self.settings_lable_1.SetLabel('Размерность сетки')
+        self.settings_lable_1.SetLabel('Размерность сетки:')
         self.settings_value_1.Enable(True)
         self.settings_value_1.SetValue('0.02')
 
@@ -448,7 +408,7 @@ class MainWindow(wx.Frame):
         self.algo_state.SetLabel('classification_naive_bayes')
         self.advanced_settings_disable()
         self.settings_lable_1.Enable(True)
-        self.settings_lable_1.SetLabel('Размерность сетки')
+        self.settings_lable_1.SetLabel('Размерность сетки:')
         self.settings_value_1.Enable(True)
         self.settings_value_1.SetValue('0.02')
 
@@ -464,7 +424,7 @@ class MainWindow(wx.Frame):
         self.algo_state.SetLabel('clustering_kmeans')
         self.advanced_settings_disable()
         self.settings_lable_1.Enable(True)
-        self.settings_lable_1.SetLabel('Размерность')
+        self.settings_lable_1.SetLabel('Размерность:')
         self.settings_value_1.Enable(True)
         self.settings_value_1.SetValue('3')
 
@@ -480,7 +440,7 @@ class MainWindow(wx.Frame):
         self.algo_state.SetLabel('clustering_Affinity_Propagation')
         self.advanced_settings_disable()
         self.settings_lable_1.Enable(True)
-        self.settings_lable_1.SetLabel('Предпочтение')
+        self.settings_lable_1.SetLabel('Предпочтение:')
         self.settings_value_1.Enable(True)
         self.settings_value_1.SetValue('-50')
 
@@ -490,11 +450,11 @@ class MainWindow(wx.Frame):
         self.algo_state.SetLabel('clustering_Birch')
         self.advanced_settings_disable()
         self.settings_lable_1.Enable(True)
-        self.settings_lable_1.SetLabel('Радиус кластера')
+        self.settings_lable_1.SetLabel('Радиус кластера:')
         self.settings_value_1.Enable(True)
         self.settings_value_1.SetValue('1.7')
         self.settings_lable_2.Enable(True)
-        self.settings_lable_2.SetLabel('Кол-во кластеров')
+        self.settings_lable_2.SetLabel('Кол-во кластеров:')
         self.settings_value_2.Enable(True)
         self.settings_value_2.SetValue('100')
 
@@ -504,15 +464,9 @@ class MainWindow(wx.Frame):
         self.algo_state.SetLabel('clustering_Mean_Shift')
         self.advanced_settings_disable()
         self.settings_lable_1.Enable(True)
-        self.settings_lable_1.SetLabel('Пропускная способность')
+        self.settings_lable_1.SetLabel('Пропускная способн.:')
         self.settings_value_1.Enable(True)
         self.settings_value_1.SetValue('1.04388')
-
-    def clustering_Perfomance_evalution(self, event):
-        self.lable_task.SetLabel("Задача: Кластеризация")
-        self.lable_algo.SetLabel("Алгоритм: Perfomance evalution")
-        self.algo_state.SetLabel('clustering_Perfomance_evalution')
-        self.advanced_settings_disable()
 
     def clustering_Hierarchical_clustering(self, event):
         self.lable_task.SetLabel("Задача: Кластеризация")
@@ -520,15 +474,9 @@ class MainWindow(wx.Frame):
         self.algo_state.SetLabel('clustering_Hierarchical_clustering')
         self.advanced_settings_disable()
         self.settings_lable_1.Enable(True)
-        self.settings_lable_1.SetLabel('Кол-во кластеров')
+        self.settings_lable_1.SetLabel('Кол-во кластеров:')
         self.settings_value_1.Enable(True)
         self.settings_value_1.SetValue('6')
-
-    def clustering_Adjusted_Rand_index(self, event):
-        self.lable_task.SetLabel("Задача: Кластеризация")
-        self.lable_algo.SetLabel("Алгоритм: Adjusted Rand index")
-        self.algo_state.SetLabel('clustering_Adjusted_Rand_index')
-        self.advanced_settings_disable()
 
     def clustering_DBSCAN(self, event):
         self.lable_task.SetLabel("Задача: Кластеризация")
@@ -536,31 +484,13 @@ class MainWindow(wx.Frame):
         self.algo_state.SetLabel('clustering_DBSCAN')
         self.advanced_settings_disable()
         self.settings_lable_1.Enable(True)
-        self.settings_lable_1.SetLabel('Eps')
+        self.settings_lable_1.SetLabel('Eps:')
         self.settings_value_1.Enable(True)
         self.settings_value_1.SetValue('0.3')
         self.settings_lable_2.Enable(True)
-        self.settings_lable_2.SetLabel('Мин. кол-во сэмплов')
+        self.settings_lable_2.SetLabel('Мин. кол-во сэмплов:')
         self.settings_value_2.Enable(True)
         self.settings_value_2.SetValue('10')
-
-    def clustering_MutualInformationbasedscore(self, event):
-        self.lable_task.SetLabel("Задача: Кластеризация")
-        self.lable_algo.SetLabel("Алгоритм: Mutual Information based score")
-        self.algo_state.SetLabel('clustering_MutualInformationbasedscore')
-        self.advanced_settings_disable()
-
-    def clustering_Silhouette_Coefficient(self, event):
-        self.lable_task.SetLabel("Задача: Кластеризация")
-        self.lable_algo.SetLabel("Алгоритм: Silhouette Coefficient")
-        self.algo_state.SetLabel('clustering_Silhouette_Coefficient')
-        self.advanced_settings_disable()
-
-    def clustering_V_measure(self, event):
-        self.lable_task.SetLabel("Задача: Кластеризация")
-        self.lable_algo.SetLabel("Алгоритм: V-measure")
-        self.algo_state.SetLabel('clustering_V_measure')
-        self.advanced_settings_disable()
 
     def clustering_Spectral_clustering(self, event):
         self.lable_task.SetLabel("Задача: Кластеризация")
@@ -580,11 +510,11 @@ class MainWindow(wx.Frame):
         self.algo_state.SetLabel('asociative_rules_aprioriTID')
         self.advanced_settings_disable()
         self.settings_lable_1.Enable(True)
-        self.settings_lable_1.SetLabel('мин. Поддержка')
+        self.settings_lable_1.SetLabel('мин. Поддержка:')
         self.settings_value_1.Enable(True)
         self.settings_value_1.SetValue('0.5')
         self.settings_lable_2.Enable(True)
-        self.settings_lable_2.SetLabel('мин. Доверие')
+        self.settings_lable_2.SetLabel('мин. Доверие:')
         self.settings_value_2.Enable(True)
         self.settings_value_2.SetValue('0.05')
 
@@ -779,23 +709,11 @@ class MainWindow(wx.Frame):
                         elif self.file_type_check() == 'csv':
                             wx.MessageBox("Csv файлы временно не поддерживаются")
 
-                    elif self.algo_state.GetLabel() == 'clustering_Perfomance_evalution':
-                        if self.file_type_check() == 'txt':
-                            wx.MessageBox("Txt файлы временно не поддерживаются")
-                        elif self.file_type_check() == 'csv':
-                            wx.MessageBox("Csv файлы временно не поддерживаются")
-
                     elif self.algo_state.GetLabel() == 'clustering_Hierarchical_clustering':
                         n_clusters = self.advanced_settings_int(self.settings_value_1.GetValue())
                         if self.file_type_check() == 'txt':
                             X = io.Input.get_ndarray_from_txt(self.file_path_local())
                             hc_plot.run(X, n_clusters)
-                        elif self.file_type_check() == 'csv':
-                            wx.MessageBox("Csv файлы временно не поддерживаются")
-
-                    elif self.algo_state.GetLabel() == 'clustering_Adjusted_Rand_index':
-                        if self.file_type_check() == 'txt':
-                            wx.MessageBox("Txt файлы временно не поддерживаются")
                         elif self.file_type_check() == 'csv':
                             wx.MessageBox("Csv файлы временно не поддерживаются")
 
@@ -807,24 +725,6 @@ class MainWindow(wx.Frame):
                         if self.file_type_check() == 'txt':
                             X = io.Input.get_ndarray_from_txt(self.file_path_local())
                             dbscan.dbscan_run(X, eps, min_samples)
-                        elif self.file_type_check() == 'csv':
-                            wx.MessageBox("Csv файлы временно не поддерживаются")
-
-                    elif self.algo_state.GetLabel() == 'clustering_MutualInformationbasedscore':
-                        if self.file_type_check() == 'txt':
-                            wx.MessageBox("Txt файлы временно не поддерживаются")
-                        elif self.file_type_check() == 'csv':
-                            wx.MessageBox("Csv файлы временно не поддерживаются")
-
-                    elif self.algo_state.GetLabel() == 'clustering_Silhouette_Coefficient':
-                        if self.file_type_check() == 'txt':
-                            wx.MessageBox("Txt файлы временно не поддерживаются")
-                        elif self.file_type_check() == 'csv':
-                            wx.MessageBox("Csv файлы временно не поддерживаются")
-
-                    elif self.algo_state.GetLabel() == 'clustering_V_measure':
-                        if self.file_type_check() == 'txt':
-                            wx.MessageBox("Txt файлы временно не поддерживаются")
                         elif self.file_type_check() == 'csv':
                             wx.MessageBox("Csv файлы временно не поддерживаются")
 
@@ -979,23 +879,11 @@ class MainWindow(wx.Frame):
                         elif self.file_type_check_web() == 'csv':
                             wx.MessageBox("Работа с csv файлами временно не поддерживается")
 
-                    elif self.algo_state.GetLabel() == 'clustering_Perfomance_evalution':
-                        if self.file_type_check_web() == 'txt':
-                            wx.MessageBox("Работа с txt файлами временно не поддерживается")
-                        elif self.file_type_check_web() == 'csv':
-                            wx.MessageBox("Работа с csv файлами временно не поддерживается")
-
                     elif self.algo_state.GetLabel() == 'clustering_Hierarchical_clustering':
                         n_clusters = self.advanced_settings_int(self.settings_value_1.GetValue())
                         if self.file_type_check_web() == 'txt':
                             X = io.Input.get_ndarray_from_web_txt(self.file_path_web())
                             hc_plot.run(X, n_clusters)
-                        elif self.file_type_check_web() == 'csv':
-                            wx.MessageBox("Работа с csv файлами временно не поддерживается")
-
-                    elif self.algo_state.GetLabel() == 'clustering_Adjusted_Rand_index':
-                        if self.file_type_check_web() == 'txt':
-                            wx.MessageBox("Работа с txt файлами временно не поддерживается")
                         elif self.file_type_check_web() == 'csv':
                             wx.MessageBox("Работа с csv файлами временно не поддерживается")
 
@@ -1007,24 +895,6 @@ class MainWindow(wx.Frame):
                         if self.file_type_check_web() == 'txt':
                             X = io.Input.get_ndarray_from_web_txt(self.file_path_web())
                             dbscan.dbscan_run(X, eps, min_samples)
-                        elif self.file_type_check_web() == 'csv':
-                            wx.MessageBox("Работа с csv файлами временно не поддерживается")
-
-                    elif self.algo_state.GetLabel() == 'clustering_MutualInformationbasedscore':
-                        if self.file_type_check_web() == 'txt':
-                            wx.MessageBox("Работа с txt файлами временно не поддерживается")
-                        elif self.file_type_check_web() == 'csv':
-                            wx.MessageBox("Работа с csv файлами временно не поддерживается")
-
-                    elif self.algo_state.GetLabel() == 'clustering_Silhouette_Coefficient':
-                        if self.file_type_check_web() == 'txt':
-                            wx.MessageBox("Работа с txt файлами временно не поддерживается")
-                        elif self.file_type_check_web() == 'csv':
-                            wx.MessageBox("Работа с csv файлами временно не поддерживается")
-
-                    elif self.algo_state.GetLabel() == 'clustering_V_measure':
-                        if self.file_type_check_web() == 'txt':
-                            wx.MessageBox("Работа с txt файлами временно не поддерживается")
                         elif self.file_type_check_web() == 'csv':
                             wx.MessageBox("Работа с csv файлами временно не поддерживается")
 

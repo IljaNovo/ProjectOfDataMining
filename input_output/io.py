@@ -7,7 +7,6 @@ import urllib
 
 class Input:
     # Чтение csv таблиц из интернета
-    # url - адрес файла в интернете
     @staticmethod
     def internet_read_csv(url):
         print('Чтение CSV с ' + url + '...')
@@ -18,44 +17,26 @@ class Input:
         except Exception:
             print('Неизвестная ошибка!')
 
+
+    # Чтение текстовых файлов из интернета
     @staticmethod
-    def load_csv_for_classification(inputFilePath):
-        with open(inputFilePath) as csv_file:
-            data_file = csv.reader(csv_file)
-            temp = next(data_file)
-            n_samples = int(temp[0])
-            n_features = int(temp[1])
-            target_names = np.array(temp[2:])
-            data = np.empty((n_samples, n_features))
-            target = np.empty((n_samples,), dtype=np.int)
-
-            for i, ir in enumerate(data_file):
-                data[i] = np.asarray(ir[:-1], dtype=np.float64)
-                target[i] = np.asarray(ir[-1], dtype=np.int)
-
-        return Bunch(data=data, target=target,
-                     target_names=target_names,
-                     DESCR="",
-                     feature_names=['sepal length (cm)', 'sepal width (cm)',
-                                    'petal length (cm)', 'petal width (cm)'])
-
-    #Загрузить csv таблицу из интернета с форматированием
-    @staticmethod
-    def load_csv_for_classification_from_webresource(url):
-        table = urllib.request.urlopen(url)
-        return Input.format_csv(table)
-
-    # Чтение csv таблиц из файла
-    @staticmethod
-    def local_read_csv(file_path):
-        print('Чтение CSV из ' + file_path + '...')
+    def internet_read_text_file(url):
+        print('Чтение данных с ' + url)
         try:
-            return pandas.read_csv(file_path, index_col=None)
+            return requests.get(url).text
         except TimeoutError:
             print('Истекло время ожидания')
         except Exception:
             print('Неизвестная ошибка!')
 
+
+    #Загрузить csv таблицу из интернета с форматированием для алгоритмов классификации
+    @staticmethod
+    def load_csv_for_classification_from_webresource(url):
+        table = urllib.request.urlopen(url)
+        return Input.format_csv(table)
+
+    #Формирование таблицы
     @staticmethod
     def format_csv(http_response):
         data_bytes = http_response.read()
@@ -85,6 +66,19 @@ class Input:
                  feature_names=['sepal length (cm)', 'sepal width (cm)',
                                 'petal length (cm)', 'petal width (cm)'])
 
+
+    # Чтение csv таблиц из файла
+    @staticmethod
+    def local_read_csv(file_path):
+        print('Чтение CSV из ' + file_path + '...')
+        try:
+            return pandas.read_csv(file_path, index_col=None)
+        except TimeoutError:
+            print('Истекло время ожидания')
+        except Exception:
+            print('Неизвестная ошибка!')
+
+
     # Чтение текстовых файлов с компьютера
     @staticmethod
     def local_read_text_file(file_path):
@@ -100,17 +94,8 @@ class Input:
         except Exception:
             print('Неизвестная ошибка')
 
-    # Чтение текстовых файлов из интернета
-    @staticmethod
-    def internet_read_text_file(url):
-        print('Чтение данных с ' + url)
-        try:
-            return requests.get(url).text
-        except TimeoutError:
-            print('Истекло время ожидания')
-        except Exception:
-            print('Неизвестная ошибка!')
 
+    #Формирование данных из локального текстового файла
     @staticmethod
     def get_ndarray_from_txt(path):
         text = Input.local_read_text_file(path)
@@ -122,6 +107,8 @@ class Input:
         X = array(float_array)
         return X
 
+
+    #Формирование данных из веб текстового файла
     @staticmethod
     def get_ndarray_from_web_txt(url):
         text = Input.internet_read_text_file(url)
@@ -132,6 +119,29 @@ class Input:
             float_array.append(float_line)
         X = array(float_array)
         return X
+
+
+    #Чтение csv и полготовка данных для алгоритмов классификации
+    @staticmethod
+    def load_csv_for_classification(inputFilePath):
+        with open(inputFilePath) as csv_file:
+            data_file = csv.reader(csv_file)
+            temp = next(data_file)
+            n_samples = int(temp[0])
+            n_features = int(temp[1])
+            target_names = np.array(temp[2:])
+            data = np.empty((n_samples, n_features))
+            target = np.empty((n_samples,), dtype=np.int)
+
+            for i, ir in enumerate(data_file):
+                data[i] = np.asarray(ir[:-1], dtype=np.float64)
+                target[i] = np.asarray(ir[-1], dtype=np.int)
+
+        return Bunch(data=data, target=target,
+                     target_names=target_names,
+                     DESCR="",
+                     feature_names=['sepal length (cm)', 'sepal width (cm)',
+                                    'petal length (cm)', 'petal width (cm)'])
 
 
 class Output:
