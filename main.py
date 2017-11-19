@@ -899,29 +899,32 @@ class MainWindow(wx.Frame):
                             sgd.run(data, h)
 
                     elif self.algo_state.GetLabel() == 'classification_Nearest_Neighbors':
+                        n_neighbors = self.advanced_settings_int(self.settings_value_1.GetValue())
+                        h = self.advanced_settings_float(self.settings_value_2.GetValue())  # step size in the mesh
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("Работа с txt файлами временно не поддерживается")
                         elif self.file_type_check_web() == 'csv':
-                            wx.MessageBox("Работа с csv файлами временно не поддерживается")
+                            data = io.Input.load_csv_for_classification_from_webresource(self.file_path_web())
+                            knn.run(data, n_neighbors, h)
 
                     elif self.algo_state.GetLabel() == 'classification_Gaussian_Processes':
+                        h = self.advanced_settings_float(self.settings_value_1.GetValue())  # step size in the mesh
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("Работа с txt файлами временно не поддерживается")
                         elif self.file_type_check_web() == 'csv':
-                            wx.MessageBox("Работа с csv файлами временно не поддерживается")
+                            data = io.Input.load_csv_for_classification_from_webresource(self.file_path_web())
+                            gpc.gaussian_processes_run(data, h)
 
                     elif self.algo_state.GetLabel() == 'classification_Decision_trees':
-                        k = self.advanced_settings_int(self.settings_value_1.GetValue())
+                        plot_step = self.advanced_settings_float(self.settings_value_1.GetValue())
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("Работа с txt файлами временно не поддерживается")
                         elif self.file_type_check_web() == 'csv':
-                            data = io.Input.internet_read_csv(self.file_path_web())
-                            c45.run_decision_tree(data, k)
-                            wx.MessageBox("Decision trees (c4.5) result in classification\\C_4_5\\result.txt")
-                            os_command_string = "notepad.exe classification/C_4_5/result.txt"
-                            os.system(os_command_string)
+                            data = io.Input.load_csv_for_classification_from_webresource(self.file_path_web())
+                            dtc.dtc_run(data, plot_step)
 
                     elif self.algo_state.GetLabel() == 'classification_naive_bayes':
+                        splitRatio = self.advanced_settings_float(self.settings_value_1.GetValue())
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("Работа с txt файлами временно не поддерживается")
                         elif self.file_type_check_web() == 'csv':
@@ -932,9 +935,6 @@ class MainWindow(wx.Frame):
                             wx.MessageBox("Работа с txt файлами временно не поддерживается")
                         elif self.file_type_check_web() == 'csv':
                             wx.MessageBox("Работа с csv файлами временно не поддерживается")
-
-
-
 
 
                     ##### Кластеризация web
