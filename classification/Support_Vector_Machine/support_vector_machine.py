@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn import svm, datasets
+import input_output.io as io
 
 
 def make_meshgrid(x, y, h=.02):
@@ -39,7 +40,7 @@ def plot_contours(ax, clf, xx, yy, **params):
     out = ax.contourf(xx, yy, Z, **params)
     return out
 
-def svm_run(data):
+def svm_run(data, C):
     # import some data to play with
     #iris = datasets.load_iris()
     # Take the first two features. We could avoid this by using a two-dim dataset
@@ -48,7 +49,7 @@ def svm_run(data):
 
     # we create an instance of SVM and fit out data. We do not scale our
     # data since we want to plot the support vectors
-    C = 1.0  # SVM regularization parameter
+    #C = 5.0  # SVM regularization parameter
     models = (svm.SVC(kernel='linear', C=C),
               svm.LinearSVC(C=C),
               svm.SVC(kernel='rbf', gamma=0.7, C=C),
@@ -79,5 +80,8 @@ def svm_run(data):
         ax.set_xticks(())
         ax.set_yticks(())
         ax.set_title(title)
+
+    #io.Output.write_to_txt_file_two_value("!Results/classification_SVM_result.txt", X, y)
+    plt.savefig('!Results/classification_SVM_result.png', bbox_inches='tight')
 
     plt.show()

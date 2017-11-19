@@ -16,7 +16,6 @@ import classification.Linear_Least_Squares_Classifier.LLS as lls
 import classification.Decision_Tree_Classification.decision_tree_classification as dtc
 import classification.Gaussian_Processes_Classification.gaussian_processes as gpc
 
-import clustering.Hierarchical_clustering.hclust as hc
 import clustering.Hierarchical_clustering.hierarchical_clustering_plot as hc_plot
 import clustering.DBSCAN.plot_dbscan as dbscan
 import clustering.BIRCH.birch_clustering as birch
@@ -393,6 +392,10 @@ class MainWindow(wx.Frame):
         self.lable_algo.SetLabel("Алгоритм: Support vector machines")
         self.algo_state.SetLabel('classification_Support_vector_machines')
         self.advanced_settings_disable()
+        self.settings_lable_1.Enable(True)
+        self.settings_lable_1.SetLabel('C (оптимизация)')
+        self.settings_value_1.Enable(True)
+        self.settings_value_1.SetValue('5')
 
     def classification_Stochastic_gradient_descent(self, event):
         self.lable_task.SetLabel("Задача: Классификация")
@@ -410,7 +413,7 @@ class MainWindow(wx.Frame):
         self.algo_state.SetLabel('classification_Nearest_Neighbors')
         self.advanced_settings_disable()
         self.settings_lable_1.Enable(True)
-        self.settings_lable_1.SetLabel('n_neighbors')
+        self.settings_lable_1.SetLabel('Ближайших соседей')
         self.settings_value_1.Enable(True)
         self.settings_value_1.SetValue('15')
         self.settings_lable_2.Enable(True)
@@ -423,16 +426,20 @@ class MainWindow(wx.Frame):
         self.lable_algo.SetLabel("Алгоритм: Gaussian Processes")
         self.algo_state.SetLabel('classification_Gaussian_Processes')
         self.advanced_settings_disable()
+        self.settings_lable_1.Enable(True)
+        self.settings_lable_1.SetLabel('Размерность сетки')
+        self.settings_value_1.Enable(True)
+        self.settings_value_1.SetValue('0.02')
 
     def classification_Decision_trees(self, event):
         self.lable_task.SetLabel("Задача: Классификация")
         self.lable_algo.SetLabel("Алгоритм: Decision trees")
         self.algo_state.SetLabel('classification_Decision_trees')
         self.advanced_settings_disable()
-        self.settings_value_1.Enable(True)
         self.settings_lable_1.Enable(True)
-        self.settings_lable_1.SetLabel('Кол-во проходов')
-        self.settings_value_1.SetValue('6')
+        self.settings_lable_1.SetLabel('Размерность сетки')
+        self.settings_value_1.Enable(True)
+        self.settings_value_1.SetValue('0.02')
 
     def classification_naive_bayes(self, event):
         self.lable_task.SetLabel("Задача: Классификация")
@@ -572,11 +579,11 @@ class MainWindow(wx.Frame):
         self.algo_state.SetLabel('asociative_rules_aprioriTID')
         self.advanced_settings_disable()
         self.settings_lable_1.Enable(True)
-        self.settings_lable_1.SetLabel('min. Support')
+        self.settings_lable_1.SetLabel('мин. Поддержка')
         self.settings_value_1.Enable(True)
         self.settings_value_1.SetValue('0.5')
         self.settings_lable_2.Enable(True)
-        self.settings_lable_2.SetLabel('min. Confidence')
+        self.settings_lable_2.SetLabel('мин. Доверие')
         self.settings_value_2.Enable(True)
         self.settings_value_2.SetValue('0.05')
 
@@ -673,11 +680,12 @@ class MainWindow(wx.Frame):
                 if self.file_type_check() != 'empty':
                     ##### Классификация local
                     if self.algo_state.GetLabel() == 'classification_Support_vector_machines':
+                        C = self.advanced_settings_int(self.settings_value_1.GetValue())
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("Txt файлы временно не поддерживаются")
                         elif self.file_type_check() == 'csv':
                             data = io.Input.load_csv_for_classification(self.file_path_local())
-                            svm.svm_run(data)
+                            svm.svm_run(data, C)
 
                     elif self.algo_state.GetLabel() == 'classification_Stochastic_gradient_descent':
                         h = self.advanced_settings_float(self.settings_value_1.GetValue())  # step size in the mesh
@@ -697,25 +705,21 @@ class MainWindow(wx.Frame):
                             knn.run(data,n_neighbors,h)
 
                     elif self.algo_state.GetLabel() == 'classification_Gaussian_Processes':
+                        h = self.advanced_settings_float(self.settings_value_1.GetValue())  # step size in the mesh
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("Txt файлы временно не поддерживаются")
                         elif self.file_type_check() == 'csv':
-                            #parameters
-                            h = .02  # step size in the mesh
                             data = io.Input.load_csv_for_classification(self.file_path_local())
                             gpc.gaussian_processes_run(data, h)
 
                     elif self.algo_state.GetLabel() == 'classification_Decision_trees':
-                        k = self.advanced_settings_int(self.settings_value_1.GetValue())
+                        plot_step = self.advanced_settings_float(self.settings_value_1.GetValue())
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("Txt файлы временно не поддерживаются")
                         elif self.file_type_check() == 'csv':
-                            #parameters
-                            n_classes = 3
-                            plot_colors = "ryb"
-                            plot_step = 0.02
                             data = io.Input.load_csv_for_classification(self.file_path_local())
-                            dtc.dtc_run(data, n_classes,plot_colors,plot_step)
+                            dtc.dtc_run(data, plot_step)
+
                     elif self.algo_state.GetLabel() == 'classification_naive_bayes':
                         splitRatio = self.advanced_settings_float(self.settings_value_1.GetValue())
                         if self.file_type_check() == 'txt':
@@ -957,7 +961,6 @@ class MainWindow(wx.Frame):
                             self.settings_value_1.GetValue())  # maximum radius for cluster
                         clusters = self.advanced_settings_int(
                             self.settings_value_2.GetValue())  # count of clusters for BIRCH with global clustering
-
                         if self.file_type_check_web() == 'txt':
                             X = io.Input.get_ndarray_from_web_txt(self.file_path_web())
                             birch.run(X, threshold, clusters)

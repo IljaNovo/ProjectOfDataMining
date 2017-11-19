@@ -47,6 +47,7 @@ def run(data,n_neighbors,h):
         plt.ylim(yy.min(), yy.max())
         plt.title("3-Class classification (k = %i, weights = '%s')"
                   % (n_neighbors, weights))
-        io.Output.write_to_txt_file_two_value("!Results/classification_KNN_result.txt", X, y)
+        #io.Output.write_to_txt_file_two_value("!Results/classification_KNN_result.txt", X, y)
+    plt.savefig('!Results/classification_KNN_result.png', bbox_inches='tight')
 
     plt.show()

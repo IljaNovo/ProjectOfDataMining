@@ -6,7 +6,7 @@ from sklearn.gaussian_process.kernels import RBF
 
 def gaussian_processes_run(data, h) :
     # import some data to play with
-    data = datasets.load_iris()
+    #data = datasets.load_iris()
     X = data.data[:, :2]  # we only take the first two features.
     y = np.array(data.target, dtype=int)
 
@@ -47,4 +47,5 @@ def gaussian_processes_run(data, h) :
                   (titles[i], clf.log_marginal_likelihood(clf.kernel_.theta)))
 
     plt.tight_layout()
+    plt.savefig('!Results/classification_GP_result.png', bbox_inches='tight')
     plt.show()
