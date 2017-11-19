@@ -883,17 +883,20 @@ class MainWindow(wx.Frame):
                 if self.file_type_check_web() != 'empty':
                     ##### Классификация web
                     if self.algo_state.GetLabel() == 'classification_Support_vector_machines':
+                        C = self.advanced_settings_int(self.settings_value_1.GetValue())
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("Работа с txt файлами временно не поддерживается")
                         elif self.file_type_check_web() == 'csv':
                             data = io.Input.load_csv_for_classification_from_webresource(self.file_path_web())
-                            svm.svm_run(data)
+                            svm.svm_run(data,C)
 
                     elif self.algo_state.GetLabel() == 'classification_Stochastic_gradient_descent':
+                        h = self.advanced_settings_float(self.settings_value_1.GetValue())  # step size in the mesh
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("Работа с txt файлами временно не поддерживается")
                         elif self.file_type_check_web() == 'csv':
-                            wx.MessageBox("Работа с csv файлами временно не поддерживается")
+                            data = io.Input.load_csv_for_classification_from_webresource(self.file_path_web())
+                            sgd.run(data, h)
 
                     elif self.algo_state.GetLabel() == 'classification_Nearest_Neighbors':
                         if self.file_type_check_web() == 'txt':
