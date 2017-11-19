@@ -3,6 +3,7 @@ import requests
 from numpy import array
 import numpy as np
 import csv
+import urllib
 
 class Input:
     # Чтение csv таблиц из интернета
@@ -16,6 +17,7 @@ class Input:
             print('Истекло время ожидания')
         except Exception:
             print('Неизвестная ошибка!')
+
     @staticmethod
     def load_csv_for_classification(inputFilePath):
         with open(inputFilePath) as csv_file:
@@ -37,6 +39,12 @@ class Input:
                      feature_names=['sepal length (cm)', 'sepal width (cm)',
                                     'petal length (cm)', 'petal width (cm)'])
 
+    #Загрузить csv таблицу из интернета с форматированием
+    @staticmethod
+    def load_csv_for_classification_from_webresource(url):
+        table = urllib.request.urlopen(url)
+        return Input.format_csv(table)
+
     # Чтение csv таблиц из файла
     @staticmethod
     def local_read_csv(file_path):
@@ -47,6 +55,35 @@ class Input:
             print('Истекло время ожидания')
         except Exception:
             print('Неизвестная ошибка!')
+
+    @staticmethod
+    def format_csv(http_response):
+        data_bytes = http_response.read()
+        data_str = data_bytes.decode()
+        lst = data_str.split('\n')
+        for x in range(len(lst)):
+            lst[x] = lst[x].split(',')
+
+        temp = lst[0]
+        n_samples = int(temp[0])
+        n_features = int(temp[1])
+        target_names = np.array(temp[2:])
+        data = np.empty((n_samples, n_features))
+        target = np.empty((n_samples,), dtype=np.int)
+
+        for i, ir in enumerate(lst):
+            if i == 0:
+                continue
+            elif i > n_samples:
+                break
+            data[i-1] = np.asarray(ir[:-1], dtype=np.float64)
+            target[i-1] = np.asarray(ir[-1], dtype=np.int)
+
+        return Bunch(data=data, target=target,
+                 target_names=target_names,
+                 DESCR="",
+                 feature_names=['sepal length (cm)', 'sepal width (cm)',
+                                'petal length (cm)', 'petal width (cm)'])
 
     # Чтение текстовых файлов с компьютера
     @staticmethod

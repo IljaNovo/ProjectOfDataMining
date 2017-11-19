@@ -882,7 +882,8 @@ class MainWindow(wx.Frame):
                         if self.file_type_check_web() == 'txt':
                             wx.MessageBox("Работа с txt файлами временно не поддерживается")
                         elif self.file_type_check_web() == 'csv':
-                            wx.MessageBox("Работа с csv файлами временно не поддерживается")
+                            data = io.Input.load_csv_for_classification_from_webresource(self.file_path_web())
+                            svm.svm_run(data)
 
                     elif self.algo_state.GetLabel() == 'classification_Stochastic_gradient_descent':
                         if self.file_type_check_web() == 'txt':
