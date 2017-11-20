@@ -7,13 +7,21 @@ import matplotlib.pyplot as plt
 
 import input_output.io as io
 from itertools import cycle
+import random
+from numpy import array
 
 
 def compute_affinity_propagation(preference_, X):
 
     centers = [[1, 1], [-1, -1], [1, -1]]
 
-    data, labels_true = make_blobs(n_samples=len(X), centers=centers, cluster_std=1, random_state=0)
+    if (X is None):
+        n_samples = random.randint(50,800)
+        X, labels_true = make_blobs(n_samples = n_samples, centers=centers, cluster_std=1, random_state=0)
+        print("Data is none!!!")
+        print("Generating " + str(n_samples) + " samples")
+    else:
+        data, labels_true = make_blobs(n_samples=len(X), centers=centers, cluster_std=1, random_state=0)
 
     af = AffinityPropagation(preference=preference_).fit(X)
     cluster_centers_indices = af.cluster_centers_indices_
@@ -25,7 +33,7 @@ def compute_affinity_propagation(preference_, X):
     print("V-measure: %0.3f" % metrics.v_measure_score(labels_true, labels))
     print("Adjusted Rand Index: %0.3f" % metrics.adjusted_rand_score(labels_true, labels))
     print("Adjusted Mutual Information: %0.3f" % metrics.adjusted_mutual_info_score(labels_true, labels))
-    print("Fowlkes Mallows Score: %0.3f" % metrics.fowlkes_mallows_score(labels_true, labels))
+    #print("Fowlkes Mallows Score: %0.3f" % metrics.fowlkes_mallows_score(labels_true, labels))
 
 
     plt.close('all')

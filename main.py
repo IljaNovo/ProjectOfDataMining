@@ -618,6 +618,7 @@ class MainWindow(wx.Frame):
                             data = io.Input.load_csv_for_classification(self.file_path_local())
                             svm.svm_run(data, C)
 
+
                     elif self.algo_state.GetLabel() == 'classification_Stochastic_gradient_descent':
                         h = self.advanced_settings_float(self.settings_value_1.GetValue())  # step size in the mesh
                         if self.file_type_check() == 'txt':
@@ -946,7 +947,13 @@ class MainWindow(wx.Frame):
                     wx.MessageBox("URL не указан или имеет неверный формат", "Ошибка")
 
             elif self.radioBtn_random.GetValue():
-                wx.MessageBox("Рандом временно недоступен", "Функция недоступна")
+                if self.algo_state.GetLabel() == 'clustering_Affinity_Propagation':
+                    preference = self.advanced_settings_int(self.settings_value_1.GetValue())
+                    if self.algo_state.GetLabel() == 'clustering_Affinity_Propagation':
+                        aff_p.compute_affinity_propagation(preference, None)
+
+                else:
+                    wx.MessageBox("Рандом временно недоступен", "Функция недоступна")
         else:
             wx.MessageBox("Выберите алгоритм в меню программы", "Ошибка")
 
