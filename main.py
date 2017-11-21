@@ -12,6 +12,7 @@ import classification.stochastic_gradient_descent_classification as sgd
 import classification.support_vector_machine_classification as svm
 import classification.decision_tree_classification as dtc
 import classification.gaussian_processes_classification as gpc
+import classification.c_4_5 as c45
 
 import clustering.hierarchical_clustering as hc_plot
 import clustering.dbscan_clustering as dbscan
@@ -19,6 +20,7 @@ import clustering.birch_clustering as birch
 import clustering.mean_shift_clustering as mean_shift
 import clustering.k_means_clustering as k_means
 import clustering.affinity_propagation_clustering as aff_p
+import clustering.Clustering_performance_evaluation as cpe
 
 from associative_rules.apriori_associative_rules import *
 
@@ -77,6 +79,16 @@ class MainWindow(wx.Frame):
         self.menu_classification_less_sqad = wx.MenuItem(self.menu_classification, wx.ID_ANY,
                                                          u"Linear Least Squares classification", wx.EmptyString,
                                                          wx.ITEM_NORMAL)
+#####################
+
+
+        self.menu_c_4_5 = wx.MenuItem(self.menu_classification, wx.ID_ANY,
+                                                         u"C 4.5", wx.EmptyString,
+                                                         wx.ITEM_NORMAL)
+        self.menu_classification.Append(self.menu_c_4_5)
+        
+        
+###############        
         self.menu_classification.Append(self.menu_classification_less_sqad)
         self.menu.AppendSubMenu(self.menu_classification, u"Классификация")
         # endregion
@@ -112,6 +124,14 @@ class MainWindow(wx.Frame):
                                                                    u"Spectral clustering", wx.EmptyString,
                                                                    wx.ITEM_NORMAL)
         self.menu_clustering.Append(self.menu_clustering_Spectral_clustering)
+        
+########
+        self.menu_Clustering_performance_evaluation = wx.MenuItem(self.menu_clustering, wx.ID_ANY,
+                                                                   u"Clustering performance evaluation", wx.EmptyString,
+                                                                   wx.ITEM_NORMAL)
+        self.menu_clustering.Append(self.menu_Clustering_performance_evaluation)
+
+#########        
         self.menu.AppendSubMenu(self.menu_clustering, u"Кластеризация")
         # endregion
 
@@ -137,6 +157,7 @@ class MainWindow(wx.Frame):
                                                            wx.EmptyString,
                                                            wx.ITEM_NORMAL)
         self.menu_asociative_rules.Append(self.menu_asociative_rules_PARTITION)
+                
 
         self.menu.AppendSubMenu(self.menu_asociative_rules, u"Поиск ассоциативных правил")
         # endregion
@@ -295,6 +316,15 @@ class MainWindow(wx.Frame):
         self.settings_value_2.Bind(wx.EVT_CHAR, self.check_input)
         self.settings_value_3.Bind(wx.EVT_CHAR, self.check_input)
 
+#################
+        self.Bind(wx.EVT_MENU, self.c_4_5,
+                  id=self.menu_c_4_5.GetId())
+        
+        self.Bind(wx.EVT_MENU, self.Clustering_performance_evaluation,
+                  id=self.menu_Clustering_performance_evaluation.GetId())
+
+#################
+
         self.Bind(wx.EVT_MENU, self.classification_Support_vector_machines,
                   id=self.menu_classification_Support_vector_machines.GetId())
         self.Bind(wx.EVT_MENU, self.classification_Stochastic_gradient_descent,
@@ -346,6 +376,37 @@ class MainWindow(wx.Frame):
         self.settings_value_2.SetValue('')
         self.settings_value_3.SetValue('')
 
+#################
+    def c_4_5(self, event):
+        self.lable_task.SetLabel("Задача: Классификация")
+        self.lable_algo.SetLabel("Алгоритм: C 4.5")
+        self.algo_state.SetLabel('c_4_5')
+        self.advanced_settings_disable()
+        self.settings_lable_1.Enable(True)
+        self.settings_lable_1.SetLabel('Количество классов:')
+        self.settings_value_1.Enable(True)
+        self.settings_value_1.SetValue('3')
+        self.settings_lable_2.Enable(True)
+        self.settings_lable_2.SetLabel('Размерность сетки:')
+        self.settings_value_2.Enable(True)
+        self.settings_value_2.SetValue('0.02')
+        
+        
+        #################
+    def Clustering_performance_evaluation(self, event):
+        self.lable_task.SetLabel("Задача: Классификация")
+        self.lable_algo.SetLabel("Алгоритм: Clustering performance evaluation")
+        self.algo_state.SetLabel('c_4_5')
+        self.advanced_settings_disable()
+        self.settings_lable_1.Enable(True)
+        self.settings_lable_1.SetLabel('Количество классов:')
+        self.settings_value_1.Enable(True)
+        self.settings_value_1.SetValue('3')
+        self.settings_lable_2.Enable(True)
+        self.settings_lable_2.SetLabel('Размерность сетки:')
+        self.settings_value_2.Enable(True)
+        self.settings_value_2.SetValue('0.02')
+###############        
 
 
     def classification_Support_vector_machines(self, event):
@@ -356,7 +417,10 @@ class MainWindow(wx.Frame):
         self.settings_lable_1.Enable(True)
         self.settings_lable_1.SetLabel('C (оптимизация):')
         self.settings_value_1.Enable(True)
-        self.settings_value_1.SetValue('5')
+        self.settings_lable_1.SetLabel('Размерность сетки:')
+        self.settings_value_1.Enable(True)
+        self.settings_value_1.SetValue('0.02')
+
 
     def classification_Stochastic_gradient_descent(self, event):
         self.lable_task.SetLabel("Задача: Классификация")
@@ -643,6 +707,26 @@ class MainWindow(wx.Frame):
                         elif self.file_type_check() == 'csv':
                             data = io.Input.load_csv_for_classification(self.file_path_local())
                             gpc.gaussian_processes_run(data, h)
+###############                            
+                    elif self.algo_state.GetLabel() == 'C 4.5':
+                        h = self.advanced_settings_float(self.settings_value_1.GetValue())  # step size in the mesh
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("Txt файлы временно не поддерживаются алгоритмом GP", "Функция недоступна")
+                        elif self.file_type_check() == 'csv':
+                            data = io.Input.load_csv_for_classification(self.file_path_local())
+                            gpc.c_4_5_run(data, h)
+                            
+                            
+                           
+   
+                    elif self.algo_state.GetLabel() == 'Clustering performance evaluation':
+                        h = self.advanced_settings_float(self.settings_value_1.GetValue())  # step size in the mesh
+                        if self.file_type_check() == 'txt':
+                            wx.MessageBox("Txt файлы временно не поддерживаются алгоритмом GP", "Функция недоступна")
+                        elif self.file_type_check() == 'csv':
+                            data = io.Input.load_csv_for_classification(self.file_path_local())
+                            gpc.cpe.run_CPE()                         
+##############################
 
                     elif self.algo_state.GetLabel() == 'classification_Decision_trees':
                         plot_step = self.advanced_settings_float(self.settings_value_1.GetValue())
@@ -814,6 +898,29 @@ class MainWindow(wx.Frame):
                         elif self.file_type_check_web() == 'csv':
                             data = io.Input.load_csv_for_classification_from_webresource(self.file_path_web())
                             gpc.gaussian_processes_run(data, h)
+                            
+##############
+
+
+                    elif self.algo_state.GetLabel() == 'C 4.5':
+                        h = self.advanced_settings_float(self.settings_value_1.GetValue())  # step size in the mesh
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("Работа с web txt файлами временно не поддерживается алгоритмом GP", "Функция недоступна")
+                        elif self.file_type_check_web() == 'csv':
+                            data = io.Input.load_csv_for_classification_from_webresource(self.file_path_web())
+                            gpc.c_4_5_run(data, h)
+                            
+                            
+                            
+                    elif self.algo_state.GetLabel() == ' Clustering_performance_evaluation':
+                        h = self.advanced_settings_float(self.settings_value_1.GetValue())  # step size in the mesh
+                        if self.file_type_check_web() == 'txt':
+                            wx.MessageBox("Работа с web txt файлами временно не поддерживается алгоритмом GP", "Функция недоступна")
+                        elif self.file_type_check_web() == 'csv':
+                            data = io.Input.load_csv_for_classification_from_webresource(self.file_path_web())
+                            gpc.cpe.run_CPE()                            
+
+##############                            
 
                     elif self.algo_state.GetLabel() == 'classification_Decision_trees':
                         plot_step = self.advanced_settings_float(self.settings_value_1.GetValue())
@@ -900,7 +1007,7 @@ class MainWindow(wx.Frame):
                             wx.MessageBox("Работа с web csv файлами временно не поддерживается алгоритмом DBSCAN", "Функция недоступна")
 
                     elif self.algo_state.GetLabel() == 'clustering_Spectral_clustering':
-                        if self.file_type_check_web() == 'txt':
+                        if self.file_type_check_web () == 'txt':
                             wx.MessageBox("Работа с txt файлами временно не поддерживается")
                         elif self.file_type_check_web() == 'csv':
                             wx.MessageBox("Работа с csv файлами временно не поддерживается")
@@ -947,13 +1054,30 @@ class MainWindow(wx.Frame):
                     wx.MessageBox("URL не указан или имеет неверный формат", "Ошибка")
 
             elif self.radioBtn_random.GetValue():
-                if self.algo_state.GetLabel() == 'clustering_Affinity_Propagation':
+                print("111")
+####################
+                if self.algo_state.GetLabel() == 'c_4_5':
+                    preference = self.advanced_settings_int(self.settings_value_1.GetValue())
+                    if self.algo_state.GetLabel() == 'c_4_5':
+                        print("!rand")
+                        c45.c_4_5_run(preference, None)
+                        
+                elif self.algo_state.GetLabel() == 'Clustering_performance_evaluation':
+                    preference = self.advanced_settings_int(self.settings_value_1.GetValue())
+                    if self.algo_state.GetLabel() == 'Clustering_performance_evaluation':
+                        print("!rand")
+                        cpe.run_CPE()                   
+                         
+              
+##################
+                elif self.algo_state.GetLabel() == 'clustering_Affinity_Propagation':
                     preference = self.advanced_settings_int(self.settings_value_1.GetValue())
                     if self.algo_state.GetLabel() == 'clustering_Affinity_Propagation':
                         aff_p.compute_affinity_propagation(preference, None)
 
                 else:
                     wx.MessageBox("Рандом временно недоступен", "Функция недоступна")
+                    
         else:
             wx.MessageBox("Выберите алгоритм в меню программы", "Ошибка")
 
