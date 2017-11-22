@@ -419,7 +419,7 @@ class MainWindow(wx.Frame):
         self.settings_value_1.Enable(True)
         self.settings_lable_1.SetLabel('Размерность сетки:')
         self.settings_value_1.Enable(True)
-        self.settings_value_1.SetValue('0.02')
+        self.settings_value_1.SetValue('1.0')
 
 
     def classification_Stochastic_gradient_descent(self, event):
