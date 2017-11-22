@@ -22,13 +22,13 @@ def c_4_5_run(data, h):
     pl.set_cmap(pl.cm.Paired)
     
     # Load data
-    iris = load_iris()
+    #iris = load_iris()
     
     for pairidx, pair in enumerate([[0, 1], [0, 2], [0, 3],
                                     [1, 2], [1, 3], [2, 3]]):
          # We only take the two corresponding features
-        X = iris.data[:, pair]
-        y = iris.target
+        X = data.data[:, pair]
+        y = data.target
     
         # Shuffle
         idx = np.arange(X.shape[0])
@@ -57,14 +57,14 @@ def c_4_5_run(data, h):
         Z = Z.reshape(xx.shape)
         cs = pl.contourf(xx, yy, Z)
     
-        pl.xlabel(iris.feature_names[pair[0]])
-        pl.ylabel(iris.feature_names[pair[1]])
+        pl.xlabel(data.feature_names[pair[0]])
+        pl.ylabel(data.feature_names[pair[1]])
         pl.axis("tight")
     
         # Plot the training points
         for i, color in zip(range(n_classes), plot_colors):
             idx = np.where(y == i)
-            pl.scatter(X[idx, 0], X[idx, 1], c=color, label=iris.target_names[i])
+            pl.scatter(X[idx, 0], X[idx, 1], c=color, label=data.target_names[i])
     
         pl.axis("tight")
     
@@ -72,5 +72,3 @@ def c_4_5_run(data, h):
     pl.legend()
     pl.savefig('!Results/Clustering_C_4_5.png', bbox_inches='tight') #сохранение графика
     pl.show()
-    print("123")
-    print("123")

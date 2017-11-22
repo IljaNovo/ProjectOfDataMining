@@ -383,29 +383,17 @@ class MainWindow(wx.Frame):
         self.algo_state.SetLabel('c_4_5')
         self.advanced_settings_disable()
         self.settings_lable_1.Enable(True)
-        self.settings_lable_1.SetLabel('Количество классов:')
+        self.settings_lable_1.SetLabel('Размерность сетки:')
         self.settings_value_1.Enable(True)
-        self.settings_value_1.SetValue('3')
-        self.settings_lable_2.Enable(True)
-        self.settings_lable_2.SetLabel('Размерность сетки:')
-        self.settings_value_2.Enable(True)
-        self.settings_value_2.SetValue('0.02')
+        self.settings_value_1.SetValue('0.02')
         
         
         #################
     def Clustering_performance_evaluation(self, event):
         self.lable_task.SetLabel("Задача: Классификация")
         self.lable_algo.SetLabel("Алгоритм: Clustering performance evaluation")
-        self.algo_state.SetLabel('c_4_5')
+        self.algo_state.SetLabel('Clustering_performance_evaluation')
         self.advanced_settings_disable()
-        self.settings_lable_1.Enable(True)
-        self.settings_lable_1.SetLabel('Количество классов:')
-        self.settings_value_1.Enable(True)
-        self.settings_value_1.SetValue('3')
-        self.settings_lable_2.Enable(True)
-        self.settings_lable_2.SetLabel('Размерность сетки:')
-        self.settings_value_2.Enable(True)
-        self.settings_value_2.SetValue('0.02')
 ###############        
 
 
@@ -708,25 +696,23 @@ class MainWindow(wx.Frame):
                             data = io.Input.load_csv_for_classification(self.file_path_local())
                             gpc.gaussian_processes_run(data, h)
 ###############                            
-                    elif self.algo_state.GetLabel() == 'C 4.5':
+                    elif self.algo_state.GetLabel() == 'c_4_5':
                         h = self.advanced_settings_float(self.settings_value_1.GetValue())  # step size in the mesh
                         if self.file_type_check() == 'txt':
                             wx.MessageBox("Txt файлы временно не поддерживаются алгоритмом GP", "Функция недоступна")
                         elif self.file_type_check() == 'csv':
                             data = io.Input.load_csv_for_classification(self.file_path_local())
-                            gpc.c_4_5_run(data, h)
-                            
-                            
-                           
+                            c45.c_4_5_run(data, h)
+
    
-                    elif self.algo_state.GetLabel() == 'Clustering performance evaluation':
-                        h = self.advanced_settings_float(self.settings_value_1.GetValue())  # step size in the mesh
+                    elif self.algo_state.GetLabel() == 'Clustering_performance_evaluation':
                         if self.file_type_check() == 'txt':
-                            wx.MessageBox("Txt файлы временно не поддерживаются алгоритмом GP", "Функция недоступна")
+                            wx.MessageBox("Алгоритм CPE в данный момент работает только со случайными значениями", "Функция недоступна")
                         elif self.file_type_check() == 'csv':
-                            data = io.Input.load_csv_for_classification(self.file_path_local())
-                            gpc.cpe.run_CPE()                         
-##############################
+                            wx.MessageBox("Алгоритм CPE в данный момент работает только со случайными значениями",
+                                          "Функция недоступна")
+
+                        ##############################
 
                     elif self.algo_state.GetLabel() == 'classification_Decision_trees':
                         plot_step = self.advanced_settings_float(self.settings_value_1.GetValue())
@@ -901,24 +887,21 @@ class MainWindow(wx.Frame):
                             
 ##############
 
-
-                    elif self.algo_state.GetLabel() == 'C 4.5':
+                    elif self.algo_state.GetLabel() == 'c_4_5':
                         h = self.advanced_settings_float(self.settings_value_1.GetValue())  # step size in the mesh
                         if self.file_type_check_web() == 'txt':
-                            wx.MessageBox("Работа с web txt файлами временно не поддерживается алгоритмом GP", "Функция недоступна")
+                            wx.MessageBox("Работа с web txt файлами временно не поддерживается алгоритмом C 4.5", "Функция недоступна")
                         elif self.file_type_check_web() == 'csv':
                             data = io.Input.load_csv_for_classification_from_webresource(self.file_path_web())
-                            gpc.c_4_5_run(data, h)
+                            c45.c_4_5_run(data, h)
                             
                             
                             
-                    elif self.algo_state.GetLabel() == ' Clustering_performance_evaluation':
-                        h = self.advanced_settings_float(self.settings_value_1.GetValue())  # step size in the mesh
+                    elif self.algo_state.GetLabel() == 'Clustering_performance_evaluation':
                         if self.file_type_check_web() == 'txt':
-                            wx.MessageBox("Работа с web txt файлами временно не поддерживается алгоритмом GP", "Функция недоступна")
+                            wx.MessageBox("Работа с web txt файлами временно не поддерживается алгоритмом CPE", "Функция недоступна")
                         elif self.file_type_check_web() == 'csv':
-                            data = io.Input.load_csv_for_classification_from_webresource(self.file_path_web())
-                            gpc.cpe.run_CPE()                            
+                            wx.MessageBox("Работа с web txt файлами временно не поддерживается алгоритмом CPE", "Функция недоступна")
 
 ##############                            
 
@@ -1054,26 +1037,13 @@ class MainWindow(wx.Frame):
                     wx.MessageBox("URL не указан или имеет неверный формат", "Ошибка")
 
             elif self.radioBtn_random.GetValue():
-                print("111")
-####################
-                if self.algo_state.GetLabel() == 'c_4_5':
-                    preference = self.advanced_settings_int(self.settings_value_1.GetValue())
-                    if self.algo_state.GetLabel() == 'c_4_5':
-                        print("!rand")
-                        c45.c_4_5_run(preference, None)
-                        
-                elif self.algo_state.GetLabel() == 'Clustering_performance_evaluation':
-                    preference = self.advanced_settings_int(self.settings_value_1.GetValue())
-                    if self.algo_state.GetLabel() == 'Clustering_performance_evaluation':
-                        print("!rand")
-                        cpe.run_CPE()                   
+                if self.algo_state.GetLabel() == 'Clustering_performance_evaluation':
+                    print("!rand")
+                    cpe.run_CPE()
                          
-              
-##################
                 elif self.algo_state.GetLabel() == 'clustering_Affinity_Propagation':
                     preference = self.advanced_settings_int(self.settings_value_1.GetValue())
-                    if self.algo_state.GetLabel() == 'clustering_Affinity_Propagation':
-                        aff_p.compute_affinity_propagation(preference, None)
+                    aff_p.compute_affinity_propagation(preference, None)
 
                 else:
                     wx.MessageBox("Рандом временно недоступен", "Функция недоступна")
