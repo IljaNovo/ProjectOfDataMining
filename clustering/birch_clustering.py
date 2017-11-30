@@ -11,9 +11,11 @@ import input_output.io as io
 from sklearn.cluster import Birch, MiniBatchKMeans
 
 def run(X, threshold_,cluster_count ):
+
+    if(X is None):
+        X = birch_random()
     # Use all colors that matplotlib provides by default.
     colors_ = cycle(colors.cnames.keys())
-
     fig = plt.figure(figsize=(12, 4))
     fig.subplots_adjust(left=0.04, right=0.98, bottom=0.1, top=0.9)
 
@@ -77,3 +79,17 @@ def run(X, threshold_,cluster_count ):
     fig = plt.gcf()
     fig.canvas.set_window_title('[Result] BIRCH clustering')
     plt.show()
+
+def birch_random():
+    from sklearn.datasets.samples_generator import make_blobs
+    import random
+    # Generate centers for the blobs so that it forms a 10 X 10 grid.
+    xx = np.linspace(-22, 22, 10)
+    yy = np.linspace(-22, 22, 10)
+    xx, yy = np.meshgrid(xx, yy)
+    n_centres = np.hstack((np.ravel(xx)[:, np.newaxis],
+                           np.ravel(yy)[:, np.newaxis]))
+    n_samples = random.randint(20000, 100000)
+    # Generate blobs to do a comparison between MiniBatchKMeans and Birch.
+    X, y = make_blobs(n_samples=n_samples, centers=n_centres, random_state=0)
+    return X

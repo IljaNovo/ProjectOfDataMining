@@ -1047,6 +1047,13 @@ class MainWindow(wx.Frame):
                     preference = self.advanced_settings_int(self.settings_value_1.GetValue())
                     aff_p.compute_affinity_propagation(preference, None)
 
+                elif self.algo_state.GetLabel() == 'clustering_Birch':
+                    threshold = self.advanced_settings_float(
+                        self.settings_value_1.GetValue())  # maximum radius for cluster
+                    clusters = self.advanced_settings_int(
+                        self.settings_value_2.GetValue())  # count of clusters for BIRCH with global clustering
+                    birch.run(None, threshold, clusters)
+
                 else:
                     wx.MessageBox("Рандом временно недоступен", "Функция недоступна")
                     
