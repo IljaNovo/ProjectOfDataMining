@@ -688,6 +688,8 @@ class MainWindow(wx.Frame):
                         if self.file_type_check() == 'txt':
                             X = io.Input.get_ndarray_from_txt(self.file_path_local())
                             aff_p.compute_affinity_propagation(preference, X)
+                            os_command_string = "notepad.exe !Results/clustering_AP_metrics_result.txt"
+                            os.system(os_command_string)
                         elif self.file_type_check() == 'csv':
                             wx.MessageBox("Csv файлы временно не поддерживаются алгоритмом AP", "Функция недоступна")
 

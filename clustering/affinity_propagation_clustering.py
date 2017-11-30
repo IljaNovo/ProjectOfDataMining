@@ -33,9 +33,7 @@ def compute_affinity_propagation(preference_, X):
     print("V-measure: %0.3f" % metrics.v_measure_score(labels_true, labels))
     print("Adjusted Rand Index: %0.3f" % metrics.adjusted_rand_score(labels_true, labels))
     print("Adjusted Mutual Information: %0.3f" % metrics.adjusted_mutual_info_score(labels_true, labels))
-    #print("Fowlkes Mallows Score: %0.3f" % metrics.fowlkes_mallows_score(labels_true, labels))
-
-
+    print("Fowlkes Mallows Score: %0.3f" % metrics.fowlkes_mallows_score(labels_true, labels))
     plt.close('all')
     plt.figure(1)
     plt.clf()
@@ -49,7 +47,15 @@ def compute_affinity_propagation(preference_, X):
             plt.plot([cluster_center[0], x[0]], [cluster_center[1], x[1]], col)
 
     io.Output.write_to_txt_file_two_value("!Results/clustering_AP_result.txt", X, labels)
-
+    io.Output.write_to_txt_file("!Results/clustering_AP_metrics_result.txt",
+    "Estimated number of clusters: %d" % n_clusters_ + "\n" +
+    "Homogeneity: %0.3f" % metrics.homogeneity_score(labels_true, labels) + "\n" +
+    "Completeness: %0.3f" % metrics.completeness_score(labels_true, labels) + "\n" +
+    "V-measure: %0.3f" % metrics.v_measure_score(labels_true, labels) + "\n" +
+    "Adjusted Rand Index: %0.3f" % metrics.adjusted_rand_score(labels_true, labels) + "\n" +
+    "Adjusted Mutual Information: %0.3f" % metrics.adjusted_mutual_info_score(labels_true, labels) + "\n" +
+    "Fowlkes Mallows Score: %0.3f" % metrics.fowlkes_mallows_score(labels_true, labels)
+    )
 
     plt.title('Estimated number of clusters: %d' % n_clusters_)
     fig = plt.gcf()
