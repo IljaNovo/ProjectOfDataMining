@@ -7,6 +7,7 @@ import input_output.io as io
 
 
 def run_mean_shift(X, bandwidth):
+    
     # The following bandwidth can be automatically detected using
     if(bandwidth == None):
         bandwidth = estimate_bandwidth(X, quantile=0.2, n_samples=500)
@@ -41,4 +42,6 @@ def run_mean_shift(X, bandwidth):
 
     fig = plt.gcf()
     fig.canvas.set_window_title('[Result] Mean Shift clustering')
+    plt.savefig('!Results/Clustering_Mean_Shift_result.png', bbox_inches='tight') #сохранение графика
     plt.show()
+    
