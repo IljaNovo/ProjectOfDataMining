@@ -1053,7 +1053,12 @@ class MainWindow(wx.Frame):
                     clusters = self.advanced_settings_int(
                         self.settings_value_2.GetValue())  # count of clusters for BIRCH with global clustering
                     birch.run(None, threshold, clusters)
-
+                elif self.algo_state.GetLabel() == 'clustering_DBSCAN':
+                    eps = self.advanced_settings_float(
+                        self.settings_value_1.GetValue())  # maximum distance between two samples or them to be considered as in the same neighborhood
+                    min_samples = self.advanced_settings_int(
+                        self.settings_value_2.GetValue())  # The number of samples (or total weight) in a neighborhood for a point to be considered as a core point. This includes the point itself.
+                    dbscan.dbscan_run(None, eps, min_samples)
                 else:
                     wx.MessageBox("Рандом временно недоступен", "Функция недоступна")
                     

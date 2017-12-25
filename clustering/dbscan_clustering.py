@@ -8,13 +8,17 @@ from sklearn.datasets.samples_generator import make_blobs
 from sklearn.preprocessing import StandardScaler
 
 import input_output.io as io
-
+import random
 
 def dbscan_run(X, eps_, min_samples_):
     centers = [[1, 1], [-1, -1], [1, -1]]
 
     # This operation need for labels_true generating for metrics printing
-    useless_data, labels_true = make_blobs(n_samples=len(X), centers=centers, cluster_std=0.4,random_state=0)
+    if(X is None):
+        n_samples = random.randint(50, 1000)
+        X, labels_true = make_blobs(n_samples=n_samples, centers=centers, cluster_std=0.4, random_state=0)
+    else :
+        useless_data, labels_true = make_blobs(n_samples=len(X), centers=centers, cluster_std=0.4, random_state=0)
 
     X = StandardScaler().fit_transform(X)
 
