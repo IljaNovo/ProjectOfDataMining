@@ -1067,6 +1067,9 @@ class MainWindow(wx.Frame):
                     C = self.advanced_settings_int(
                         self.settings_value_1.GetValue())
                     svm.svm_run(None, C)
+                elif self.algo_state.GetLabel() == 'classification_Stochastic_gradient_descent':
+                    h = self.advanced_settings_float(self.settings_value_1.GetValue())  # step size in the mesh
+                    sgd.run(None, h)
                 else:
                     wx.MessageBox("Рандом временно недоступен", "Функция недоступна")
                     

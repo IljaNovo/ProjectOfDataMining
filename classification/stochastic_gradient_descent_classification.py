@@ -3,10 +3,22 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.linear_model import SGDClassifier
+from sklearn import datasets
+import random
 
 def run(data, h):
     # we only take the first two features. We could
     # avoid this ugly slicing by using a two-dim dataset
+    if (data is None):
+        data = datasets.load_iris()
+        i = 0
+        for row in data.data:
+            j = 0
+            for el in row:
+                data.data[i, j] = random.uniform(0.1, 9.9)
+                j = j + 1
+            i = i + 1
+
     X = data.data[:, :2]
     y = data.target
     colors = "bry"
