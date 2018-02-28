@@ -3,19 +3,25 @@
 import time
 import numpy as np
 import matplotlib.pyplot as plt
+import random
 
 from itertools import cycle
 import input_output.io as io
 
 from sklearn.cluster import MiniBatchKMeans, KMeans
 from sklearn.metrics.pairwise import pairwise_distances_argmin
+from sklearn.datasets.samples_generator import make_blobs
 
 # #############################################################################
 # #############################################################################
 # Generate sample data
 def run_kmeans(X, n_clusters):
 	np.random.seed(0)
-
+	if(X is None):
+		n_samples = random.randint(1000,10000)
+		centers = generate_centers(n_clusters)
+		X, labels_true = make_blobs(n_samples=n_samples, centers=centers, cluster_std=0.7)
+	print("n_samples = %d" % n_samples)
 	batch_size = 45
 
 	k_means = KMeans(init='k-means++', n_clusters=n_clusters, n_init=10)
@@ -99,3 +105,10 @@ def run_kmeans(X, n_clusters):
 	fig = plt.gcf()
 	fig.canvas.set_window_title('[Result] K-means clustering')
 	plt.show()
+
+def generate_centers(n_clusters):
+	centers = []
+	for i in range(0, n_clusters):
+			row = [random.randint(-5,5),random.randint(-5,5)]
+			centers.append(row)
+	return centers

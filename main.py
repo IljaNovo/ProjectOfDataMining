@@ -1059,6 +1059,10 @@ class MainWindow(wx.Frame):
                     min_samples = self.advanced_settings_int(
                         self.settings_value_2.GetValue())  # The number of samples (or total weight) in a neighborhood for a point to be considered as a core point. This includes the point itself.
                     dbscan.dbscan_run(None, eps, min_samples)
+                elif self.algo_state.GetLabel() == 'clustering_kmeans':
+                    n_clusters = self.advanced_settings_int(
+                        self.settings_value_1.GetValue())
+                    k_means.run_kmeans(None, n_clusters)
                 else:
                     wx.MessageBox("Рандом временно недоступен", "Функция недоступна")
                     
