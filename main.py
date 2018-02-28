@@ -1063,6 +1063,10 @@ class MainWindow(wx.Frame):
                     n_clusters = self.advanced_settings_int(
                         self.settings_value_1.GetValue())
                     k_means.run_kmeans(None, n_clusters)
+                elif self.algo_state.GetLabel() =='classification_Support_vector_machines':
+                    C = self.advanced_settings_int(
+                        self.settings_value_1.GetValue())
+                    svm.svm_run(None, C)
                 else:
                     wx.MessageBox("Рандом временно недоступен", "Функция недоступна")
                     
