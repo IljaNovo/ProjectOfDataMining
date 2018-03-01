@@ -21,7 +21,7 @@ def run_kmeans(X, n_clusters):
 		n_samples = random.randint(1000,10000)
 		centers = generate_centers(n_clusters)
 		X, labels_true = make_blobs(n_samples=n_samples, centers=centers, cluster_std=0.7)
-	print("n_samples = %d" % n_samples)
+		print("n_samples = %d" % n_samples)
 	batch_size = 45
 
 	k_means = KMeans(init='k-means++', n_clusters=n_clusters, n_init=10)
