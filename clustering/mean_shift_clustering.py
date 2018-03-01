@@ -4,6 +4,8 @@ import numpy as np
 from sklearn.cluster import MeanShift, estimate_bandwidth
 
 import input_output.io as io
+import random
+from sklearn.datasets.samples_generator import make_blobs
 
 
 def run_mean_shift(X, bandwidth):
@@ -11,6 +13,12 @@ def run_mean_shift(X, bandwidth):
     # The following bandwidth can be automatically detected using
     if(bandwidth == None):
         bandwidth = estimate_bandwidth(X, quantile=0.2, n_samples=500)
+
+    if (X is None):
+        n_samples = random.randint(500,4000)
+        X, labels_true = make_blobs(n_samples = n_samples, cluster_std=1, random_state=0)
+        print("Data is none!!!")
+        print("Generating " + str(n_samples) + " samples")
 
     ms = MeanShift(bandwidth=bandwidth, bin_seeding=True)
     ms.fit(X)
@@ -44,4 +52,3 @@ def run_mean_shift(X, bandwidth):
     fig.canvas.set_window_title('[Result] Mean Shift clustering')
     plt.savefig('!Results/Clustering_Mean_Shift_result.png', bbox_inches='tight') #сохранение графика
     plt.show()
-    
