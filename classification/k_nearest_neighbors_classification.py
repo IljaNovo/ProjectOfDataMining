@@ -4,9 +4,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 from sklearn import neighbors
+from sklearn import datasets
+import random
 
 
 def run(data, n_neighbors, h):
+    if (data is None):
+        data = datasets.load_iris()
+        i = 0
+        for row in data.data:
+            j = 0
+            for el in row:
+                data.data[i, j] = random.uniform(0.1, 9.9)
+                j = j + 1
+            i = i + 1
     X = data.data[:, :2]
     y = data.target
 

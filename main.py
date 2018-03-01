@@ -1039,10 +1039,14 @@ class MainWindow(wx.Frame):
                     wx.MessageBox("URL не указан или имеет неверный формат", "Ошибка")
 
             elif self.radioBtn_random.GetValue():
-                if self.algo_state.GetLabel() == 'Clustering_performance_evaluation':
-                    print("!rand")
-                    cpe.run_CPE()
-                         
+                if self.algo_state.GetLabel() == 'clustering_kmeans':
+                    n_clusters = self.advanced_settings_int(
+                        self.settings_value_1.GetValue())
+                    k_means.run_kmeans(None, n_clusters)
+
+                elif self.algo_state.GetLabel() == 'clustering_id3':
+                    wx.MessageBox("Работа данного алгоритма временно не поддерживается")
+
                 elif self.algo_state.GetLabel() == 'clustering_Affinity_Propagation':
                     preference = self.advanced_settings_int(self.settings_value_1.GetValue())
                     aff_p.compute_affinity_propagation(preference, None)
@@ -1053,23 +1057,64 @@ class MainWindow(wx.Frame):
                     clusters = self.advanced_settings_int(
                         self.settings_value_2.GetValue())  # count of clusters for BIRCH with global clustering
                     birch.run(None, threshold, clusters)
+
+                elif self.algo_state.GetLabel() == 'clustering_Mean_Shift':
+                    bandwidth = self.advanced_settings_float(self.settings_value_1.GetValue())
+                    mean_shift.run_mean_shift(None, bandwidth)
+
+                elif self.algo_state.GetLabel() == 'clustering_Hierarchical_clustering':
+                    n_clusters = self.advanced_settings_int(self.settings_value_1.GetValue())
+                    hc_plot.run(None, n_clusters)
+
                 elif self.algo_state.GetLabel() == 'clustering_DBSCAN':
                     eps = self.advanced_settings_float(
                         self.settings_value_1.GetValue())  # maximum distance between two samples or them to be considered as in the same neighborhood
                     min_samples = self.advanced_settings_int(
                         self.settings_value_2.GetValue())  # The number of samples (or total weight) in a neighborhood for a point to be considered as a core point. This includes the point itself.
                     dbscan.dbscan_run(None, eps, min_samples)
-                elif self.algo_state.GetLabel() == 'clustering_kmeans':
-                    n_clusters = self.advanced_settings_int(
-                        self.settings_value_1.GetValue())
-                    k_means.run_kmeans(None, n_clusters)
+
+                elif self.algo_state.GetLabel() == 'clustering_Spectral_clustering':
+                    wx.MessageBox("Работа данного алгоритма временно не поддерживается")
+
+
                 elif self.algo_state.GetLabel() =='classification_Support_vector_machines':
                     C = self.advanced_settings_int(
                         self.settings_value_1.GetValue())
                     svm.svm_run(None, C)
+
                 elif self.algo_state.GetLabel() == 'classification_Stochastic_gradient_descent':
                     h = self.advanced_settings_float(self.settings_value_1.GetValue())  # step size in the mesh
                     sgd.run(None, h)
+
+                elif self.algo_state.GetLabel() == 'classification_Nearest_Neighbors':
+                    n_neighbors = self.advanced_settings_int(self.settings_value_1.GetValue())
+                    h = self.advanced_settings_float(self.settings_value_2.GetValue())  # step size in the mesh
+                    knn.run(None, n_neighbors, h)
+
+
+                elif self.algo_state.GetLabel() == 'classification_Gaussian_Processes':
+                    h = self.advanced_settings_float(self.settings_value_1.GetValue())  # step size in the mesh
+                    gpc.gaussian_processes_run(None, h)
+
+                elif self.algo_state.GetLabel() == 'c_4_5':
+                    h = self.advanced_settings_float(self.settings_value_1.GetValue())  # step size in the mesh
+                    c45.c_4_5_run(None, h)
+
+                elif self.algo_state.GetLabel() == 'Clustering_performance_evaluation':
+                    print("!rand")
+                    cpe.run_CPE()
+
+                elif self.algo_state.GetLabel() == 'classification_Decision_trees':
+                    plot_step = self.advanced_settings_float(self.settings_value_1.GetValue())
+                    dtc.dtc_run(None, plot_step)
+
+                elif self.algo_state.GetLabel() == 'classification_naive_bayes':
+                    plot_step = self.advanced_settings_float(self.settings_value_1.GetValue())
+                    bayes.bayes_run(None, plot_step)
+
+                elif self.algo_state.GetLabel() == 'classification_less_sqad':
+                    wx.MessageBox("Работа данного алгоритма временно не поддерживается")
+
                 else:
                     wx.MessageBox("Рандом временно недоступен", "Функция недоступна")
                     

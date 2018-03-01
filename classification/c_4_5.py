@@ -9,10 +9,22 @@ import pylab as pl
 
 from sklearn.datasets import load_iris
 from sklearn.tree import DecisionTreeClassifier
+from sklearn import datasets
+import random
 
 
 def c_4_5_run(data, h):
 # Parameters
+
+    if (data is None):
+        data = datasets.load_iris()
+        i = 0
+        for row in data.data:
+            j = 0
+            for el in row:
+                data.data[i, j] = random.uniform(0.1, 9.9)
+                j = j + 1
+            i = i + 1
 
     n_classes = 3
     

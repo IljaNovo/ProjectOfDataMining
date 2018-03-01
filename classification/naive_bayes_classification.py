@@ -3,8 +3,19 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.naive_bayes import GaussianNB
+from sklearn import datasets
+import random
 
 def bayes_run(data, plot_step):
+	if (data is None):
+		data = datasets.load_iris()
+		i = 0
+		for row in data.data:
+			j = 0
+			for el in row:
+				data.data[i, j] = random.uniform(0.1, 9.9)
+				j = j + 1
+			i = i + 1
 	# Parameters
 	n_classes = 3
 	plot_colors = "bry"

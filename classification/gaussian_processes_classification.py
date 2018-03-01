@@ -4,10 +4,23 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.gaussian_process import GaussianProcessClassifier
 from sklearn.gaussian_process.kernels import RBF
+from sklearn import datasets
+import random
 
 def gaussian_processes_run(data, h):
+    if (data is None):
+        data = datasets.load_iris()
+        i = 0
+        for row in data.data:
+            j = 0
+            for el in row:
+                data.data[i, j] = random.uniform(0.1, 9.9)
+                j = j + 1
+            i = i + 1
+
     X = data.data[:, :2]  # we only take the first two features.
     y = np.array(data.target, dtype=int)
+
 
     kernel = 1.0 * RBF([1.0])
     gpc_rbf_isotropic = GaussianProcessClassifier(kernel=kernel).fit(X, y)
