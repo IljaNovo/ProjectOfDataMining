@@ -7,8 +7,14 @@ import mpl_toolkits.mplot3d.axes3d as p3
 from sklearn.cluster import AgglomerativeClustering
 
 import input_output.io as io
+import random
+from sklearn.datasets.samples_generator import make_swiss_roll
 
 def run(X, n_clusters):
+    if(X is None):
+        n_samples = random.randint(500, 4000)
+        noise = 0.05
+        X, _ = make_swiss_roll(n_samples, noise)
     X[:, 1] *= .5
 
     # #############################################################################
