@@ -1,8 +1,3 @@
-Usage:
-    $python apriori.py -f DATASET.csv -s minSupport  -c minConfidence
-    $python apriori.py -f DATASET.csv -s 0.15 -c 0.6
-"""
-
 import sys
 
 from itertools import chain, combinations
@@ -11,13 +6,12 @@ from optparse import OptionParser
 
 
 def subsets(arr):
-    """ Returns non empty subsets of arr"""
+
     return chain(*[combinations(arr, i + 1) for i, a in enumerate(arr)])
 
 
 def returnItemsWithMinSupport(itemSet, transactionList, minSupport, freqSet):
-        """calculates the support for items in the itemSet and returns a subset
-       of the itemSet each of whose elements satisfies the minimum support"""
+
         _itemSet = set()
         localSet = defaultdict(int)
 
@@ -37,7 +31,7 @@ def returnItemsWithMinSupport(itemSet, transactionList, minSupport, freqSet):
 
 
 def joinSet(itemSet, length):
-        """Join a set with itself and returns the n-element itemsets"""
+
         return set([i.union(j) for i in itemSet for j in itemSet if len(i.union(j)) == length])
 
 
@@ -53,12 +47,7 @@ def getItemSetTransactionList(data_iterator):
 
 
 def runApriori(data_iter, minSupport, minConfidence):
-    """
-    run the apriori algorithm. data_iter is a record iterator
-    Return both:
-     - items (tuple, support)
-     - rules ((pretuple, posttuple), confidence)
-    """
+
     itemSet, transactionList = getItemSetTransactionList(data_iter)
 
     freqSet = defaultdict(int)
@@ -87,7 +76,7 @@ def runApriori(data_iter, minSupport, minConfidence):
         k = k + 1
 
     def getSupport(item):
-            """local function which Returns the support of an item"""
+
             return float(freqSet[item])/len(transactionList)
 
     toRetItems = []
@@ -110,7 +99,7 @@ def runApriori(data_iter, minSupport, minConfidence):
 
 
 def printResults(items, rules):
-    """prints the generated itemsets sorted by support and the confidence rules sorted by confidence"""
+
     for item, support in sorted(items, key=lambda (item, support): support):
         print "item: %s , %.3f" % (str(item), support)
     print "\n------------------------ RULES:"
@@ -120,7 +109,7 @@ def printResults(items, rules):
 
 
 def dataFromFile(fname):
-        """Function which reads from the file and yields a generator"""
+
         file_iter = open(fname, 'rU')
         for line in file_iter:
                 line = line.strip().rstrip(',')                         # Remove trailing comma
