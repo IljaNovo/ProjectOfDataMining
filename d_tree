@@ -1,0 +1,76 @@
+import os
+import sys
+import subprocess
+import splunk.Intersplunk
+import sys
+from sklearn import tree
+
+#---Get data---
+X=sys.argv[2]
+Y=sys.argv[3]
+Class=sys.argv[4]
+predict_X=sys.argv[5]
+predict_Y=sys.argv[6]
+#---Prepare data---
+X=X.split(",")
+Y=Y.split(",")
+Class=Class.split(",")
+predict_X=predict_X.split(",")
+predict_Y=predict_Y.split(",")
+predict=list(zip(predict_X,predict_Y))
+new_X=list(zip(X,Y))
+new_Y=Class
+#---Call Machine Learning function---
+clf = tree.DecisionTreeClassifier()
+clf = clf.fit(new_X, new_Y)
+result=clf.predict(predict[1:])
+#---Print results---
+print '{},{},{}'.format("Predicted","X","Y")
+for line,(x,y) in zip(result,predict[1:]):
+  print '{},{},{}'.format(line, x, y)
+
+  # ---Get data from Splunk---
+  results, unused1, unused2 = splunk.Intersplunk.getOrganizedResults()
+
+  # ---Prepare data---
+  str_X = ""
+  str_Y = ""
+  str_Class = ""
+
+  predict_X = ""
+  predict_Y = ""
+
+  cnt = 0
+  delim = ""
+
+  for result in results:
+      if result["Class"] == "":
+          predict_X = predict_X + "," + result["X"]
+          predict_Y = predict_Y + "," + result["Y"]
+      else:
+          if cnt >= 1: delim = ","
+          str_X = str_X + delim + result["X"]
+          str_Y = str_Y + delim + result["Y"]
+          str_Class = str_Class + delim + result["Class"]
+
+          result["new_X"] = str_X
+          result["new_Y"] = str_Y
+          result["new_Class"] = str_Class
+      cnt = cnt + 1
+
+  # ---Call python module with required functionality
+  _NEW_PYTHON_PATH = '/usr/bin/python'
+  os.environ['PYTHONPATH'] = '/opt/splunk/lib/python2.7'
+  _SPLUNK_PYTHON_PATH = os.environ['PYTHONPATH']
+
+  os.environ['PYTHONPATH'] = _NEW_PYTHON_PATH
+  my_process = os.path.join(os.getcwd(), '/home/konstantin/Documents/dtree_lib.py')
+
+  p = subprocess.Popen(
+      [os.environ['PYTHONPATH'], my_process, _SPLUNK_PYTHON_PATH, str_X, str_Y, str_Class, predict_X, predict_Y],
+      stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+  output = p.communicate()[0]
+
+  # ---Print results---
+  # splunk.Intersplunk.outputResults(results)
+  print output
