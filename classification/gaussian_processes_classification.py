@@ -7,6 +7,8 @@ from sklearn.gaussian_process.kernels import RBF
 from sklearn import datasets
 import random
 
+import time
+
 def gaussian_processes_run(data, h):
     if (data is None):
         data = datasets.load_iris()
@@ -18,6 +20,7 @@ def gaussian_processes_run(data, h):
                 j = j + 1
             i = i + 1
 
+    start_time = time.time()
     X = data.data[:, :2]  # we only take the first two features.
     y = np.array(data.target, dtype=int)
 
@@ -62,4 +65,5 @@ def gaussian_processes_run(data, h):
     plt.savefig('!Results/classification_GP_result.png', bbox_inches='tight')
     fig = plt.gcf()
     fig.canvas.set_window_title('[Result] Gaussian Processes classification')
+    print("--- %s seconds , " % (time.time() - start_time) + "h = %s ---" % (h))
     plt.show()
