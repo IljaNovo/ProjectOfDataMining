@@ -707,10 +707,10 @@ class MainWindow(wx.Frame):
    
                     elif self.algo_state.GetLabel() == 'Clustering_performance_evaluation':
                         if self.file_type_check() == 'txt':
-                            wx.MessageBox("Алгоритм CPE в данный момент работает только со случайными значениями", "Функция недоступна")
+                            cpe.run_CPE()#wx.MessageBox("Алгоритм CPE в данный момент работает только со случайными значениями", "Функция недоступна")
                         elif self.file_type_check() == 'csv':
-                            wx.MessageBox("Алгоритм CPE в данный момент работает только со случайными значениями",
-                                          "Функция недоступна")
+                            cpe.run_CPE()# wx.MessageBox("Алгоритм CPE в данный момент работает только со случайными значениями",
+                           #               "Функция недоступна")
 
                         ##############################
 
@@ -901,10 +901,9 @@ class MainWindow(wx.Frame):
                             
                     elif self.algo_state.GetLabel() == 'Clustering_performance_evaluation':
                         if self.file_type_check_web() == 'txt':
-                            wx.MessageBox("Работа с web txt файлами временно не поддерживается алгоритмом CPE", "Функция недоступна")
+                            cpe.run_CPE()  #текст
                         elif self.file_type_check_web() == 'csv':
-                            wx.MessageBox("Работа с web txt файлами временно не поддерживается алгоритмом CPE", "Функция недоступна")
-
+                            cpe.run_CPE()  #из инета
 ##############                            
 
                     elif self.algo_state.GetLabel() == 'classification_Decision_trees':
